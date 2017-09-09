@@ -21,8 +21,14 @@ let operators = {
 let operands = {
     'pX': null,
     'pY': null,
-    //'PI': () => Math.PI,
-    'rand5': () => getRandomInt(0, 5),
+    'sinX': null,
+    'cosX': null,
+    'tanX': null,
+    'sinY': null,
+    'cosY': null,
+    'tanY': null,
+    'PI': () => Math.PI,
+    'rand': () => getRandomArbitrary(0, 10000),
 }
 
 
@@ -48,11 +54,38 @@ function solveRpnExpression(expression, x, y) {
                 } else {
                     //Otherwise we are dealing with pixel locations
 
+
                     //supply current x value if operand type is pX
                     if(n === 'pX') {
                         n = x;
-                    } else if(n === 'pY') {
+                    }
+                    
+                    if(n === 'pY') {
                         n = y;
+                    }
+
+                    if(n === 'sinX') {
+                        n = Math.sin(x);
+                    }
+
+                    if(n === 'cosX') {
+                        n = Math.cos(x);
+                    }
+
+                    if(n === 'tanX') {
+                        n = Math.tan(x);
+                    }
+
+                    if(n === 'sinY') {
+                        n = Math.sin(y);
+                    }
+
+                    if(n === 'cosY') {
+                        n = Math.cos(y);
+                    }
+
+                    if(n === 'tanY') {
+                        n = Math.tan(y);
                     }
                 }
 
