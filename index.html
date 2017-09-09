@@ -12,38 +12,39 @@
             let population = [];
 
             for(let i = 0; i < 3; i++) {
-                population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators), 3, 0));
+                population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators), 6, 0));
             }
-            
+
             let canvas = document.getElementById('canvas');
 
             let ctx = canvas.getContext('2d');
-            let rgbString = '';
-            for(let x = 0; x < canvas.width; x++) {
-                for(let y = 0; y < canvas.height; y++) {
-                    
-                    //Select 3 items from the population to solve for red, green and blue
-                    let r = solveRpnExpression(population[0].slice(0), x, y);
-                    let g = solveRpnExpression(population[1].slice(0), x, y);
-                    let b = solveRpnExpression(population[2].slice(0), x, y);
 
-                    if(r < 0) { r = 0; }
-                    if(g < 0) { g = 0; }
-                    if(b < 0) { b = 0; }
+            for(let y = 0; y < canvas.height; y++) {
+                for(let x = 0; x < canvas.width; x++) {
+                    //Yield, this allows for progressive rendering of the image
+                    setTimeout(function() {
+                        window.requestAnimationFrame(function() {
+                            //Select 3 items from the population to solve for red, green and blue
+                            let r = solveRpnExpression(population[0].slice(0), x, y);
+                            let g = solveRpnExpression(population[1].slice(0), x, y);
+                            let b = solveRpnExpression(population[2].slice(0), x, y);
 
-                    if(r > 255) { r = 255; }
-                    if(g > 255) { g = 255; }
-                    if(b > 255) { b = 255; }
-                    rgbString = `rgb(${r}, ${g}, ${b})`;
-                    //Set the fill style to our rgb values
-                    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-                   
-                    //Draw a dot!
-                    ctx.fillRect(x, y, 1, 1);
+                            if(r < 0) { r = 0; }
+                            if(g < 0) { g = 0; }
+                            if(b < 0) { b = 0; }
+
+                            if(r > 255) { r = 255; }
+                            if(g > 255) { g = 255; }
+                            if(b > 255) { b = 255; }
+                            //Set the fill style to our rgb values
+                            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                        
+                            //Draw a dot!
+                            ctx.fillRect(x, y, 1, 1);
+                        });
+                    }, 0);
                 }
-                
             }
-
             
         </script>
     </body>

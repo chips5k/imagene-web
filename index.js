@@ -14,7 +14,7 @@ let operators = {
     },
     '^': (a, b) => { 
         return Math.pow(a, b); 
-    }
+    },
 };
 
 let currentX = 6;
@@ -85,16 +85,6 @@ function treeToRpn(tree) {
 
 }
 
-function randRange(min, max) {
-    let r = parseInt(Math.random() * 10);
-
-    if(r < min) { return min; }
-
-    if(r > max) { return max; }
-
-    return r;
-}
-
 /**
  * 
  * @param {Numerically indexed array of operand characters/strings} operands 
@@ -107,9 +97,13 @@ function buildRpnExpression(operands, operators, maxSubexpressions, currentDepth
     let expression = [];
 
     //Todo randomize whether or not to nest
+
+    
+
     if(currentDepth < maxSubexpressions) {
-        expression = expression.concat(buildRpnExpression(operands, operators, maxSubexpressions - 1, currentDepth + 1));
-        expression = expression.concat(buildRpnExpression(operands, operators, maxSubexpressions - 1, currentDepth + 1));
+        let currentMaxSubExpressions = getRandomArbitrary(0, maxSubexpressions - 1);
+        expression = expression.concat(buildRpnExpression(operands, operators, currentMaxSubExpressions, currentDepth + 1));
+        expression = expression.concat(buildRpnExpression(operands, operators, currentMaxSubExpressions, currentDepth + 1));
         expression = expression.concat((operators[getRandomInt(0, operators.length)]));
     } else {
         expression = expression.concat((operands[getRandomInt(0, operands.length)]));
