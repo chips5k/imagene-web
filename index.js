@@ -17,14 +17,12 @@ let operators = {
     },
 };
 
-let currentX = 6;
-let currentY = 8;
 
 let operands = {
     'pX': null,
     'pY': null,
-    'PI': () => Math.PI,
-    'rand': () => getRandomArbitrary(0, 100)
+    //'PI': () => Math.PI,
+    'rand5': () => getRandomInt(0, 5),
 }
 
 
@@ -101,7 +99,7 @@ function buildRpnExpression(operands, operators, maxSubexpressions, currentDepth
     
 
     if(currentDepth < maxSubexpressions) {
-        let currentMaxSubExpressions = getRandomArbitrary(0, maxSubexpressions - 1);
+        let currentMaxSubExpressions = getRandomInt(0, maxSubexpressions - 1);
         expression = expression.concat(buildRpnExpression(operands, operators, currentMaxSubExpressions, currentDepth + 1));
         expression = expression.concat(buildRpnExpression(operands, operators, currentMaxSubExpressions, currentDepth + 1));
         expression = expression.concat((operators[getRandomInt(0, operators.length)]));

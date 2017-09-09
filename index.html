@@ -50,10 +50,23 @@
 
             function paint(population, grid, canvas, ctx, completeFn) {
                 
+                let rgbRange = {
+                    min: { r: false, g: false, b: false, all: false},
+                    max: { r: false, g: false, b: false, all: false}
+                };
+
                 $('#status').html('Initiating paint...');
                
                 let onComplete = () => {
                     $('#status').html('Rendering - second pass - normalized colours...');
+
+                    let diffs = {
+                        r: rgbRange.max.r - rgbRange.min.r,
+                        g: rgbRange.max.g - rgbRange.min.g,
+                        b: rgbRange.max.b - rgbRange.min.b,
+                    }
+                    
+                   
                     for(let y = 0; y < grid.length; y++) {
                         for(let x = 0; x < grid[y].length; x++) {
                             //Yield, this allows for progressive rendering of the image
@@ -61,6 +74,12 @@
                                 window.requestAnimationFrame(function() {
                                     
                                     let cell = grid[y][x];
+                                    
+                                    cell.r = parseInt((cell.r - rgbRange.min.r) / diffs.r * 255);
+                                    cell.g = parseInt((cell.g - rgbRange.min.g)/ diffs.g * 255);
+                                    cell.b = parseInt((cell.b - rgbRange.min.g)/ diffs.b * 255);
+
+                                    
                                     //Set the fill style to our rgb values
                                     ctx.fillStyle = `rgb(${cell.r}, ${cell.g}, ${cell.b})`;
                                     
@@ -79,10 +98,7 @@
 
 
                 let index = getRandomInt(0, population.length - 4);
-                let rgbRange = {
-                    min: { r: false, g: false, b: false},
-                    max: { r: false, g: false, b: false}
-                };
+                
 
                 //Yield, to prevent events being blocked
                 setTimeout(function() {
@@ -106,27 +122,27 @@
 
                                     grid[y].push({r: r, g: g, b: b });
 
-                                    if(r < rgbRange.min.r || rgbRange.min.r === false) {
+                                    if(isFinite(r) && (r < rgbRange.min.r || rgbRange.min.r === false)) {
                                         rgbRange.min.r = r;
                                     }
 
-                                    if(g < rgbRange.min.g || rgbRange.min.g === false) {
+                                    if(isFinite(g) && (g < rgbRange.min.g || rgbRange.min.g === false)) {
                                         rgbRange.min.g = g;
                                     }
 
-                                    if(b < rgbRange.min.b || rgbRange.min.b === false) {
+                                    if(isFinite(b) && (b < rgbRange.min.b || rgbRange.min.b === false)) {
                                         rgbRange.min.b = b;
                                     }
 
-                                    if(r > rgbRange.max.r || rgbRange.max.r === false) {
+                                    if(isFinite(r) && (r > rgbRange.max.r || rgbRange.max.r === false)) {
                                         rgbRange.max.r = r;
                                     }
 
-                                    if(g > rgbRange.max.g || rgbRange.max.g === false) {
+                                    if(isFinite(g) && (g > rgbRange.max.g || rgbRange.max.g === false)) {
                                         rgbRange.max.g = g;
                                     }
 
-                                    if(b > rgbRange.max.b || rgbRange.max.b === false) {
+                                    if(isFinite(b) && (b > rgbRange.max.b || rgbRange.max.b === false)) {
                                         rgbRange.max.b = b;
                                     }
                                     // End second pass vars
