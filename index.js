@@ -21,24 +21,15 @@ let currentX = 6;
 let currentY = 8;
 
 let operands = {
-    'pX': () => currentX,
-    'pY': () => currentY,
+    'pX': null,
+    'pY': null,
     'PI': () => Math.PI,
     'rand': () => getRandomArbitrary(0, 100)
 }
 
-let expressionA = buildRpnExpression(Object.keys(operands), Object.keys(operators), 3, 0);
 
 
-console.log(expressionA.join(" "));
-
-let result = rpnSolver(expressionA);
-
-console.log(result);
-
-
-
-function rpnSolver(expression) {
+function solveRpnExpression(expression, x, y) {
     let operandStack = [];
     let operatorStack = [];
 
@@ -52,7 +43,22 @@ function rpnSolver(expression) {
             if(operators.hasOwnProperty(n)) {
                 operatorStack.push(operators[n]);
             } else if(operands.hasOwnProperty(n)) {
-                operandStack.push(operands[n]());
+
+                //If operand has a function body, use it
+                if(operands[n] !== null) {
+                    n = operands[n]()
+                } else {
+                    //Otherwise we are dealing with pixel locations
+
+                    //supply current x value if operand type is pX
+                    if(n === 'pX') {
+                        n = x;
+                    } else if(n === 'pY') {
+                        n = y;
+                    }
+                }
+
+                operandStack.push(n);
             }
         }
     
