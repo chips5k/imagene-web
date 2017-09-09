@@ -5,45 +5,154 @@
 
         <canvas id="canvas" width="320" height="320"></canvas>
 
+        <script src="vendor/jquery.min.js"></script>
         <script src="index.js"></script>
+        <p id="status"></p>
+        <div>
+            <button type="button" data-action="paint">(re)paint</button>
+        </div>
 
         <script>
+            $(function() {
+                let population = [];
 
-            let population = [];
+                
+                //Hacky global var - its only temporary though!
+                //And using it to avoid regenerating the array everytime we call paint
+                let grid = [];
 
-            for(let i = 0; i < 3; i++) {
-                population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators), 6, 0));
-            }
-
-            let canvas = document.getElementById('canvas');
-
-            let ctx = canvas.getContext('2d');
-
-            for(let y = 0; y < canvas.height; y++) {
-                for(let x = 0; x < canvas.width; x++) {
-                    //Yield, this allows for progressive rendering of the image
-                    setTimeout(function() {
-                        window.requestAnimationFrame(function() {
-                            //Select 3 items from the population to solve for red, green and blue
-                            let r = solveRpnExpression(population[0].slice(0), x, y);
-                            let g = solveRpnExpression(population[1].slice(0), x, y);
-                            let b = solveRpnExpression(population[2].slice(0), x, y);
-
-                            if(r < 0) { r = 0; }
-                            if(g < 0) { g = 0; }
-                            if(b < 0) { b = 0; }
-
-                            if(r > 255) { r = 255; }
-                            if(g > 255) { g = 255; }
-                            if(b > 255) { b = 255; }
-                            //Set the fill style to our rgb values
-                            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-                        
-                            //Draw a dot!
-                            ctx.fillRect(x, y, 1, 1);
-                        });
-                    }, 0);
+                for(let i = 0; i < 24; i++) {
+                    population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators), 6, 0));
                 }
+
+                let canvas = document.getElementById('canvas');
+                let ctx = canvas.getContext('2d');
+                
+                $('button[data-action="paint"]').click(function(e) {
+                    e.preventDefault();
+                    $(this).prop('disabled', true);
+                    let self = this;
+                    paint(population, grid, canvas, ctx, () => {
+                        
+                        $(self).prop('disabled', false);
+                    });
+                });
+
+                $('button').prop('disabled', true);
+                paint(population, grid, canvas, ctx, function() {
+                    $('button').prop('disabled', false);
+                });
+               
+            });
+            
+
+            
+
+            function paint(population, grid, canvas, ctx, completeFn) {
+                
+                $('#status').html('Initiating paint...');
+               
+                let onComplete = () => {
+                    $('#status').html('Rendering - second pass - normalized colours...');
+                    for(let y = 0; y < grid.length; y++) {
+                        for(let x = 0; x < grid[y].length; x++) {
+                            //Yield, this allows for progressive rendering of the image
+                            setTimeout(function() {
+                                window.requestAnimationFrame(function() {
+                                    
+                                    let cell = grid[y][x];
+                                    //Set the fill style to our rgb values
+                                    ctx.fillStyle = `rgb(${cell.r}, ${cell.g}, ${cell.b})`;
+                                    
+                                    //Draw a dot!
+                                    ctx.fillRect(x, y, 1, 1);
+
+                                    if(y === canvas.height - 1 && x === canvas.width - 1) {
+                                        completeFn();
+                                        $('#status').html('Paint cycles complete');
+                                    }
+                                });
+                            },0);
+                        }
+                    }
+                }
+
+
+                let index = getRandomInt(0, population.length - 4);
+                let rgbRange = {
+                    min: { r: false, g: false, b: false},
+                    max: { r: false, g: false, b: false}
+                };
+
+                //Yield, to prevent events being blocked
+                setTimeout(function() {
+                    $('#status').html('Rendering - first pass - colours not yet normalized...');
+                    for(let y = 0; y < canvas.height; y++) {
+                        for(let x = 0; x < canvas.width; x++) {
+                            //Yield, this allows for progressive rendering of the image
+                            setTimeout(function() {
+                                window.requestAnimationFrame(function() {
+                                
+
+                                    //Select 3 items from the population to solve for red, green and blue
+                                    let r = solveRpnExpression(population[index].slice(0), x, y);
+                                    let g = solveRpnExpression(population[index + 1].slice(0), x, y);
+                                    let b = solveRpnExpression(population[index + 2].slice(0), x, y);
+
+                                    //Setting up variables for second pass render
+                                    if(!grid[y]) { 
+                                        grid[y] = [];
+                                    }
+
+                                    grid[y].push({r: r, g: g, b: b });
+
+                                    if(r < rgbRange.min.r || rgbRange.min.r === false) {
+                                        rgbRange.min.r = r;
+                                    }
+
+                                    if(g < rgbRange.min.g || rgbRange.min.g === false) {
+                                        rgbRange.min.g = g;
+                                    }
+
+                                    if(b < rgbRange.min.b || rgbRange.min.b === false) {
+                                        rgbRange.min.b = b;
+                                    }
+
+                                    if(r > rgbRange.max.r || rgbRange.max.r === false) {
+                                        rgbRange.max.r = r;
+                                    }
+
+                                    if(g > rgbRange.max.g || rgbRange.max.g === false) {
+                                        rgbRange.max.g = g;
+                                    }
+
+                                    if(b > rgbRange.max.b || rgbRange.max.b === false) {
+                                        rgbRange.max.b = b;
+                                    }
+                                    // End second pass vars
+                                
+                                    if(r < 0) { r = 0; }
+                                    if(g < 0) { g = 0; }
+                                    if(b < 0) { b = 0; }
+
+                                    if(r > 255) { r = 255; }
+                                    if(g > 255) { g = 255; }
+                                    if(b > 255) { b = 255; }
+
+                                    //Set the fill style to our rgb values
+                                    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                                
+                                    //Draw a dot!
+                                    ctx.fillRect(x, y, 1, 1);
+
+                                    if(y === canvas.height - 1 && x === canvas.width - 1) {
+                                        onComplete();
+                                    }
+                                });
+                            }, 0);
+                        }
+                    }
+                }, 0);
             }
             
         </script>
