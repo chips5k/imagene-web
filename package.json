@@ -1,0 +1,11 @@
+{
+  "name": "imagene-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Callem Pittard <callem.pittard@gmail.com> (https://github.com/chips5k)",
+  "license": "ISC"
+}
