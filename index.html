@@ -9,56 +9,64 @@
         <script src="index.js"></script>
         <p id="status"></p>
         <div>
-            <button type="button" data-action="paint">(re)paint</button>
+                <button type="button" data-action="generate-population">Generate new population</button>
+            <button type="button" data-action="render">Render</button>
         </div>
 
         <script>
             $(function() {
                 let population = [];
-
-                
-                //Hacky global var - its only temporary though!
-                //And using it to avoid regenerating the array everytime we call paint
                 let grid = [];
-
-                for(let i = 0; i < 24; i++) {
-                    population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators), 12, 0));
-                }
 
                 let canvas = document.getElementById('canvas');
                 let ctx = canvas.getContext('2d');
                 
-                $('button[data-action="paint"]').click(function(e) {
+                $('button[data-action="render"]').click(function(e) {
                     e.preventDefault();
-                    $(this).prop('disabled', true);
-                    let self = this;
-                    paint(population, grid, canvas, ctx, () => {
-                        
-                        $(self).prop('disabled', false);
+                    $('button').prop('disabled', true);
+                    render(population, grid, canvas, ctx, () => {
+                        $('button').prop('disabled', false);
                     });
                 });
 
-                $('button').prop('disabled', true);
-                paint(population, grid, canvas, ctx, function() {
+                $('button[data-action="generate-population"]').click(function(e) {
+                    e.preventDefault();
+                    $('button').prop('disabled', true);
+                    population = generatePopulation();
                     $('button').prop('disabled', false);
+                    $('button[data-action="render"]').trigger('click');
+                   
                 });
-               
+
+                $('button[data-action="generate-population"]').trigger('click');
+
             });
             
 
-            
+            function generatePopulation() {
+                $('#status').html('Generating population...');
+                let population = [];
+                for(let i = 0; i < 24; i++) {
+                    population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators.double).concat(Object.keys(operators.single)), 12, 0));
+                }
 
-            function paint(population, grid, canvas, ctx, completeFn) {
+                return population;
+            }
+
+            function render(population, grid, canvas, ctx, completeFn) {
                 
+                let width = canvas.width;
+                let height = canvas.height;
+
                 let rgbRange = {
                     min: { r: false, g: false, b: false, all: false},
                     max: { r: false, g: false, b: false, all: false}
                 };
 
-                $('#status').html('Initiating paint...');
+                $('#status').html('Initiating render...');
                
                 let onComplete = () => {
-                    $('#status').html('Rendering - second pass - normalized colours...');
+                    $('#status').html('Rendering - second pass - normalized colour values...');
 
                     let diffs = {
                         r: rgbRange.max.r - rgbRange.min.r,
@@ -66,9 +74,9 @@
                         b: rgbRange.max.b - rgbRange.min.b,
                     }
                     
-                   
-                    for(let y = 0; y < grid.length; y++) {
-                        for(let x = 0; x < grid[y].length; x++) {
+                    
+                    for(let y = 0; y < height; y++) {
+                        for(let x = 0; x < width; x++) {
                             //Yield, this allows for progressive rendering of the image
                             setTimeout(function() {
                                 window.requestAnimationFrame(function() {
@@ -102,9 +110,9 @@
 
                 //Yield, to prevent events being blocked
                 setTimeout(function() {
-                    $('#status').html('Rendering - first pass - colours not yet normalized...');
-                    for(let y = 0; y < canvas.height; y++) {
-                        for(let x = 0; x < canvas.width; x++) {
+                    $('#status').html('Rendering - first pass - colour values clamped...');
+                    for(let y = 0; y < height; y++) {
+                        for(let x = 0; x < width; x++) {
                             //Yield, this allows for progressive rendering of the image
                             setTimeout(function() {
                                 window.requestAnimationFrame(function() {

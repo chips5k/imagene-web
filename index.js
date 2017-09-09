@@ -1,34 +1,44 @@
 
 let operators = {
-    '+': (a, b) => { 
-        return a + b;
+    double: {
+        '+': (a, b) => { 
+            return a + b;
+        },
+        '-': (a, b) => { 
+            return a - b 
+        },
+        '/': (a, b) => { 
+            return a / b 
+        },
+        '*': (a, b) => { 
+            return a * b; 
+        },
+        '^': (a, b) => { 
+            return Math.pow(a, b); 
+        }
     },
-    '-': (a, b) => { 
-        return a - b 
-    },
-    '/': (a, b) => { 
-        return a / b 
-    },
-    '*': (a, b) => { 
-        return a * b; 
-    },
-    '^': (a, b) => { 
-        return Math.pow(a, b); 
-    },
+    single: {
+        'sin': (a) => {
+            return Math.sin(a % Math.PI)
+        },
+        'cos': (a) => {
+            return Math.cos(a % Math.PI)
+        },
+        'tan': (a) => {
+            return Math.tan(a % Math.PI)
+        },
+        'log': (a) => {
+            return Math.log(Math.abs(a));
+        }
+    }
 };
 
 
 let operands = {
-    'pX': null,
-    'pY': null,
-    'sinX': null,
-    'cosX': null,
-    'tanX': null,
-    'sinY': null,
-    'cosY': null,
-    'tanY': null,
-    'PI': () => Math.PI,
-    'rand': () => getRandomArbitrary(0, 10000),
+    'pX': (x, y) => x,
+    'pY': (x, y) => y,
+    'PI': (x, y) => Math.PI,
+    'rand': (x, y) => getRandomArbitrary(0, 10000),
 }
 
 
@@ -38,58 +48,16 @@ function solveRpnExpression(expression, x, y) {
     let operatorStack = [];
 
     while(expression.length) {
-    
         let n = expression.shift();
-        
         if(!isNaN(parseFloat(n))) {
             operandStack.push(n);
         } else {
-            if(operators.hasOwnProperty(n)) {
-                operatorStack.push(operators[n]);
+            if(operators.double.hasOwnProperty(n)) {
+                operatorStack.push(operators.double[n]);
+            } else if(operators.single.hasOwnProperty(n)) {
+                operatorStack.push(operators.single[n]);
             } else if(operands.hasOwnProperty(n)) {
-
-                //If operand has a function body, use it
-                if(operands[n] !== null) {
-                    n = operands[n]()
-                } else {
-                    //Otherwise we are dealing with pixel locations
-
-
-                    //supply current x value if operand type is pX
-                    if(n === 'pX') {
-                        n = x;
-                    }
-                    
-                    if(n === 'pY') {
-                        n = y;
-                    }
-
-                    if(n === 'sinX') {
-                        n = Math.sin(x);
-                    }
-
-                    if(n === 'cosX') {
-                        n = Math.cos(x);
-                    }
-
-                    if(n === 'tanX') {
-                        n = Math.tan(x);
-                    }
-
-                    if(n === 'sinY') {
-                        n = Math.sin(y);
-                    }
-
-                    if(n === 'cosY') {
-                        n = Math.cos(y);
-                    }
-
-                    if(n === 'tanY') {
-                        n = Math.tan(y);
-                    }
-                }
-
-                operandStack.push(n);
+                operandStack.push(operands[n](x, y));
             }
         }
     
@@ -128,8 +96,6 @@ function buildRpnExpression(operands, operators, maxSubexpressions, currentDepth
     let expression = [];
 
     //Todo randomize whether or not to nest
-
-    
 
     if(currentDepth < maxSubexpressions) {
         let currentMaxSubExpressions = getRandomInt(0, maxSubexpressions - 1);
