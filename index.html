@@ -9,8 +9,33 @@
         <script src="index.js"></script>
         <p id="status"></p>
         <div>
-                <button type="button" data-action="generate-population">Generate new population</button>
+            <div>
+                <label>Population Size</label>
+                <input type="text" name="populationSize" value="24">
+            </div>
+            <div>
+                <label>Max Depth of generated formulae</label>
+                <input type="text" name="maxDepth" value="12">
+            </div>
+
+            <div>
+                <label>Min Depth of generated formulae</label>
+                <input type="text" name="minDepth" value="6">
+            </div>  
+
+            <div>
+                <label>Colour Mode</label>
+                <div>
+                    <label><input type="radio" name="colourMode" value="RGB"> RGB (smaller range, more interpolation)</label>
+                    <label><input type="radio" name="colourMode" value="YUV"> RGB (larger range, less interpolation)</label>
+                </div>
+            </div>  
+
+            
+
+            <button type="button" data-action="generate-population">Generate new population</button>
             <button type="button" data-action="render">Render</button>
+
         </div>
 
         <script>
@@ -47,7 +72,7 @@
                 $('#status').html('Generating population...');
                 let population = [];
                 for(let i = 0; i < 24; i++) {
-                    population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators.double).concat(Object.keys(operators.single)), 12, 0));
+                    population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), 12, 0));
                 }
 
                 return population;
@@ -105,7 +130,11 @@
                 }
 
 
-                let index = getRandomInt(0, population.length - 4);
+                let indexes = [
+                    getRandomInt(0, population.length),
+                    getRandomInt(0, population.length),
+                    getRandomInt(0, population.length)
+                ]; 
                 
 
                 //Yield, to prevent events being blocked
@@ -119,9 +148,9 @@
                                 
 
                                     //Select 3 items from the population to solve for red, green and blue
-                                    let r = solveRpnExpression(population[index].slice(0), x, y);
-                                    let g = solveRpnExpression(population[index + 1].slice(0), x, y);
-                                    let b = solveRpnExpression(population[index + 2].slice(0), x, y);
+                                    let r = solveRpnExpression(population[indexes[0]].slice(0), x, y);
+                                    let g = solveRpnExpression(population[indexes[1]].slice(0), x, y);
+                                    let b = solveRpnExpression(population[indexes[2]].slice(0), x, y);
 
                                     //Setting up variables for second pass render
                                     if(!grid[y]) { 

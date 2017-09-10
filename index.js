@@ -91,23 +91,42 @@ function treeToRpn(tree) {
  * @param {Integer} maxSubexpressions 
  * @param {Integer} currentDepth 
  */
-function buildRpnExpression(operands, operators, maxSubexpressions, currentDepth) {
+function buildRpnExpression(operands, singleOperators, doubleOperators, maxSubexpressions, currentDepth) {
     
     let expression = [];
 
     //Todo randomize whether or not to nest
 
-    if(currentDepth < maxSubexpressions) {
-        let currentMaxSubExpressions = getRandomInt(0, maxSubexpressions - 1);
-        expression = expression.concat(buildRpnExpression(operands, operators, currentMaxSubExpressions, currentDepth + 1));
-        expression = expression.concat(buildRpnExpression(operands, operators, currentMaxSubExpressions, currentDepth + 1));
-        expression = expression.concat((operators[getRandomInt(0, operators.length)]));
+    let type = getRandomInt(1, 3);
+    
+
+
+    if(type === 1) {
+
+        if(currentDepth < maxSubexpressions) {
+            let currentMaxSubExpressions = getRandomInt(0, maxSubexpressions);
+            expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, currentMaxSubExpressions, currentDepth + 1));
+            expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, currentMaxSubExpressions, currentDepth + 1));
+            expression = expression.concat((doubleOperators[getRandomInt(0, doubleOperators.length)]));
+        } else {
+            expression = expression.concat((operands[getRandomInt(0, operands.length)]));
+            expression = expression.concat((operands[getRandomInt(0, operands.length)]));
+            expression = expression.concat((doubleOperators[getRandomInt(0, doubleOperators.length)]));
+        }
     } else {
-        expression = expression.concat((operands[getRandomInt(0, operands.length)]));
-        expression = expression.concat((operands[getRandomInt(0, operands.length)]));
-        expression = expression.concat((operators[getRandomInt(0, operators.length)]));
+        if(currentDepth < maxSubexpressions) {
+            let currentMaxSubExpressions = getRandomInt(0, maxSubexpressions);
+            expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, currentMaxSubExpressions, currentDepth + 1));
+            
+        } else {
+            expression = expression.concat((operands[getRandomInt(0, operands.length)]));
+        }
+        
+        
+        expression = expression.concat((singleOperators[getRandomInt(0, singleOperators.length)]));
     }
     
+
     return expression;
 }
 
