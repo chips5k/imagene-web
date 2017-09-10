@@ -11,23 +11,23 @@
         <div>
             <div>
                 <label>Population Size</label>
-                <input type="text" name="populationSize" value="24">
+                <input type="text" name="populationSize" value="24" disabled>
             </div>
             <div>
                 <label>Max Depth of generated formulae</label>
-                <input type="text" name="maxDepth" value="12">
+                <input type="text" name="maxDepth" value="12" disabled>
             </div>
 
             <div>
                 <label>Min Depth of generated formulae</label>
-                <input type="text" name="minDepth" value="6">
+                <input type="text" name="minDepth" value="6" disabled>
             </div>  
 
             <div>
                 <label>Colour Mode</label>
                 <div>
-                    <label><input type="radio" name="colourMode" value="RGB"> RGB (smaller range, more interpolation)</label>
-                    <label><input type="radio" name="colourMode" value="YUV"> RGB (larger range, less interpolation)</label>
+                    <label><input type="radio" name="colourMode" disabled value="RGB"> RGB (smaller range, more interpolation)</label>
+                    <label><input type="radio" name="colourMode"disabled  value="YUV"> YUV (larger range, less interpolation)</label>
                 </div>
             </div>  
 
@@ -72,7 +72,7 @@
                 $('#status').html('Generating population...');
                 let population = [];
                 for(let i = 0; i < 24; i++) {
-                    population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), 12, 0));
+                    population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), 6, 0));
                 }
 
                 return population;

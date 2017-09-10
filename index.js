@@ -33,15 +33,14 @@ let operators = {
     }
 };
 
-
 let operands = {
     'pX': (x, y) => x,
     'pY': (x, y) => y,
     'PI': (x, y) => Math.PI,
-    'rand': (x, y) => getRandomArbitrary(0, 10000),
+    'rand5': (x, y) => getRandomArbitrary(0, 5),
+    'rand10': (x, y) => getRandomArbitrary(6, 11),
+    'rand15': (x, y) => getRandomArbitrary(11, 16),
 }
-
-
 
 function solveRpnExpression(expression, x, y) {
     let operandStack = [];
