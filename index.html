@@ -136,17 +136,15 @@
                     getRandomInt(0, population.length)
                 ]; 
                 
-
                 //Yield, to prevent events being blocked
                 setTimeout(function() {
-                    $('#status').html('Rendering - first pass - colour values clamped...');
+                    $('#status').html('Processing - first pass');
                     for(let y = 0; y < height; y++) {
                         for(let x = 0; x < width; x++) {
                             //Yield, this allows for progressive rendering of the image
-                            setTimeout(function() {
-                                window.requestAnimationFrame(function() {
+                            //setTimeout(function() {
+                                //window.requestAnimationFrame(function() {
                                 
-
                                     //Select 3 items from the population to solve for red, green and blue
                                     let r = solveRpnExpression(population[indexes[0]].slice(0), x, y);
                                     let g = solveRpnExpression(population[indexes[1]].slice(0), x, y);
@@ -184,25 +182,11 @@
                                     }
                                     // End second pass vars
                                 
-                                    if(r < 0) { r = 0; }
-                                    if(g < 0) { g = 0; }
-                                    if(b < 0) { b = 0; }
-
-                                    if(r > 255) { r = 255; }
-                                    if(g > 255) { g = 255; }
-                                    if(b > 255) { b = 255; }
-
-                                    //Set the fill style to our rgb values
-                                    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-                                
-                                    //Draw a dot!
-                                    ctx.fillRect(x, y, 1, 1);
-
                                     if(y === canvas.height - 1 && x === canvas.width - 1) {
                                         onComplete();
                                     }
-                                });
-                            }, 0);
+                                //});
+                            //}, 0);
                         }
                     }
                 }, 0);

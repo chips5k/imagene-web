@@ -15,17 +15,26 @@ let operators = {
         },
         '^': (a, b) => { 
             return Math.pow(a, b); 
+        },
+        '%': (a, b) => {
+            return a % b;
+        },
+        'CIR': (a, b) => {
+            return Math.sin(Math.sqrt(a * a + b * b) * Math.PI / 180.00);
         }
     },
     single: {
+        'sqrt': (a) => {
+            return Math.sqrt(Math.abs(a));
+        },
         'sin': (a) => {
-            return Math.sin(a % Math.PI)
+            return Math.sin(a % 3.16)
         },
         'cos': (a) => {
-            return Math.cos(a % Math.PI)
+            return Math.cos(a % 3.16)
         },
         'tan': (a) => {
-            return Math.tan(a % Math.PI)
+            return Math.tan(a)
         },
         'log': (a) => {
             return Math.log(Math.abs(a));
