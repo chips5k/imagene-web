@@ -49,6 +49,8 @@
                 $('button[data-action="render"]').click(function(e) {
                     e.preventDefault();
                     $('button').prop('disabled', true);
+                   
+                    grid = [];
                     render(population, grid, canvas, ctx, () => {
                         $('button').prop('disabled', false);
                     });
@@ -57,7 +59,9 @@
                 $('button[data-action="generate-population"]').click(function(e) {
                     e.preventDefault();
                     $('button').prop('disabled', true);
+                    population = [];
                     population = generatePopulation();
+                    console.log(population);
                     $('button').prop('disabled', false);
                     $('button[data-action="render"]').trigger('click');
                    
@@ -72,7 +76,7 @@
                 $('#status').html('Generating population...');
                 let population = [];
                 for(let i = 0; i < 24; i++) {
-                    population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), 6, 0));
+                    population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), 12, 0));
                 }
 
                 return population;
@@ -135,6 +139,8 @@
                     getRandomInt(0, population.length),
                     getRandomInt(0, population.length)
                 ]; 
+
+                console.log(indexes);
                 
                 //Yield, to prevent events being blocked
                 setTimeout(function() {
