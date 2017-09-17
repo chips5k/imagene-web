@@ -8,6 +8,8 @@ import Button from 'material-ui/Button';
 import sample1 from "./img/samples/1.png";
 import AddIcon from 'material-ui-icons/Add';
 import OpenInBrowserIcon from 'material-ui-icons/OpenInBrowser';
+import PopulationDialog from './PopulationDialog';
+import GenerationDialog from './GenerationDialog';
 
 const styles = theme => ({
     home: {
@@ -17,6 +19,51 @@ const styles = theme => ({
 
   
 class Home extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            populationDialogOpen: false,
+            generationDialogOpen: false
+        };
+    }
+
+    newPopulation() {
+        this.setState({
+            populationDialogOpen: true
+        });
+    }
+
+    closePopulationDialog() {
+        this.setState({
+            populationDialogOpen: false
+        });
+    }
+
+    confirmPopulationDialog() {
+        this.setState({
+            populationDialogOpen: false,
+            generationDialogOpen: true
+        });
+    }
+
+    closeGenerationDialog() {
+        this.setState({
+            generationDialogOpen: false
+        });
+    }
+
+    confirmGenerationDialog() {
+        this.setState({
+            generationDialogOpen: false
+        });
+
+        //Should be dsoing this via action creators
+        // store.dispatch(push('/foo'))
+
+        this.props.history.push('/evolve');
+    }
+
     render() {
         return (
             <Grid container className={this.props.classes.home}>
@@ -32,7 +79,7 @@ class Home extends Component {
                     </Typography>
                     
                     <div style={{marginTop:'2rem'}}>
-                        <Button raised color="primary" style={{marginRight:'1rem'}}>
+                        <Button raised color="primary" style={{marginRight:'1rem'}} onClick={ this.newPopulation.bind(this) }>
                             <AddIcon style={{marginRight: '0.5rem'}} /> New Population
                         </Button>
                         <Button raised color="accent">
@@ -45,6 +92,16 @@ class Home extends Component {
                     <img src={sample1} style={{maxWidth: '100%', height: 'auto' }} />
                     <figure>Sample output of ImageneWeb</figure>
                 </Grid>
+
+                <PopulationDialog 
+                    open={this.state.populationDialogOpen} 
+                    handleCloseAction={this.closePopulationDialog.bind(this)} 
+                    handleSubmitAction={this.confirmPopulationDialog.bind(this)} />
+
+                <GenerationDialog 
+                    open={this.state.generationDialogOpen} 
+                    handleCloseAction={this.closeGenerationDialog.bind(this)} 
+                    handleSubmitAction={this.confirmGenerationDialog.bind(this)} />
             </Grid>
         );
     }

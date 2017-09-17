@@ -13,7 +13,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <AppBar position="static">
+                <AppBar position="fixed">
                     <Toolbar>
                         <Typography type="title" color="inherit" style={{ flex: 1 }}>
                             ImageneWeb
