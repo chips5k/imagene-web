@@ -9,7 +9,7 @@ import Button from 'material-ui/Button';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
 
-import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
+import Card, { CardActions } from 'material-ui/Card';
 import ThumbUpIcon from 'material-ui-icons/ThumbUp';
 import ThumbDownIcon from 'material-ui-icons/ThumbDown';
 import sample1 from "./img/samples/1.png";
@@ -27,7 +27,7 @@ const styles = theme => ({
     paper: {
         zIndex: 1000,
         borderLeft: '1px solid #ccc',
-        paddingTop: '65px',
+        paddingTop: '60px',
         minWidth: '320px'
     },
     paperB: {
@@ -113,7 +113,7 @@ class Evolve extends Component {
                     {[0, 1, 2].map(n => (
                         <Grid item key={n} sm={12} md={6} lg={4} xs={12}>
                             <Card>
-                                <img src={sample1} style={{width: '100%', height:'auto'}} />
+                                <img src={sample1} style={{width: '100%', height:'auto'}} alt="" />
                                 <CardActions>
                                     <div style={{flex: 1}}>
                                         <Button dense color="primary" style={{marginRight: '1rem' }}>
@@ -150,27 +150,27 @@ class Evolve extends Component {
                     paper: this.props.classes.paper
                 }}>
 
-                    <List dense >
-                        <ListSubheader style={{display:'flex', backgroundColor: '#f7f7f7'}}>
-                            <Typography type="subtitle" style={{flex: 1}}>Initial Population Settings</Typography>
-                            <IconButton dense style={{marginRight: 0}} onClick={this.openPopulationDialog.bind(this)}><LockIcon /></IconButton>
+                    <List >
+                        <ListSubheader style={{display:'flex', backgroundColor: '#f7f7f7', paddingRight: 0}}>
+                            <div style={{flex: 1}}>Initial Population Settings</div>
+                            <IconButton style={{marginRight: 0}} onClick={this.openPopulationDialog.bind(this)}><LockIcon /></IconButton>
                         </ListSubheader>
                         <Divider />
                         <ListItem>
-                            <ListItemText style={{marginLeft:'1rem'}} primary="Individuals: 24" />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText style={{marginLeft:'1rem'}} primary="Min Depth: 6" />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText style={{marginLeft:'1rem'}} primary="Max Depth: 12" />
+                            <Typography>
+                                <ul style={{listStyleType: 'square'}}>
+                                    <li>Individuals: 24</li>
+                                    <li>Min Depth: 1</li>
+                                    <li>Max Depth: 12</li>
+                                </ul>
+                            </Typography>
                         </ListItem>
                         <Divider />
                         <ListSubheader style={{backgroundColor: '#f7f7f7'}}>Generations</ListSubheader>
                         <Divider />
 
                        
-                        <ListItem dense button style={{borderBottom: '1px solid #eee'}}>
+                        <ListItem button style={{borderBottom: '1px solid #eee'}}>
                             <ListItemIcon>
                                 <KeyboardArrowRightIcon />
                             </ListItemIcon>
@@ -182,7 +182,7 @@ class Evolve extends Component {
                             </ListItemSecondaryAction>
                         </ListItem>
 
-                        <ListItem dense button  style={{backgroundColor: 'lightblue'}}>
+                        <ListItem button  style={{backgroundColor: 'lightblue'}}>
                             <ListItemIcon>
                                 <KeyboardArrowDownIcon />
                             </ListItemIcon>
@@ -193,21 +193,21 @@ class Evolve extends Component {
                                 </IconButton>
                             </ListItemSecondaryAction>
                         </ListItem>
-                        <div style={{backgroundColor: '#eee'}}>
-                        <ListItem style={{paddingLeft: '4rem'}}>
-                            <ListItemText primary="Red threshold: 16, 200"  style={{paddingLeft: 0}}/>
+                        <ListItem style={{backgroundColour: '#ccc'}}>
+                            <Typography>
+                                <ul style={{listStyleType: 'square'}}>
+                                    <li>Num Samples: 6</li>
+                                    <li>Width: 320, Height: 320</li>
+                                    <li>Red Threshold: 124, 255</li>
+                                    <li>Green threshold: 82, 97</li>
+                                    <li>Blue threshold: 55, 100</li>
+                                </ul>
+                            </Typography>
                         </ListItem>
-                        <ListItem style={{paddingLeft: '4rem'}}>
-                            <ListItemText primary="Blue threshold: 55, 100"  style={{paddingLeft: 0}}/>
-                        </ListItem>
-                        <ListItem style={{paddingLeft: '4rem'}}>
-                            <ListItemText primary="Green threshold: 82, 97"  style={{paddingLeft: 0}}/>
-                        </ListItem>
-                        </div>
                             
                             
                         <Divider/>
-                        <ListItem dense button  style={{borderBottom: '1px solid #eee'}}>
+                        <ListItem button  style={{borderBottom: '1px solid #eee'}}>
                             <ListItemIcon>
                                 <KeyboardArrowRightIcon />
                             </ListItemIcon>

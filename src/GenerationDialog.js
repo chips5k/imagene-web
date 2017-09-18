@@ -4,7 +4,6 @@ import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/D
 import Input, { InputLabel } from 'material-ui/Input';
 import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
-import { FormControl, FormHelperText, FormGroup } from 'material-ui/Form';
 export default class PopulationDialog extends Component {
 
     render() {
@@ -25,7 +24,7 @@ export default class PopulationDialog extends Component {
                                 />
                             </Grid>
 
-                            <Grid item sm={12}>
+                            <Grid item sm={6}>
                                 <TextField
                                     id="helperText"
                                     label="Sample Width"
@@ -36,7 +35,7 @@ export default class PopulationDialog extends Component {
                                 />
                             </Grid>
                             
-                            <Grid item sm={12}>
+                            <Grid item sm={6}>
                                 <TextField
                                     id="helperText"
                                     label="Sample Height"
@@ -47,38 +46,64 @@ export default class PopulationDialog extends Component {
                                 />
                             </Grid>
                 
-                            <Grid item sm={12}>
+                            <Grid item sm={6}>
                                 <TextField
                                     id="helperText"
-                                    label="Red Threshold"
-                                    defaultValue="6"
-                                    helperText="Min/Max red values for image generation"
+                                    label="Red Threshold Min"
+                                    defaultValue="0"
                                     margin="normal"
                                     style={{width:'100%'}}
                                 />
                             </Grid>
-                            
-                            <Grid item sm={12}>
+                            <Grid item sm={6}>
                                 <TextField
                                     id="helperText"
-                                    label="Green Threshold"
-                                    defaultValue="6"
-                                    helperText="Min/Max Green values for image generation"
+                                    label="Red Threshold Max"
+                                    defaultValue="255"
                                     margin="normal"
                                     style={{width:'100%'}}
                                 />
                             </Grid>
 
-                            <Grid item sm={12}>
+                            <Grid item sm={6}>
                                 <TextField
                                     id="helperText"
-                                    label="Blue Threshold"
-                                    defaultValue="6"
-                                    helperText="Min/Max Blue values for image generation"
+                                    label="Green Threshold Min"
+                                    defaultValue="0"
                                     margin="normal"
                                     style={{width:'100%'}}
                                 />
                             </Grid>
+                            <Grid item sm={6}>
+                                <TextField
+                                    id="helperText"
+                                    label="Green Threshold Max"
+                                    defaultValue="255"
+                                    margin="normal"
+                                    style={{width:'100%'}}
+                                />
+                            </Grid>
+
+                            <Grid item sm={6}>
+                                <TextField
+                                    id="helperText"
+                                    label="Blue Threshold Min"
+                                    defaultValue="0"
+                                    margin="normal"
+                                    style={{width:'100%'}}
+                                />
+                            </Grid>
+                            <Grid item sm={6}>
+                                <TextField
+                                    id="helperText"
+                                    label="Blue Threshold Max"
+                                    defaultValue="255"
+                                    margin="normal"
+                                    style={{width:'100%'}}
+                                />
+                            </Grid>
+                            
+                            
                         </Grid>
                         
                     </form>

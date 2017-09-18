@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -8,7 +7,6 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import HomeIcon from 'material-ui-icons/Home';
 import { withStyles } from 'material-ui/styles';
-import MenuIcon from 'material-ui-icons/Menu';
 import { Link } from 'react-router-dom';
 
 

@@ -19,11 +19,7 @@ const styles = theme => ({
   
 class Home extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
-
+    
     render() {
         return (
             <Grid container className={this.props.classes.home}>
@@ -49,7 +45,7 @@ class Home extends Component {
                 </Grid>
                 <Grid  item sm={4} xs={12} style={{textAlign:'center', paddingTop: '3.5rem'}}>
                     
-                    <img src={sample1} style={{maxWidth: '100%', height: 'auto' }} />
+                    <img src={sample1} style={{maxWidth: '100%', height: 'auto' }} alt="Sample" />
                     <figure>Sample output of ImageneWeb</figure>
                 </Grid>
 

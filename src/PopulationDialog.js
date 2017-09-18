@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
-import Input, { InputLabel } from 'material-ui/Input';
 import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
-import { FormControl, FormHelperText, FormGroup } from 'material-ui/Form';
 export default class PopulationDialog extends Component {
 
     render() {
