@@ -7,7 +7,7 @@ export default class Home extends Component {
     render() {
         return (
             <div className="home">
-                
+
                 <div className="content">
                     <div className="grid">
                         <div className="grid__column">
@@ -28,12 +28,6 @@ export default class Home extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="bottom-bar">
-                    <Link to="/">Re-Generate</Link>
-                </div>
-                <div className="side-bar">
-            
                 </div>
             </div>
         );

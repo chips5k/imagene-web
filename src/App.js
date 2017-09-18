@@ -5,12 +5,23 @@ export default class App extends Component {
     render() {
         return (
             <div className="container">
-                <nav className="primary-nav">
-                    <h1 className="primary-nav__title">Imagene</h1>
-                </nav>
-                <div className="body">
+
+                <div className="top">
+                    <h1 className="title">Imagene</h1>
+                </div>
+
+                <div className="middle">
                     {this.props.children}
                 </div>
+                
+                <div className="bottom">
+                    <Link to="/">Re-Generate</Link>
+                </div>
+
+                <div className="right">
+                    <Link to="/">Help</Link>
+                </div>
+                
             </div>
         );
     }
