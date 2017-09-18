@@ -14,10 +14,8 @@ import reducers from './reducers'; // Or wherever you keep your reducers
 
 import App from './App';
 import Home from './Home';
-import Evolve from './Evolve';
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
-
 
 // Build the middleware for intercepting and dispatching navigation actions
 const middleware = routerMiddleware(history);
@@ -84,7 +82,6 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <App>
         <Route exact path="/" component={Home}/>
-        <Route exact path="/evolve" component={Evolve}/>
       </App>
     </ConnectedRouter>
   </Provider>,
