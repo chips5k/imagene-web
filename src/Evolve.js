@@ -157,13 +157,11 @@ class Evolve extends Component {
                         </ListSubheader>
                         <Divider />
                         <ListItem>
-                            <Typography>
-                                <ul style={{listStyleType: 'square'}}>
-                                    <li>Individuals: 24</li>
-                                    <li>Min Depth: 1</li>
-                                    <li>Max Depth: 12</li>
-                                </ul>
-                            </Typography>
+                            <ul style={{listStyleType: 'square', fontSize: '0.9rem'}}>
+                                <li style={{marginBottom:'0.3rem'}}>Individuals: 24</li>
+                                <li style={{marginBottom:'0.3rem'}}>Min Depth: 1</li>
+                                <li style={{marginBottom:'0.3rem'}}>Max Depth: 12</li>
+                            </ul>
                         </ListItem>
                         <Divider />
                         <ListSubheader style={{backgroundColor: '#f7f7f7'}}>Generations</ListSubheader>
@@ -194,15 +192,13 @@ class Evolve extends Component {
                             </ListItemSecondaryAction>
                         </ListItem>
                         <ListItem style={{backgroundColour: '#ccc'}}>
-                            <Typography>
-                                <ul style={{listStyleType: 'square'}}>
-                                    <li>Num Samples: 6</li>
-                                    <li>Width: 320, Height: 320</li>
-                                    <li>Red Threshold: 124, 255</li>
-                                    <li>Green threshold: 82, 97</li>
-                                    <li>Blue threshold: 55, 100</li>
-                                </ul>
-                            </Typography>
+                            <ul style={{listStyleType: 'square', fontSize: '0.9rem'}}>
+                                <li style={{marginBottom:'0.3rem'}}>Num Samples: 6</li>
+                                <li style={{marginBottom:'0.3rem'}}>Width: 320, Height: 320</li>
+                                <li style={{marginBottom:'0.3rem'}}>Red Threshold: 124, 255</li>
+                                <li style={{marginBottom:'0.3rem'}}>Green threshold: 82, 97</li>
+                                <li style={{marginBottom:'0.3rem'}}>Blue threshold: 55, 100</li>
+                            </ul>
                         </ListItem>
                             
                             
