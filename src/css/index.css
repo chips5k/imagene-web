@@ -5,41 +5,51 @@ body {
 }
   
 .top {
-    background: #09473b;
-    padding:0.2rem 1rem;
-    z-index: 100;
+    background-image: linear-gradient(45deg, rgba(6,82,47,1) 0%, rgba(0,122,163,1) 100%);
+    padding:0.3rem 1rem;
+    z-index: 0;
     position:fixed;
-    left: 0px;
-    right:0px;
+    left: -10px;
+    padding-left: 25px;
+    right:-10px;
     top:0px;
+    min-height:100px;
+}
 
+
+
+.top__title {
+    font-size: 1.2rem;
+    color: white;
 }
 
 
 .middle {
     position:fixed;
-    top: 70px;
-    right: 381px;
+    top: 3.6rem;
+    z-index: 200;
+    right: 380px;
     overflow-y: auto;
-    bottom: 115px;
+    bottom: 0;
+    background:white;
+    box-shadow: 2px -1px 23px -6px #000000; 
 }
 
 
 .right {
     position:fixed;
-    top: 70px;
-    padding-top: 50px;
+    top: 100px;
     width: 380px;
-    border-left:1px solid #ccc;
-    background: white;
+    background: #222;
     bottom:0px;
     right: 0px;
     z-index: 50;
+    overflow-y: hidden;
 }
 
 .bottom {
     position:fixed;
-    border-top:1px solid #ccc;
+    
     bottom:0px;
     right: 0px;
     left :0px;
@@ -68,42 +78,208 @@ body {
 
 
 
-.home-link {
-    padding: 1rem;
-    border-bottom:1px solid #ccc;
-    text-decoration: none;
-    color: black;
-    display:block;
+.form-control {
+    margin-bottom:1rem;
+    margin-right:1rem;
 }
 
-.home-link:hover {
-    background: #f7f7f7;
+.form-control__label {
+    display: block;
+    font-size:0.7rem;
+    margin-bottom:0.3rem;
 }
 
-.generations {
-
+.form-control__input {
+    display:flex;
 }
 
-.generations__header {
-    padding: 1rem;
+.button {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-radius:0.3rem;
 }
 
-.generations__body {
+.button.button--save {
+    background: #198fc1;
+    border:1px solid #198fc1;
+    color: white;
 }
 
-.generation {
-    border-bottom:1px solid #eee;
+.population-config {
+   box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.5);
 }
+.population-config__header {
+    margin-top:4px;
+    background: linear-gradient(45deg, rgba(36,36,36,1) 0%, rgba(23,23,23,1) 100%);
+    
+    padding: 1.3rem 1rem;
+    display:flex;
+    color: white;
+    font-size: 1rem;
+}   
 
-.generation__header {
-    padding: 1rem;
-    background: #f7f7f7;
-    border-top:1px solid #eee;
+.population-config__title {
+    flex: 1;
+    font-weight: normal;
     font-size:1rem;
-    font-style:italic;
-    border-bottom:1px solid #eee;
+    margin:0;
+    padding:0;
 }
 
-.generation__body {
+.population-config__body {
+    transition: max-height 500ms, opacity 500ms;
+    overflow:hidden;
+    max-height: 150px;
+    opacity: 1;
+    background: #f7f7f7;
+}
+
+.population-config__content {
     padding: 1rem;
+}
+
+.population-config__actions {
+    text-align:right;
+}
+
+.population-config--collapsed .population-config__body {
+    max-height:0px;
+    opacity: 0;
+}
+
+/** Generation Config **/
+
+.generation-config {
+    box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.5);
+ }
+ .generation-config__header {
+     background: linear-gradient(45deg, rgba(74,74,74,1) 0%, rgba(51,51,51,1) 100%);
+     
+     padding: 1.3rem 1rem;
+     display:flex;
+     color: white;
+     font-size: 1rem;
+ }   
+ 
+ .generation-config__title {
+     flex: 1;
+     font-weight: normal;
+     font-size:1rem;
+     margin:0;
+     padding:0;
+ }
+ 
+ .generation-config__body {
+     transition: max-height 500ms, opacity 500ms;
+     overflow:hidden;
+     max-height: 350px;
+     opacity: 1;
+     background: #f7f7f7;
+ }
+ 
+ .generation-config__content {
+     padding: 1rem;
+ }
+ 
+ .generation-config__actions {
+     text-align:right;
+ }
+ 
+ .generation-config--collapsed .generation-config__body {
+     max-height:0px;
+     opacity: 0;
+ }
+
+
+.text-input {
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    border: 1px solid #ccc;
+    font-size:0.75rem;
+    width: 100%;
+}
+
+/** Stepper Input **/
+.stepper-input {
+    display:flex;
+}
+
+.stepper-input__input {
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    border: 1px solid #ccc;
+    font-size:0.75rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    width:100%;
+    text-align:center;
+
+}   
+
+.stepper-input__first-button {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    font-size:0.75em;   
+    border-left:none;
+}
+
+.stepper-input__last-button {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    font-size:0.75em;
+    border-radius:0.3rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/** End Stepper Input **/
+
+
+/** Colour Range Input **/
+.colour-range-input {
+    width: 100%;
+    position:relative;
+}
+
+.colour-range-input__track {
+    height: 10px;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom:0.25rem;
+    margin-top:0.5rem;
+}
+
+.colour-range-input--red .colour-range-input__track {
+    background: linear-gradient(90deg, rgb(0,0,0), rgb(255,0,0));
+}
+
+.colour-range-input--blue .colour-range-input__track {
+    background: linear-gradient(90deg, rgb(0,0,0), rgb(0,255,0));
+}
+
+.colour-range-input--green .colour-range-input__track {
+    background: linear-gradient(90deg, rgb(0,0,0), rgb(0,0,255));
+}
+
+.colour-range-input__selection {
+    position:absolute;
+    top: 0.5rem;
+    height: 10px;   
+    background: rgba(255,255,255,0.3);
+    border-radius: 5px;
+}
+
+.colour-range-input_handle{
+    width: 10px;
+    height: 100%;
+    top: -2px;
+    border: 2px solid rgb(10, 10, 10);
+    border-radius: 5px;
+    background: rgba(255,255,255,0.1);
+    position:absolute;
+}
+
+.colour-range-input_handle:hover {
+    background: rgba(255,255,255,0.6);
+    cursor: pointer;
 }

@@ -1,4 +1,5 @@
 import 'roboto-fontface';
+import 'font-awesome/css/font-awesome.css';
 import './css/index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
