@@ -1,3 +1,4 @@
+import 'roboto-fontface';
 import './css/index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -75,7 +76,6 @@ const store = createStore(
   applyMiddleware(middleware)
 );
 
-
 ReactDOM.render(
   <Provider store={store}>
     { /* ConnectedRouter will use the store from Provider automatically */ }
@@ -87,3 +87,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+
+

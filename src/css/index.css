@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: 'Roboto', 'Sans-serif', 'Arial';
 }
   
 .top {
@@ -18,7 +19,7 @@ body {
 .middle {
     position:fixed;
     top: 70px;
-    right: 201px;
+    right: 381px;
     overflow-y: auto;
     bottom: 115px;
 }
@@ -28,7 +29,7 @@ body {
     position:fixed;
     top: 70px;
     padding-top: 50px;
-    width: 200px;
+    width: 380px;
     border-left:1px solid #ccc;
     background: white;
     bottom:0px;
@@ -65,3 +66,44 @@ body {
 }
 
 
+
+
+.home-link {
+    padding: 1rem;
+    border-bottom:1px solid #ccc;
+    text-decoration: none;
+    color: black;
+    display:block;
+}
+
+.home-link:hover {
+    background: #f7f7f7;
+}
+
+.generations {
+
+}
+
+.generations__header {
+    padding: 1rem;
+}
+
+.generations__body {
+}
+
+.generation {
+    border-bottom:1px solid #eee;
+}
+
+.generation__header {
+    padding: 1rem;
+    background: #f7f7f7;
+    border-top:1px solid #eee;
+    font-size:1rem;
+    font-style:italic;
+    border-bottom:1px solid #eee;
+}
+
+.generation__body {
+    padding: 1rem;
+}
