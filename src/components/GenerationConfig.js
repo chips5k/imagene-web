@@ -28,7 +28,7 @@ export default class GenerationConfig extends Component {
         return (
             <div className={rootClasses}>
                 <div className="generation-config__header" onClick={this.handleToggleCollapse.bind(this)}>
-                    <h3 className="generation-config__title">Generation 1</h3>
+                    <h3 className="generation-config__title"><i className="fa fa-sitemap"/> Generation {this.props.label}</h3>
                     <span className="generation-config__collapse-toggle"> 
                         <i className={this.state.collapsed ? 'fa fa-angle-up' : 'fa fa-angle-down'}></i>
                     </span>

@@ -27,7 +27,7 @@ export default class PopulationConfig extends Component {
         return (
             <div className={rootClasses}>
                 <div className="population-config__header" onClick={this.handleToggleCollapse.bind(this)}>
-                    <h3 className="population-config__title">Population</h3>
+                    <h3 className="population-config__title"><i className="fa fa-globe"/> Population</h3>
                     <span className="population-config__collapse-toggle"> 
                         <i className={this.state.collapsed ? 'fa fa-angle-up' : 'fa fa-angle-down'}></i>
                     </span>
