@@ -52,15 +52,15 @@ export default class GenerationConfig extends Component {
                         <div style={{display: 'flex', flexDirection: 'column'}}>
 
                             <FormControl label="Red Threshold" last>
-                                <ColourRangeInput value={[0, 255]}  colour="red" />  
+                                <ColourRangeInput minValue={0} maxValue={255}  colour="red" />  
                             </FormControl>
 
                             <FormControl label="Green Threshold" last>
-                                <ColourRangeInput value={[0, 255]}  colour="green" />  
+                                <ColourRangeInput minValue={0} maxValue={255}  colour="green" />  
                             </FormControl>
 
                             <FormControl label="Blue Threshold" last >
-                                <ColourRangeInput value={[0, 255]} colour="blue" />  
+                                <ColourRangeInput minValue={0} maxValue={255} colour="blue" />  
                             </FormControl>
                         </div>
                         

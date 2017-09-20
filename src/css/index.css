@@ -302,25 +302,20 @@ body {
     background: linear-gradient(90deg, rgb(0,0,0), rgb(0,0,255));
 }
 
-.colour-range-input__selection {
-    position:absolute;
-    top: 0.5rem;
-    height: 10px;   
-    background: rgba(255,255,255,0.3);
-    border-radius: 5px;
-}
+
 
 .colour-range-input_handle{
     width: 10px;
     height: 100%;
-    top: -2px;
+    top: 6px;
+    height:10px;
     border: 2px solid rgb(10, 10, 10);
     border-radius: 5px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.4);
     position:absolute;
 }
 
 .colour-range-input_handle:hover {
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.8);
     cursor: pointer;
 }
