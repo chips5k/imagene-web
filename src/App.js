@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import FormControl from './components/FormControl';
-import StepperInput from './components/StepperInput';
 import PopulationConfig from './components/PopulationConfig';
 import GenerationConfig from './components/GenerationConfig';
 import logo from './img/logo.svg';
