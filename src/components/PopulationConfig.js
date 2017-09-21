@@ -10,24 +10,28 @@ export default class PopulationConfig extends Component {
         };
     }
 
+
     handleToggleCollapse() {
         this.setState({
             collapsed: !this.state.collapsed
         });
     }
 
-    handleSaveChanges() {
-
+    onClickSave() {
+        this.props.onSave({
+            size: this.refs.size.value,
+            minDepth: this.refs.minDepth.value,
+            maxDepth: this.refs.maxDepth.value
+        });
     }
     
 
     render() {
-
         let rootClasses = 'population-config ' + (this.state.collapsed ? 'population-config--collapsed' : '');
         return (
             <div className={rootClasses}>
                 <div className="population-config__header" onClick={this.handleToggleCollapse.bind(this)}>
-                    <h3 className="population-config__title"><i className="fa fa-globe"/> Population</h3>
+                    <h3 className="population-config__title"><i className="fa fa-gl-e"/> Population</h3>
                     <span className="population-config__collapse-toggle"> 
                         <i className={this.state.collapsed ? 'fa fa-angle-up' : 'fa fa-angle-down'}></i>
                     </span>
@@ -36,22 +40,22 @@ export default class PopulationConfig extends Component {
                     <div className="population-config__content">
                         <div style={{display: 'flex'}}>
                             <FormControl label="Population Size">
-                                <StepperInput value={24} />  
+                                <StepperInput ref="size" value={this.props.size} />  
                             </FormControl>
 
                             <FormControl label="Min Depth">
-                                <StepperInput value={0} />
+                                <StepperInput ref="minDepth" value={this.props.minDepth} />
                             </FormControl>
 
                             <FormControl label="Max Depth" last>
-                                <StepperInput value={12} />
+                                <StepperInput  ref="maxDepth" value={this.props.maxDepth} />
                             </FormControl>
                         </div>
                         <div className="population-config__actions">
-                            <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.handleSaveChanges.bind(this)}>
+                            <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickSave.bind(this)}>
                                 <i className="fa fa-check"></i> Save changes
                             </button> 
-                            <button className="button button--cancel" onClick={this.handleSaveChanges.bind(this)}>
+                            <button className="button button--cancel">
                                 <i className="fa fa-remove"></i> Cancel
                             </button>
                         </div>

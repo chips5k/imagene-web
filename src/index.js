@@ -25,44 +25,46 @@ const history = createHistory();
 const middleware = routerMiddleware(history);
 
 const initialState = {
-    population: {
-        config: {
-            initialPopulation: 24,
-            minDepth: 0, 
-            maxDepth: 12
-        },
-        generations: [
-            {
-                config: {
-                    redMin: 0,
-                    redMax: 255,
-                    greenMin: 0,
-                    greenMax: 255,
-                    blueMin: 0,
-                    blueMax: 255
-                },
-                individuals: [
-                    {
-                        id: '...',
-                        expression: [],
-                        parents: {
-                            generationIndex: 0,
-                            motherIndex: 1,
-                            fatherIndex: 2
-                        }
-                    }
-                ],
-                images: [
-                    {
-                        redIndividualId: '...',
-                        greenIndividualId: '...',
-                        blueIndividualId: '...'
-                    }
-                ]
-            }
-        ]
-    }
+    populationConfig: {
+        size: 24,
+        minDepth: 0, 
+        maxDepth: 12
+    },
+    population: [],
+    generations: [],
+    generationConfigs: []
 };
+
+/*
+{
+    config: {
+        redMin: 0,
+        redMax: 255,
+        greenMin: 0,
+        greenMax: 255,
+        blueMin: 0,
+        blueMax: 255
+    },
+    individuals: [
+        {
+            id: '...',
+            expression: [],
+            parents: {
+                generationIndex: 0,
+                motherIndex: 1,
+                fatherIndex: 2
+            }
+        }
+    ],
+    images: [
+        {
+            redIndividualId: '...',
+            greenIndividualId: '...',
+            blueIndividualId: '...'
+        }
+    ]
+} 
+*/
 
 /* combine this with initial state to enable dev tools for redux
  +  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),

@@ -4,10 +4,17 @@ export default class StepperFormControl extends Component {
 
     constructor(props) {
         super(props);
-        
         this.state = {
             value: this.props.value ? this.props.value : 0
         }
+    }
+
+    get value() {
+        return this.state.value;
+    }
+
+    componentWillReceiveProps(props) {
+        this.state = {...props}
     }
 
     increase() {

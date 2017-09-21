@@ -34,7 +34,7 @@ export default class ColourRangeInput extends Component {
 
     componentDidMount() {
         
-        let state = Object.assign(this.state, {});
+        let state = {...this.state};
 
         //Get pixel width of the track for this
         let trackWidth = this.refs.track.getBoundingClientRect().width;
@@ -52,9 +52,7 @@ export default class ColourRangeInput extends Component {
     onMouseDown(ref, e) {
         e.preventDefault();
         
-        let state = Object.assign(this.state, {
-            activeHandle: ref
-        });
+        let state = {...this.state, activeHandle: ref };
         state.mouseStart = e.clientX;
         state.handles[ref].prevLeft = state.handles[ref].left;
 
@@ -66,7 +64,7 @@ export default class ColourRangeInput extends Component {
 
     onMouseMove(e) {
         e.preventDefault();
-        let state = Object.assign(this.state, {});
+        let state = {...this.state};
         
         let currentLeft = this.state.handles[this.state.activeHandle].prevLeft + e.clientX - this.state.mouseStart;
 
