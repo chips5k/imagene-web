@@ -16,7 +16,7 @@ import reducers from './reducers'; // Or wherever you keep your reducers
 
 import App from './App';
 import Home from './Home';
-import Evolve from './Evolve';
+import Population from './Population';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
@@ -87,7 +87,7 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <App>
         <Route exact path="/" component={Home}/>
-        <Route exact path="/evolve" component={Evolve}/>
+        <Route exact path="/population" component={Population}/>
       </App>
     </ConnectedRouter>
   </Provider>,

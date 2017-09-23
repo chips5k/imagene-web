@@ -1,3 +1,5 @@
+
+
 let initialState = {
     size: 0,
     minDepth: 0,
@@ -17,7 +19,7 @@ export default {
     population: (state = [], action) => {
         switch(action.type) {
             case 'UPDATE_POPULATION_CONFIG':
-                return [...state, [['0', '1']]];
+                return [['pX', 'pY', '+']];
             default:
                 return state;
         }
