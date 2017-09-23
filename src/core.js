@@ -49,7 +49,7 @@ let operands = {
     'rand': (x, y) => getRandomArbitrary(0, 1000),
 }
 
-function solveRpnExpression(expression, x, y) {
+export const solveRpnExpression = function(expression, x, y) {
     let operandStack = [];
     let operatorStack = [];
 
@@ -110,9 +110,9 @@ function buildRpnExpression(operands, singleOperators, doubleOperators, minSubex
     if(type === 1) {
 
         if(currentDepth < maxSubexpressions) {
-            let currentMaxSubExpressions = getRandomInt(0, maxSubexpressions);
-            expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, currentMaxSubExpressions, currentDepth + 1));
-            expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, currentMaxSubExpressions, currentDepth + 1));
+            let currentMaxSubExpressions = getRandomInt(minSubexpressions, maxSubexpressions);
+            expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
+            expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
             expression = expression.concat((doubleOperators[getRandomInt(0, doubleOperators.length)]));
         } else {
             expression = expression.concat((operands[getRandomInt(0, operands.length)]));
@@ -121,8 +121,8 @@ function buildRpnExpression(operands, singleOperators, doubleOperators, minSubex
         }
     } else {
         if(currentDepth < maxSubexpressions) {
-            let currentMaxSubExpressions = getRandomInt(0, maxSubexpressions);
-            expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, currentMaxSubExpressions, currentDepth + 1));
+            let currentMaxSubExpressions = getRandomInt(minSubexpressions, maxSubexpressions);
+            expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
             
         } else {
             expression = expression.concat((operands[getRandomInt(0, operands.length)]));
