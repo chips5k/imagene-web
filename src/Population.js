@@ -2,17 +2,20 @@ import React, { Component } from 'react';
 import FormControl from './components/FormControl';
 import StepperInput from './components/StepperInput';
 
-import { updatePopulationConfig } from './actions';
+import { updatePopulation } from './actions';
 import { connect } from 'react-redux';
-// import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 class Population extends Component {
 
     onClickSave() {
-        this.props.updatePopulationConfig({
-            size: this.refs.size.value,
-            minDepth: this.refs.minDepth.value,
-            maxDepth: this.refs.maxDepth.value
+        this.props.updatePopulation({
+            individuals: [],
+            config: {
+                size: this.refs.size.value,
+                minDepth: this.refs.minDepth.value,
+                maxDepth: this.refs.maxDepth.value
+            }
         });
     }
 
@@ -23,8 +26,7 @@ class Population extends Component {
     render() {
         
         let content = null;
-
-        if(this.props.population.length === 0) {
+        if(this.props.population.individuals.length === 0) {
             content = (
                 <div>
                     <h2>Configure and generate initial population</h2>
@@ -40,11 +42,15 @@ class Population extends Component {
                 <p className="alert alert--warning">Note, if you have already created generations from this population, they will be destroyed upon altering/regenerating the population</p>
 
                     <ul>
-                        {this.props.population.map((n, i) => 
-                            <li key={i}>{n.join(" ")}</li>
+                        {this.props.population.individuals.map((n, i) => 
+                            <li key={i}>{n.expression.join(" ")}</li>
                         )}
                     </ul>
+
+                    <Link to="/generations">Proceed</Link>
                 </div>
+
+              
             )
 
         }
@@ -70,15 +76,15 @@ class Population extends Component {
                             <div className="main-sidebar-panel__body">
                                 <FormControl label="Population Size">
                                     
-                                    <StepperInput ref="size" value={this.props.populationConfig.size} />  
+                                    <StepperInput ref="size" value={this.props.population.config.size} />  
                                 </FormControl>
 
                                 <FormControl label="Min Depth">
-                                    <StepperInput ref="minDepth" value={this.props.populationConfig.minDepth} />
+                                    <StepperInput ref="minDepth" value={this.props.population.config.minDepth} />
                                 </FormControl>
 
                                 <FormControl label="Max Depth" last>
-                                    <StepperInput  ref="maxDepth" value={this.props.populationConfig.maxDepth} />
+                                    <StepperInput  ref="maxDepth" value={this.props.population.config.maxDepth} />
                                 </FormControl>
                             </div>
                             <div className="main-sidebar-panel__actions">
@@ -101,7 +107,7 @@ class Population extends Component {
 const mapStateToProps = state => state;
 
 const mapDispatchToProps = {
-    updatePopulationConfig
-}
+    updatePopulation
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Population);

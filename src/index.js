@@ -11,12 +11,14 @@ import createHistory from 'history/createBrowserHistory';
 import { Route } from 'react-router';
 
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import thunk from 'redux-thunk';
 
 import reducers from './reducers'; // Or wherever you keep your reducers
 
 import App from './App';
 import Home from './Home';
 import Population from './Population';
+import Generation from './Generation';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
@@ -25,46 +27,17 @@ const history = createHistory();
 const middleware = routerMiddleware(history);
 
 const initialState = {
-    populationConfig: {
-        size: 24,
-        minDepth: 0, 
-        maxDepth: 12
+    population: {
+        individuals: [] ,
+        config: {
+            size: 24,
+            minDepth: 0, 
+            maxDepth: 12
+        }
     },
-    population: [],
-    generations: [],
-    generationConfigs: []
+    generations: []
 };
 
-/*
-{
-    config: {
-        redMin: 0,
-        redMax: 255,
-        greenMin: 0,
-        greenMax: 255,
-        blueMin: 0,
-        blueMax: 255
-    },
-    individuals: [
-        {
-            id: '...',
-            expression: [],
-            parents: {
-                generationIndex: 0,
-                motherIndex: 1,
-                fatherIndex: 2
-            }
-        }
-    ],
-    images: [
-        {
-            redIndividualId: '...',
-            greenIndividualId: '...',
-            blueIndividualId: '...'
-        }
-    ]
-} 
-*/
 
 /* combine this with initial state to enable dev tools for redux
  +  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
@@ -78,8 +51,9 @@ const store = createStore(
     router: routerReducer
   }),
   initialState,
-  applyMiddleware(middleware)
+  applyMiddleware(middleware, thunk)
 );
+
 
 ReactDOM.render(
   <Provider store={store}>
@@ -88,6 +62,7 @@ ReactDOM.render(
       <App>
         <Route exact path="/" component={Home}/>
         <Route exact path="/population" component={Population}/>
+        <Route exact path="/generations/:id?" component={Generation}/>
       </App>
     </ConnectedRouter>
   </Provider>,
