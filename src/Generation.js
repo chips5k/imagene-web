@@ -42,7 +42,7 @@ class Generation extends Component {
 
     render() {
         
-        
+        console.log(this.props.generation);
         let content = null;
         
         if(!this.props.generation) {
@@ -57,8 +57,15 @@ class Generation extends Component {
                 <div>
                     <p>Output Generation Tabs here</p>
                     <ul>
-                        {this.props.generation.samples.map(n => 
-                            <li key={n.id}>SAaaaaample</li>
+                        {this.props.generation.samples.map(s => 
+                            <li key={s.id}>
+                                <h3>Sample {s.id}</h3>
+                                <ul>
+                                <li><b>Red:</b> {this.props.generation.population.individuals.find(n => n.id === s.red).expression.join(" ")}</li>
+                                <li><b>Green:</b> {this.props.generation.population.individuals.find(n => n.id === s.green).expression.join(" ")}</li>
+                                <li><b>Blue:</b> {this.props.generation.population.individuals.find(n => n.id === s.blue).expression.join(" ")}</li>
+                                </ul>
+                            </li>
                         )}
                     </ul>
                 </div>

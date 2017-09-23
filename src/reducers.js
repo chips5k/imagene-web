@@ -38,13 +38,15 @@ export default {
     generations: (state = [], action) => {
         switch(action.type) {
             case 'UPDATE_GENERATION':
+                
                 if(action.generation.id) {
                     //Find the config to be updated
                     let generationIndex = state.indexOf(n => n.id === action.generation.id);
                     
                     let generation = {
                         id: action.id,
-                        config: action.config,
+                        config: action.generation.config,
+                        population: action.generation.population,
                         samples: generateSamples(action.generation)
                     };
 
@@ -57,7 +59,8 @@ export default {
                 } else {
                     return [{
                         id: 1, 
-                        config: action.config, 
+                        config: action.generation.config, 
+                        population: action.generation.population,
                         samples: generateSamples(action.generation)
                     }];
                 }
@@ -65,32 +68,5 @@ export default {
             default:
                 return state;
         }
-    },
-    // generations: (state = {generations: [], generationConfigs: []}, action, generationConfigs) => {
-    //     switch(action.type) {
-    //         case 'UPDATE_GENERATION':
-
-    //             //WHEN to do mutations ?
-    //             let population = [...action.population];
-    //             let samples = [];
-    //             for(var i = 0; i < action.generationConfig.numSamples; i++) {
-    //                 samples.push({
-    //                     id: i + 1,
-    //                     red: population[getRandomInt(0, population.length)].id,
-    //                     green: population[getRandomInt(0, population.length)].id,
-    //                     blue:population[getRandomInt(0, population.length)].id,
-    //                 });
-    //             }
-
-    //             return {generations: [{
-    //                 id: action.generationConfig.id,
-    //                 population,
-    //                 samples
-    //             }], generationConfigs};
-
-    //         break;
-    //         default:
-    //             return state;
-    //     }
-    // }
+    }
 };
