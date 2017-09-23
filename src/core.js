@@ -97,7 +97,7 @@ function treeToRpn(tree) {
  * @param {Integer} maxSubexpressions 
  * @param {Integer} currentDepth 
  */
-function buildRpnExpression(operands, singleOperators, doubleOperators, maxSubexpressions, currentDepth) {
+function buildRpnExpression(operands, singleOperators, doubleOperators, minSubexpressions, maxSubexpressions, currentDepth) {
     
     let expression = [];
 
@@ -154,4 +154,45 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+export const generatePopulation = (size, minDepth, maxDepth) => {
+    
+    console.log(size, minDepth, maxDepth);
+    let population = [];
+    if(size < 1) {
+        throw new Error('Size cannot be less than one');
+    }
+    if(size > 24) {
+        throw new Error('Size of population is too large');
+    }
+
+    if(minDepth > 12) {
+        throw new Error('Size of population is too large');
+    }
+
+    if(minDepth > 12) {
+        throw new Error('Size of population is too large');
+    }
+
+    if(minDepth > maxDepth) {
+        throw new Error('Min Depth cannot be greater than max depth');
+    }
+
+    if(minDepth < 0) {
+        throw new Error('Min Depth cannot be less than zero');
+    }
+
+    if(maxDepth < 0) {
+        throw new Error('Max Depth cannot be less than zero');
+    }
+
+    if(maxDepth > 24) {
+        throw new Error('Size of population is too large');
+    }
+    for(let i = 0; i < size; i ++) {
+        population.push(buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), minDepth, maxDepth, 0));
+    }
+
+    return population;
 }

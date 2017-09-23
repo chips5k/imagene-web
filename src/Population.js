@@ -41,7 +41,7 @@ class Population extends Component {
 
                     <ul>
                         {this.props.population.map((n, i) => 
-                            <li key={i}>{n}</li>
+                            <li key={i}>{n.join(" ")}</li>
                         )}
                     </ul>
                 </div>

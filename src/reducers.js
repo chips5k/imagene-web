@@ -1,4 +1,4 @@
-
+import { generatePopulation } from './core';
 
 let initialState = {
     size: 0,
@@ -19,7 +19,18 @@ export default {
     population: (state = [], action) => {
         switch(action.type) {
             case 'UPDATE_POPULATION_CONFIG':
-                return [['pX', 'pY', '+']];
+                try {
+                    return generatePopulation(
+                        action.populationConfig.size, 
+                        action.populationConfig.minDepth, 
+                        action.populationConfig.maxDepth
+                    );
+                } catch(e) {
+                    console.log(e);
+                    //Could push to global error stack
+                    return state;
+                }
+
             default:
                 return state;
         }
