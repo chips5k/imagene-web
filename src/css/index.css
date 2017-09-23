@@ -160,6 +160,7 @@ body {
     padding-right:30px;
     font-size:0.8rem;
     padding-top:30px;
+    overflow-y: auto;
 }
 
 .main__content p {
@@ -174,7 +175,7 @@ body {
 
 
 .main-sidebar-panel {
-
+    overflow-y: auto;
 }
 
 .main-sidebar-panel__header {
@@ -195,6 +196,7 @@ body {
 .main-sidebar-panel__body {
     padding:1.5rem;
     background: #f7f7f7;
+    
 }
 
 .main-sidebar-panel__actions {
@@ -221,10 +223,6 @@ body {
     line-height:1rem;
     text-align:center;
    
-}
-
-.grid {
-    display: flex;
 }
 
 
@@ -348,6 +346,15 @@ body {
      max-height:0px;
      opacity: 0;
  }
+
+.generation-sample {
+    border:1px solid #ccc;
+    
+}
+
+.generation-sample__canvas {
+    border:1px solid #ccc;
+}
 
 
 .text-input {

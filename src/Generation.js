@@ -11,6 +11,7 @@ import ColourRangeInput from './components/ColourRangeInput';
 import { push } from 'react-router-redux';
 import { updateGeneration } from './actions';
 import { connect } from 'react-redux';
+import GenerationSample from './GenerationSample';
 // import {Link} from 'react-router-dom';
 
 class Generation extends Component {
@@ -55,16 +56,43 @@ class Generation extends Component {
         } else {
             content = (
                 <div>
-                    <p>Output Generation Tabs here</p>
+                    <h2>Samples</h2>
+                    <div className="tabs">
+                        <div className="tabs__nav">
+                            <a className="tabs__link">Asymmetric</a>
+                            <a className="tabs__link">Symmetric</a>
+                            <a className="tabs__link">Polar Coordinates</a>
+                            <a className="tabs__link">Individuals</a>
+                        </div>
+
+                        <div className="tabs__body">
+                            <div className="tabs__tab">
+
+                            </div>
+                            <div className="tabs__tab">
+                            
+                            </div>
+                            <div className="tabs__tab">
+                            
+                            </div>
+                            <div className="tabs__tab">
+                            
+                            </div>
+                        </div>
+                    </div>
+
+
                     <ul>
                         {this.props.generation.samples.map(s => 
                             <li key={s.id}>
-                                <h3>Sample {s.id}</h3>
-                                <ul>
-                                <li><b>Red:</b> {this.props.generation.population.individuals.find(n => n.id === s.red).expression.join(" ")}</li>
-                                <li><b>Green:</b> {this.props.generation.population.individuals.find(n => n.id === s.green).expression.join(" ")}</li>
-                                <li><b>Blue:</b> {this.props.generation.population.individuals.find(n => n.id === s.blue).expression.join(" ")}</li>
-                                </ul>
+                                <GenerationSample
+                                    key={s.id} 
+                                    red={this.props.generation.population.individuals.find(n => n.id === s.red)}
+                                    green={this.props.generation.population.individuals.find(n => n.id === s.green)}
+                                    blue={this.props.generation.population.individuals.find(n => n.id === s.blue)}
+                                    config={this.props.generation.config}
+                                    sample={s}
+                                />
                             </li>
                         )}
                     </ul>
