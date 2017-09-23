@@ -80,22 +80,16 @@ class Generation extends Component {
                             </div>
                         </div>
                     </div>
-
-
-                    <ul>
-                        {this.props.generation.samples.map(s => 
-                            <li key={s.id}>
-                                <GenerationSample
-                                    key={s.id} 
-                                    red={this.props.generation.population.individuals.find(n => n.id === s.red)}
-                                    green={this.props.generation.population.individuals.find(n => n.id === s.green)}
-                                    blue={this.props.generation.population.individuals.find(n => n.id === s.blue)}
-                                    config={this.props.generation.config}
-                                    sample={s}
-                                />
-                            </li>
-                        )}
-                    </ul>
+                    {this.props.generation.samples.map(s => 
+                        <GenerationSample
+                            key={s.id} 
+                            red={this.props.generation.population.individuals.find(n => n.id === s.red)}
+                            green={this.props.generation.population.individuals.find(n => n.id === s.green)}
+                            blue={this.props.generation.population.individuals.find(n => n.id === s.blue)}
+                            config={this.props.generation.config}
+                            sample={s}
+                        />
+                    )}
                 </div>
             );
         }

@@ -47,7 +47,7 @@ class Population extends Component {
                         )}
                     </ul>
 
-                    <Link to="/generations">Proceed</Link>
+                    <Link to="/generations/1">Proceed</Link>
                 </div>
 
               

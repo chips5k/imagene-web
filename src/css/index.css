@@ -53,10 +53,7 @@ body {
     font-size:0.7rem;  
 }
 
-
-
 .sidebar__nav-group {
-    margin-bottom:20px;
 }
 
 .sidebar__nav-group-header { 
@@ -78,6 +75,8 @@ body {
 }
 
 .sidebar__nav-link {
+    display:block;
+    text-decoration: none;
     color: rgba(255,255,255,0.8);
     font-size:0.75rem;
     padding:10px;

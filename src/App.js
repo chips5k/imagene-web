@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class App extends Component {
     
     render() {
+        
+        let navLinkClass = (n) => {
+            return "sidebar__nav-link" + (this.props.router.location.pathname === n ? ' sidebar__nav-link--active' : '');
+        }
+
         return (
             <div className="container">
                 <div className="sidebar">
@@ -38,12 +44,20 @@ class App extends Component {
                                 <div className="sidebar__nav-group-title">Getting Started</div>
                                 <i className="sidebar__nav-group-toggle fa fa-angle-down"></i>
                             </div>
-                            <div className="sidebar__nav-link">
+                            <Link to="/" className={navLinkClass("/")}>
                                 <i className="sidebar__nav-icon fa fa-home" /> Home
-                            </div>  
-                            <div className="sidebar__nav-link">
+                            </Link>  
+                            <Link to="/help" className={navLinkClass("/help")}>
                                 <i className="sidebar__nav-icon fa fa-question " /> Help
-                            </div>
+                            </Link>
+                            <Link to="/import" className={navLinkClass("/import")}>
+                                <i className="sidebar__nav-icon fa fa-download" /> Import
+                            </Link>
+                            
+                            <Link to="/export" className={navLinkClass("/export")}>
+                                <i className="sidebar__nav-icon fa fa-upload" /> Export
+                            </Link>
+                            
                         </div>
 
                         <div className="sidebar__nav-group">
@@ -51,16 +65,9 @@ class App extends Component {
                                 <div className="sidebar__nav-group-title">Population</div>
                                 <i className="sidebar__nav-group-toggle fa fa-angle-down"></i>
                             </div>
-                            <div className="sidebar__nav-link sidebar__nav-link--active">
-                                <i className="sidebar__nav-icon fa fa-plus" /> New Population
-                            </div>
-                            <div className="sidebar__nav-link">
-                                <i className="sidebar__nav-icon fa fa-pencil" /> Edit Details
-                            </div>
-                            <div className="sidebar__nav-link">
-                                <i className="sidebar__nav-icon fa fa-exchange" /> Import
-                            </div>
-
+                            <Link to="/population"  className={navLinkClass("/population")}>
+                                <i className="sidebar__nav-icon fa fa-plus" /> View/Edit Population
+                            </Link>
                         </div>
 
                         <div className="sidebar__nav-group">
@@ -68,18 +75,17 @@ class App extends Component {
                                 <div className="sidebar__nav-group-title">Generations</div>
                                 <i className="sidebar__nav-group-toggle fa fa-angle-down"></i>
                             </div>
-                            <div className="sidebar__nav-link">
-                                <i className="sidebar__nav-icon fa fa-sitemap" /> Generation 1
-                            </div>
-                            <div className="sidebar__nav-link">
-                                <i className="sidebar__nav-icon fa fa-sitemap" /> Generation 2
-                            </div>
-                            <div className="sidebar__nav-link">
-                                <i className="sidebar__nav-icon fa fa-sitemap" /> Generation 3
-                            </div>
-                            <div className="sidebar__nav-link">
-                                <i className="sidebar__nav-icon fa fa-sitemap" /> Generation 4
-                            </div>
+                            {this.props.generations.map(n => 
+                                <Link to={"generations/" + n.id}  className={navLinkClass("/generations/" + n.id)}key={n.id}>
+                                    <i className="sidebar__nav-icon fa fa-sitemap" /> Generation {n.id}
+                                </Link>
+                            )}
+                            {this.props.generations.length === 0 && (
+                                <Link to="generations/1"  className={navLinkClass("/generations/1")}>
+                                    <i className="sidebar__nav-icon fa fa-sitemap" /> Generation 1
+                                </Link>
+                            )}
+                            
                         </div>
                     </div>
                 </div>
