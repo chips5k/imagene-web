@@ -7,7 +7,7 @@ export default class ColourRangeInput extends Component {
         
         let minValue = this.props.minValue > 0 ? this.props.minValue < 255 ? this.props.minValue : 255 : 0;
         let maxValue = this.props.maxValue > 0 ? this.props.maxValue < 255 ? this.props.maxValue : 255 : 0;
-
+        
         this.state = {
             mouseStart: false,
             activeHandle: false,

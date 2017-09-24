@@ -1,3 +1,4 @@
+let ids = 0;
 
 let operators = {
     double: {
@@ -205,9 +206,10 @@ export const generatePopulation = (size, minDepth, maxDepth) => {
 
 export const generateSamples = function(generation) {
     let samples = [];
+
     for(var i = 0; i < generation.config.numSamples; i++) {
         samples.push({
-            id: i + 1,
+            id: ++ids,
             red: generation.population.individuals[getRandomInt(0, generation.population.individuals.length)].id,
             green: generation.population.individuals[getRandomInt(0, generation.population.individuals.length)].id,
             blue:generation.population.individuals[getRandomInt(0, generation.population.individuals.length)].id,

@@ -46,8 +46,6 @@ class Population extends Component {
                             <li key={i}>{n.expression.join(" ")}</li>
                         )}
                     </ul>
-
-                    <Link to="/generations/1">Proceed</Link>
                 </div>
 
               
@@ -88,12 +86,17 @@ class Population extends Component {
                                 </FormControl>
                             </div>
                             <div className="main-sidebar-panel__actions">
+                                {this.props.population.individuals.length > 0 && (
+                                    <Link to="/generations/1"  className="button button--save" style={{marginRight: '1rem'}}>
+                                    <i className="fa fa-chevron-right"></i> Proceed
+                                    </Link>)
+                                }
+                                
+
                                 <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickSave.bind(this)}>
                                     <i className="fa fa-refresh"></i> Generate Population
                                 </button> 
-                                <button className="button button--cancel" onClick={this.onClickCancel.bind(this)}>
-                                    <i className="fa fa-undo"></i> Revert
-                                </button>
+                                
                             </div>
                         </div>
                     </div>

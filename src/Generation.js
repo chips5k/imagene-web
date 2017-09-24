@@ -20,6 +20,7 @@ class Generation extends Component {
         this.props.updateGeneration({
             id: null,
             population: this.props.population,
+            samples: [],
             config: {
                 numSamples: this.refs.numSamples.value,
                 sampleWidth: this.refs.sampleWidth.value,
@@ -52,37 +53,32 @@ class Generation extends Component {
                     <h2>Samples</h2>
                     <div className="tabs">
                         <div className="tabs__nav">
-                            <a className="tabs__link">Asymmetric</a>
+                            <a className="tabs__link tabs__link--active">Asymmetric</a>
                             <a className="tabs__link">Symmetric</a>
                             <a className="tabs__link">Polar Coordinates</a>
-                            <a className="tabs__link">Individuals</a>
+                            <a className="tabs__link tabs__link--last">Individuals</a>
                         </div>
 
                         <div className="tabs__body">
-                            <div className="tabs__tab">
-
+                            <div className="tabs__tab tabs__tab--active">
+                            <div className="tabs__tab-content">
+                                <div className="flex-grid">
+                                    {this.props.generation.samples.map(s => 
+                                        <GenerationSample
+                                            key={s.id} 
+                                            red={this.props.generation.population.individuals.find(n => n.id === s.red)}
+                                            green={this.props.generation.population.individuals.find(n => n.id === s.green)}
+                                            blue={this.props.generation.population.individuals.find(n => n.id === s.blue)}
+                                            config={this.props.generation.config}
+                                            sample={s}
+                                        />
+                                    )}
+                                </div>
                             </div>
-                            <div className="tabs__tab">
-                            
-                            </div>
-                            <div className="tabs__tab">
-                            
-                            </div>
-                            <div className="tabs__tab">
-                            
                             </div>
                         </div>
                     </div>
-                    {this.props.generation.samples.map(s => 
-                        <GenerationSample
-                            key={s.id} 
-                            red={this.props.generation.population.individuals.find(n => n.id === s.red)}
-                            green={this.props.generation.population.individuals.find(n => n.id === s.green)}
-                            blue={this.props.generation.population.individuals.find(n => n.id === s.blue)}
-                            config={this.props.generation.config}
-                            sample={s}
-                        />
-                    )}
+                    
                 </div>
             );
         }
@@ -120,18 +116,18 @@ class Generation extends Component {
                                     </FormControl>
                                 </div>
 
-                                <div className="hbox">
-
+                                <div className="vbox">
+                                    
                                     <FormControl label="Red Threshold" last>
-                                        <ColourRangeInput minValue={this.props.generation ? this.props.generation.config.redThresholdMin : 0} maxValue={this.props.generation ? this.props.generation.config.redThresholdMax : 0} ref="redThreshold"  colour="red" />  
+                                        <ColourRangeInput minValue={this.props.generation ? this.props.generation.config.redThresholdMin : 0} maxValue={this.props.generation ? this.props.generation.config.redThresholdMax : 255} ref="redThreshold"  colour="red" />  
                                     </FormControl>
 
                                     <FormControl label="Green Threshold" last>
-                                        <ColourRangeInput minValue={this.props.generation ? this.props.generation.config.greenThresholdMin : 0} maxValue={this.props.generation ? this.props.generation.config.greenThresholdMax : 0} ref="greenThreshold"  colour="green" />  
+                                        <ColourRangeInput minValue={this.props.generation ? this.props.generation.config.greenThresholdMin : 0} maxValue={this.props.generation ? this.props.generation.config.greenThresholdMax : 255} ref="greenThreshold"  colour="green" />  
                                     </FormControl>
 
                                     <FormControl label="Blue Threshold" last>
-                                        <ColourRangeInput minValue={this.props.generation ? this.props.generation.config.blueThresholdMin : 0} maxValue={this.props.generation ? this.props.generation.config.blueThresholdMax : 0} ref="blueThreshold"  colour="blue" />  
+                                        <ColourRangeInput minValue={this.props.generation ? this.props.generation.config.blueThresholdMin : 0} maxValue={this.props.generation ? this.props.generation.config.blueThresholdMax : 255} ref="blueThreshold"  colour="blue" />  
                                     </FormControl>
 
                                    
