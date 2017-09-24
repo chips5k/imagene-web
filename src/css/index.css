@@ -53,8 +53,6 @@ body {
     font-size:0.7rem;  
 }
 
-.sidebar__nav-group {
-}
 
 .sidebar__nav-group-header { 
     padding:10px;
@@ -66,7 +64,7 @@ body {
 }
 
 .sidebar__nav-group-title {
-    flex: 1;
+    flex: 1; 
 }
 
 .sidebar__nav-icon {
