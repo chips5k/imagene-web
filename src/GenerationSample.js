@@ -23,19 +23,12 @@ export default class GenerationSample extends Component {
             ctx.putImageData(e.data, 0, 0);
         };
 
-        
-
         worker.postMessage({
             red: this.props.red,
             green: this.props.green,
             blue: this.props.blue,
             image: ctx.getImageData(0, 0, this.refs.canvas.width, this.refs.canvas.height)
         });
-
-        
-        
-      
-
         
     }
 

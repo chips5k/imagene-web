@@ -97,79 +97,71 @@ solveRpnExpression = function(expression, x, y) {
 onmessage = function(e) {
     
     let grid = [];
-
+    
     let rgbRange = {
         min: { r: false, g: false, b: false, all: false},
         max: { r: false, g: false, b: false, all: false}
     };
 
-    for(var i = 0; i < e.data.image.data.length; i++) {
+    
+    let length = e.data.image.data.length / 4;
+    
+    for(var i = 0; i < length; i++) {
        
-        let y = i % e.data.image.width;
-        let x = i + 1 - y * e.data.image.width;
-        if(i < 1000) {
-        console.log(i, x, y);
+        let x = i % e.data.image.width;
+        let y = Math.floor(i / e.data.image.width);
+        
+        let r = solveRpnExpression(e.data.red.expression.slice(0), x, y);
+        let g = solveRpnExpression(e.data.green.expression.slice(0), x, y);
+        let b = solveRpnExpression(e.data.blue.expression.slice(0), x, y);
+
+        e.data.image.data[i] = r;
+        e.data.image.data[i + 1] = g;
+        e.data.image.data[i + 2] = b;
+       
+        if(isFinite(r) && (r < rgbRange.min.r || rgbRange.min.r === false)) {
+            rgbRange.min.r = r;
         }
+
+        if(isFinite(g) && (g < rgbRange.min.g || rgbRange.min.g === false)) {
+            rgbRange.min.g = g;
+        }
+
+        if(isFinite(b) && (b < rgbRange.min.b || rgbRange.min.b === false)) {
+            rgbRange.min.b = b;
+        }
+
+        if(isFinite(r) && (r > rgbRange.max.r || rgbRange.max.r === false)) {
+            rgbRange.max.r = r;
+        }
+
+        if(isFinite(g) && (g > rgbRange.max.g || rgbRange.max.g === false)) {
+            rgbRange.max.g = g;
+        }
+
+        if(isFinite(b) && (b > rgbRange.max.b || rgbRange.max.b === false)) {
+            rgbRange.max.b = b;
+        }
+
     }
 
-    // for(let y = 0; y < e.data.image.width; y++) {
-    //     for(let x = 0; x < data.image.Height; x++) {
-    //         //Select 3 items from the population to solve for red, green and blue
-    //         let r = solveRpnExpression(e.data.red.expression.slice(0), x, y);
-    //         let g = solveRpnExpression(e.data.green.expression.slice(0), x, y);
-    //         let b = solveRpnExpression(e.data.blue.expression.slice(0), x, y);
-
-    //         if(isFinite(r) && (r < rgbRange.min.r || rgbRange.min.r === false)) {
-    //             rgbRange.min.r = r;
-    //         }
-
-    //         if(isFinite(g) && (g < rgbRange.min.g || rgbRange.min.g === false)) {
-    //             rgbRange.min.g = g;
-    //         }
-
-    //         if(isFinite(b) && (b < rgbRange.min.b || rgbRange.min.b === false)) {
-    //             rgbRange.min.b = b;
-    //         }
-
-    //         if(isFinite(r) && (r > rgbRange.max.r || rgbRange.max.r === false)) {
-    //             rgbRange.max.r = r;
-    //         }
-
-    //         if(isFinite(g) && (g > rgbRange.max.g || rgbRange.max.g === false)) {
-    //             rgbRange.max.g = g;
-    //         }
-
-    //         if(isFinite(b) && (b > rgbRange.max.b || rgbRange.max.b === false)) {
-    //             rgbRange.max.b = b;
-    //         }
-    //     }
-    // }
-
-    // let diffs = {
-    //     r: e.data.rgbRange.max.r - e.data.rgbRange.min.r,
-    //     g: e.data.rgbRange.max.g - e.data.rgbRange.min.g,
-    //     b: e.data.rgbRange.max.b - e.data.rgbRange.min.b,
-    // }
+   
+    let diffs = {
+        r: rgbRange.max.r - rgbRange.min.r,
+        g: rgbRange.max.g - rgbRange.min.g,
+        b: rgbRange.max.b - rgbRange.min.b,
+    }
     
-    
-    // for(let y = 0; y < this.refs.canvas.height; y++) {
-       
-    //     for(let x = 0; x < this.refs.canvas.width; x++) {
-            
-    //         let cell = e.data.grid[y][x];
-            
-    //         cell.r = parseInt((cell.r - e.data.rgbRange.min.r) / diffs.r * 255);
-    //         cell.g = parseInt((cell.g - e.data.rgbRange.min.g)/ diffs.g * 255);
-    //         cell.b = parseInt((cell.b - e.data.rgbRange.min.g)/ diffs.b * 255);
+    for(var i = 0; i < length; i++) {
+        
+         let r = e.data.image[i];
+         let g = e.data.image[i + 1];
+         let b = e.data.image[i + 2];
 
-            
-    //         //Set the fill style to our rgb values
-    //         ctx.fillStyle = `rgb(${cell.r}, ${cell.g}, ${cell.b})`;
-            
-    //         //Draw a dot!
-    //         ctx.fillRect(x, y, 1, 1);
-    //     }
-    // }
+         e.data.image[i] = (r - rgbRange.min.r) / diffs.r * 255;
+         e.data.image[i + 1] = (r - rgbRange.min.r) / diffs.r * 255;
+         e.data.image[i + 2] = (r - rgbRange.min.r) / diffs.r * 255;
+    }
 
     postMessage(e.data.image);
 }
