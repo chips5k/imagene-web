@@ -1,10 +1,4 @@
 import React, { Component } from 'react';
-import Sample1 from './img/samples/1.png';
-import Sample2 from './img/samples/2.png';
-import Sample3 from './img/samples/3.png';
-import Sample4 from './img/samples/4.png';
-import Sample5 from './img/samples/6.png';
-import Sample6 from './img/samples/7.png';
 import FormControl from './components/FormControl';
 import StepperInput from './components/StepperInput';
 import ColourRangeInput from './components/ColourRangeInput';
@@ -43,7 +37,6 @@ class Generation extends Component {
 
     render() {
         
-        console.log(this.props.generation);
         let content = null;
         
         if(!this.props.generation) {
@@ -94,7 +87,7 @@ class Generation extends Component {
             );
         }
 
-        console.log(this.props.generation);
+        
         return (
             <div className="main">
                 <div className="main__header">

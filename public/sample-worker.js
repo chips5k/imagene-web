@@ -96,28 +96,27 @@ solveRpnExpression = function(expression, x, y) {
 
 onmessage = function(e) {
     
-    let grid = [];
-    
     let rgbRange = {
         min: { r: false, g: false, b: false, all: false},
         max: { r: false, g: false, b: false, all: false}
     };
+    
+    let array = [];
 
-    
-    let length = e.data.image.data.length / 4;
-    
-    for(var i = 0; i < length; i++) {
+    for(let i = 0; i < e.data.image.data.length; i += 4) {
        
-        let x = i % e.data.image.width;
-        let y = Math.floor(i / e.data.image.width);
+        let x = i / 4 % e.data.image.width;
+        let y = Math.floor(i / 4 / e.data.image.width);
+
         
         let r = solveRpnExpression(e.data.red.expression.slice(0), x, y);
         let g = solveRpnExpression(e.data.green.expression.slice(0), x, y);
         let b = solveRpnExpression(e.data.blue.expression.slice(0), x, y);
 
-        e.data.image.data[i] = r;
-        e.data.image.data[i + 1] = g;
-        e.data.image.data[i + 2] = b;
+        array[i] = r;
+        array[i + 1] = g;
+        array[i + 2] = b;
+        array[i + 3] = 0;
        
         if(isFinite(r) && (r < rgbRange.min.r || rgbRange.min.r === false)) {
             rgbRange.min.r = r;
@@ -144,24 +143,27 @@ onmessage = function(e) {
         }
 
     }
-
-   
+    
+    
     let diffs = {
         r: rgbRange.max.r - rgbRange.min.r,
         g: rgbRange.max.g - rgbRange.min.g,
         b: rgbRange.max.b - rgbRange.min.b,
     }
     
-    for(var i = 0; i < length; i++) {
+    for(let i = 0; i < e.data.image.data.length; i++) {
         
-         let r = e.data.image[i];
-         let g = e.data.image[i + 1];
-         let b = e.data.image[i + 2];
-
-         e.data.image[i] = (r - rgbRange.min.r) / diffs.r * 255;
-         e.data.image[i + 1] = (r - rgbRange.min.r) / diffs.r * 255;
-         e.data.image[i + 2] = (r - rgbRange.min.r) / diffs.r * 255;
-    }
-
+         let r = array[i];
+         let g = array[i + 1];
+         let b = array[i + 2];
+         let a = array[i + 3];
+            
+         e.data.image.data[i] = (r - rgbRange.min.r) / diffs.r * 255;
+         e.data.image.data[i + 1] = (g - rgbRange.min.g) / diffs.g * 255;
+         e.data.image.data[i + 2] = (b - rgbRange.min.b) / diffs.b * 255;
+         e.data.image.data[i + 3] = a;
+    }   
+    
     postMessage(e.data.image);
+
 }

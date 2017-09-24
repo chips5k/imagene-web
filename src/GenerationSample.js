@@ -15,21 +15,19 @@ export default class GenerationSample extends Component {
 
         let worker = new Worker('/sample-worker.js');
 
-        
-
         let ctx = this.refs.canvas.getContext('2d');
+        let image = ctx.getImageData(0, 0, this.refs.canvas.width, this.refs.canvas.height);
+        worker.postMessage({
+            red: this.props.red,
+            green: this.props.green,
+            blue: this.props.blue,
+            image: image,
+        });
 
         worker.onmessage = e => {
             ctx.putImageData(e.data, 0, 0);
         };
 
-        worker.postMessage({
-            red: this.props.red,
-            green: this.props.green,
-            blue: this.props.blue,
-            image: ctx.getImageData(0, 0, this.refs.canvas.width, this.refs.canvas.height)
-        });
-        
     }
 
     render() {
