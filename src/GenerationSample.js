@@ -21,6 +21,7 @@ export default class GenerationSample extends Component {
             red: this.props.red,
             green: this.props.green,
             blue: this.props.blue,
+            config: this.props.config,
             image: image,
         });
 

@@ -75,7 +75,7 @@ solveRpnExpression = function(expression, x, y) {
             } else if(operators.single.hasOwnProperty(n)) {
                 operatorStack.push(operators.single[n]);
             } else if(operands.hasOwnProperty(n)) {
-                operandStack.push(operands[n](x, y));
+                operandStack.push(operands[n](parseFloat(x), parseFloat(y)));
             }
         }
     
@@ -83,7 +83,7 @@ solveRpnExpression = function(expression, x, y) {
             let f = operatorStack.pop();
             let a = operandStack.pop();
             let b = operandStack.pop();
-            operandStack.push(f(b, a));
+            operandStack.push(f(parseFloat(b), parseFloat(a)));
         }
     }
     
@@ -118,27 +118,27 @@ onmessage = function(e) {
         array[i + 2] = b;
         array[i + 3] = 0;
        
-        if(isFinite(r) && (r < rgbRange.min.r || rgbRange.min.r === false)) {
+        if(isFinite(r) && (rgbRange.min.r === false || r < rgbRange.min.r)) {
             rgbRange.min.r = r;
         }
 
-        if(isFinite(g) && (g < rgbRange.min.g || rgbRange.min.g === false)) {
+        if(isFinite(g) && (rgbRange.min.g === false || g < rgbRange.min.g)) {
             rgbRange.min.g = g;
         }
 
-        if(isFinite(b) && (b < rgbRange.min.b || rgbRange.min.b === false)) {
+        if(isFinite(b) && (rgbRange.min.b === false || b < rgbRange.min.b)) {
             rgbRange.min.b = b;
         }
 
-        if(isFinite(r) && (r > rgbRange.max.r || rgbRange.max.r === false)) {
+        if(isFinite(r) && (rgbRange.max.r === false || r > rgbRange.max.r)) {
             rgbRange.max.r = r;
         }
 
-        if(isFinite(g) && (g > rgbRange.max.g || rgbRange.max.g === false)) {
+        if(isFinite(g) && (rgbRange.max.g === false || g > rgbRange.max.g)) {
             rgbRange.max.g = g;
         }
 
-        if(isFinite(b) && (b > rgbRange.max.b || rgbRange.max.b === false)) {
+        if(isFinite(b) && (rgbRange.max.b === false || b > rgbRange.max.b)) {
             rgbRange.max.b = b;
         }
 
@@ -151,16 +151,26 @@ onmessage = function(e) {
         b: rgbRange.max.b - rgbRange.min.b,
     }
     
+    let thresholdRanges = {
+        r: e.data.config.redThresholdMax - e.data.config.redThresholdMin,
+        g: e.data.config.greenThresholdMax - e.data.config.greenThresholdMin,
+        b: e.data.config.blueThresholdMax - e.data.config.blueThresholdMin
+    }
+
     for(let i = 0; i < e.data.image.data.length; i++) {
         
          let r = array[i];
          let g = array[i + 1];
          let b = array[i + 2];
          let a = array[i + 3];
+        
+         if(i < 1000) {
+             console.log(r, rgbRange.min.r, rgbRange.max.r, diffs.r, thresholdRanges.r, (r - rgbRange.min.r) / diffs.r * thresholdRanges.r);
             
-         e.data.image.data[i] = (r - rgbRange.min.r) / diffs.r * 255;
-         e.data.image.data[i + 1] = (g - rgbRange.min.g) / diffs.g * 255;
-         e.data.image.data[i + 2] = (b - rgbRange.min.b) / diffs.b * 255;
+         }
+         e.data.image.data[i] = (r - rgbRange.min.r) / diffs.r * thresholdRanges.r;
+         e.data.image.data[i + 1] = (g - rgbRange.min.g) / diffs.g * thresholdRanges.g;
+         e.data.image.data[i + 2] = (b - rgbRange.min.b) / diffs.b * thresholdRanges.b;
          e.data.image.data[i + 3] = a;
     }   
     
