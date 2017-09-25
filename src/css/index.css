@@ -436,10 +436,6 @@ body {
 }
 
 
-.tabs { 
-
-}
-
 .tabs__nav {
     display:flex;
 }
@@ -485,8 +481,6 @@ body {
     height: 100%;
 }
 
-.flex-grid {
-}
 
 .generation-sample {
     overflow: hidden;
