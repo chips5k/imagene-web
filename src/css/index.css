@@ -547,3 +547,17 @@ body {
     border-top-color: #07d;
     animation: spinner .6s linear infinite;
   }
+
+  .help-text {
+      font-size: 0.75rem;
+      color: #222;
+      font-style:italic;
+  }
+
+  .checkbox-item {
+      margin-bottom:1rem;
+  }
+
+  .checkbox-item__label {
+      font-size:0.8rem;
+  }

@@ -12,7 +12,7 @@ export default class GenerationSample extends Component {
 
     componentDidMount() {
 
-        let worker = new Worker('/sample-worker.js');
+        let worker = new Worker(this.props.config.useDecimalJs ? '/sample-worker-decimal.js' : '/sample-worker.js');
 
         let ctx = this.refs.canvas.getContext('2d');
         let image = ctx.getImageData(0, 0, this.refs.canvas.width, this.refs.canvas.height);

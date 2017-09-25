@@ -31,10 +31,10 @@ class Generation extends Component {
                 greenThresholdMax: this.refs.greenThreshold.max,
                 blueThresholdMin: this.refs.blueThreshold.min,
                 blueThresholdMax: this.refs.blueThreshold.max,
+                useDecimalJs: this.refs.useDecimalJs.checked
             }
         });
     }
-
 
     render() {
         
@@ -132,6 +132,21 @@ class Generation extends Component {
 
                                    
                                 </div>
+
+                                
+                                <FormControl label="Math Library">
+                                        <div className="vbox">
+                                            <label className="checkbox-item">
+                                                <input className="checkbox-item__input" name="mathLibrary" type="checkbox" ref="useDecimalJs" value="true" defaultChecked={this.props.generation ? this.props.generation.config.useDecimalJs : false} /> <span className="checkbox-item__label">Use Decimal.js</span>
+                                            </label>
+                                        
+                                            <div className="help-text">
+                                                Using <b>Decimal.js</b> will considerably slow performance and processing. It should only be used if you wish to obtain extremely accurate results without the possibility of range overflows.
+                                            </div>
+                                        </div>
+                                </FormControl>
+                                
+                                
                             </div>
                             <div className="main-sidebar-panel__actions">
                                 <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickSave.bind(this)}>
