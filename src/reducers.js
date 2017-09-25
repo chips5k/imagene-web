@@ -1,4 +1,4 @@
-import { generatePopulation, getRandomInt, generateSamples } from './core';
+import { generatePopulation, generateSamples } from './core';
 
 let initialPopulation = {
     individuals: [],
@@ -29,7 +29,6 @@ export default {
                     return state;
                 }
                 
-                return {...action.population}
             default:
                 return state;
         } 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
             
-import { solveRpnExpression } from './core';
 
 export default class GenerationSample extends Component {
 
