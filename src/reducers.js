@@ -1,5 +1,6 @@
 import { generatePopulation, generateSamples } from './core';
 
+let generationId = 0;
 let initialPopulation = {
     individuals: [],
     config: {
@@ -36,29 +37,37 @@ export default {
     
     generations: (state = [], action) => {
         switch(action.type) {
+            case 'NEW_GENERATION':
+                return [{
+                    id: ++generationId, 
+                    config: {
+                        numSamples: 6,
+                        sampleWidth: 320,
+                        sampleHeight: 320,
+                        redThresholdMin: 0,
+                        redThresholdMax: 255,
+                        greenThresholdMin: 0,
+                        greenThresholdMax: 255,
+                        blueThresholdMin: 0,
+                        blueThresholdMax: 255,
+                        useDecimalJs: false
+                    }, 
+                    population: action.population,
+                    samples: []
+                }];
+            break;
+
             case 'UPDATE_GENERATION':
-                if(action.generation.id) {
-                    //Find the config to be updated
-                    let generationIndex = state.indexOf(n => n.id === action.generation.id);
-                    if(generationIndex !== -1) {
-                        let generation = {
-                            id: action.id,
-                            config: action.generation.config,
-                            population: action.generation.population,
-                            samples: generateSamples(action.generation)
-                        };
-                        
-                        return [...state.slice(0, generationIndex - 1), generation, ...state.slice(generationIndex + 1)];
-                    } else {
-                        return state;
-                    }
+                //Find the config to be updated
+                
+                let generationIndex = state.findIndex(n => n.id === action.generation.id);
+
+                if(generationIndex !== -1) {
+                  
+                    let generation = {...action.generation, samples: generateSamples(action.generation) };
+                    return [...state.slice(0, generationIndex - 1), generation, ...state.slice(generationIndex + 1)];
                 } else {
-                    return [{
-                        id: 1, 
-                        config: action.generation.config, 
-                        population: action.generation.population,
-                        samples: generateSamples(action.generation)
-                    }];
+                    return state;
                 }
                 
             default:

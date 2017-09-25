@@ -70,23 +70,25 @@ class App extends Component {
                             </Link>
                         </div>
 
-                        <div className="sidebar__nav-group">
-                            <div className="sidebar__nav-group-header">
-                                <div className="sidebar__nav-group-title">Generations</div>
-                                <i className="sidebar__nav-group-toggle fa fa-angle-down"></i>
+                        {this.props.population.individuals.length > 0 &&
+                            <div className="sidebar__nav-group">
+                                <div className="sidebar__nav-group-header">
+                                    <div className="sidebar__nav-group-title">Generations</div>
+                                    <i className="sidebar__nav-group-toggle fa fa-angle-down"></i>
+                                </div>
+                                <Link to="/generations"  className={navLinkClass("/generations")}>
+                                    <i className="sidebar__nav-icon fa fa-sitemap" />  {this.props.generations.length ? 'List Generations' : 'Configure Initial Generation'}
+                                </Link>
+                                {this.props.generations.map(n => 
+                                    <Link to={"/generations/" + n.id}  className={navLinkClass("/generations/" + n.id)}key={n.id}>
+                                        <i className="sidebar__nav-icon fa fa-sitemap" /> Generation {n.id}
+                                    </Link>
+                                )}
+                               
+                                   
+                                
                             </div>
-                            {this.props.generations.map(n => 
-                                <Link to={"generations/" + n.id}  className={navLinkClass("/generations/" + n.id)}key={n.id}>
-                                    <i className="sidebar__nav-icon fa fa-sitemap" /> Generation {n.id}
-                                </Link>
-                            )}
-                            {this.props.generations.length === 0 && (
-                                <Link to="generations/1"  className={navLinkClass("/generations/1")}>
-                                    <i className="sidebar__nav-icon fa fa-sitemap" /> Generation 1
-                                </Link>
-                            )}
-                            
-                        </div>
+                        }
                     </div>
                 </div>
                 {this.props.children}

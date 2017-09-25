@@ -87,14 +87,14 @@ class Population extends Component {
                             </div>
                             <div className="main-sidebar-panel__actions">
                                 {this.props.population.individuals.length > 0 && (
-                                    <Link to="/generations/1"  className="button button--save" style={{marginRight: '1rem'}}>
+                                    <Link to="/generations"  className="button button--save" style={{marginRight: '1rem'}}>
                                     <i className="fa fa-chevron-right"></i> Proceed
                                     </Link>)
                                 }
                                 
-
+                                
                                 <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickSave.bind(this)}>
-                                    <i className="fa fa-refresh"></i> Generate Population
+                                    <i className="fa fa-refresh"></i> Update Population
                                 </button> 
                                 
                             </div>

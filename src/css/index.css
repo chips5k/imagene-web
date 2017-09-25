@@ -409,11 +409,11 @@ body {
     background: linear-gradient(90deg, rgb(0,0,0), rgb(255,0,0));
 }
 
-.colour-range-input--blue .colour-range-input__track {
+.colour-range-input--green .colour-range-input__track {
     background: linear-gradient(90deg, rgb(0,0,0), rgb(0,255,0));
 }
 
-.colour-range-input--green .colour-range-input__track {
+.colour-range-input--blue .colour-range-input__track {
     background: linear-gradient(90deg, rgb(0,0,0), rgb(0,0,255));
 }
 
