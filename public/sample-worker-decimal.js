@@ -14,58 +14,52 @@ getRandomInt = function(min, max) {
 }
 
 
+
 let operators = {
     double: {
         '+': (a, b) => { 
-            //console.log('+', a, b);
             return a.add(b);
         },
         '-': (a, b) => { 
-            //console.log('-', a, b);
             return a.sub(b) 
         },
         '/': (a, b) => { 
-            //console.log('/', a, b);
-            if(b == 0) {
-                return new Decimal(0);
-            }
             return a.div(b) 
         },
         '*': (a, b) => { 
-            //console.log('*', a, b);
             return a.mul(b); 
         },
         '^': (a, b) => { 
-            //console.log('^', a, b);
-            return Decimal.pow(a, b); 
+            return a.pow(b); 
         },
         '%': (a, b) => {
-            //console.log('%', a, b);
-            if(b == 0) {
-                return new Decimal(0);
-            }
             return a.mod(b);
         },
         'CIR': (a, b) => {
-            //console.log('CIR', a, b);
-            return Decimal.sin(Decimal.sqrt(a.mul(a).add(b.mul(b)).mul(new Decimal(Math.PI)).div(180.00)));
+            return Decimal.sin(Decimal.sqrt(a.mul(a).add(b.mul(b)).mul(new Decimal(Math.PI).div(180.00))));
         }
     },
     single: {
         'sqrt': (a) => {
-            return Decimal.sqrt(Decimal.abs(a));
+            return Decimal.sqrt(a.abs());
+        },
+        'double': (a) => {
+            return Decimal.pow(a, 2);
+        },
+        'triple': (a) => {
+            return Decimal.pow(a, 3);
         },
         'sin': (a) => {
-            return Decimal.sin(a.mod(3.16));
+            return Decimal.sin(a.mod(3.16))
         },
         'cos': (a) => {
             return Decimal.cos(a.mod(3.16))
         },
         'tan': (a) => {
-            return Decimal.tan(a)
+            return Decimal.tan(a.mod(3.16))
         },
         'log': (a) => {
-            return Decimal.log(Decimal.abs(a));
+            return Decimal.log(a.abs());
         }
     }
 };
@@ -73,8 +67,17 @@ let operators = {
 let operands = {
     'pX': (x, y) => new Decimal(x),
     'pY': (x, y) => new Decimal(y),
-    'PI': (x, y) => new Decimal(Math.PI),
-    'rand': (x, y) => getRandomArbitrary(new Decimal(0), new Decimal(1000)),
+    'PIx': (x, y) => new Decimal(x).mul(Math.PI),
+    'cosY': (x, y) => Decimal.cos(y),
+    'cosX': (x, y) => Decimal.cos(x),
+    'sinY': (x, y) => Decimal.sin(y),
+    'sinX': (x, y) => Decimal.sin(x),
+    'PIy': (x, y) => new Decimal(y).mul(Math.PI),
+    'randX': (x, y) => getRandomArbitrary(new Decimal(0), new Decimal(255)).mul(x),
+    'randy': (x, y) => getRandomArbitrary(new Decimal(0), new Decimal(255)).mul(y),
+    'CIR': (a, b) => {
+        return Decimal.sin(Decimal.sqrt(a.mul(a).add(b.mul(b)).mul(new Decimal(Math.PI).div(180.00))));
+    }
 }
 
 

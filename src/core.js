@@ -28,6 +28,12 @@ let operators = {
         'sqrt': (a) => {
             return Math.sqrt(Math.abs(a));
         },
+        'double': (a) => {
+            return Math.pow(a, 2);
+        },
+        'triple': (a) => {
+            return Math.pow(a, 3);
+        },
         'sin': (a) => {
             return Math.sin(a % 3.16)
         },
@@ -35,7 +41,7 @@ let operators = {
             return Math.cos(a % 3.16)
         },
         'tan': (a) => {
-            return Math.tan(a)
+            return Math.tan(a % 3.16)
         },
         'log': (a) => {
             return Math.log(Math.abs(a));
@@ -46,8 +52,17 @@ let operators = {
 let operands = {
     'pX': (x, y) => x,
     'pY': (x, y) => y,
-    'PI': (x, y) => Math.PI,
-    'rand': (x, y) => getRandomArbitrary(0, 1000),
+    'PIx': (x, y) => x * Math.PI,
+    'cosY': (x, y) => Math.cos(y),
+    'cosX': (x, y) => Math.cos(x),
+    'sinY': (x, y) => Math.sin(x),
+    'sinX': (x, y) => Math.sin(y),
+    'PIy': (x, y) => y * Math.PI,
+    'randX': (x, y) => getRandomArbitrary(0, 255) * x,
+    'randy': (x, y) => getRandomArbitrary(0, 255) * y,
+    'CIR': (a, b) => {
+        return Math.sin(Math.sqrt(a * a + b * b) * Math.PI / 180.00);
+    }
 }
 
 export const solveRpnExpression = function(expression, x, y) {
