@@ -2,50 +2,22 @@ let ids = 0;
 
 let operators = {
     double: {
-        '+': (a, b) => { 
-            return a + b;
-        },
-        '-': (a, b) => { 
-            return a - b 
-        },
-        '/': (a, b) => { 
-            return a / b 
-        },
-        '*': (a, b) => { 
-            return a * b; 
-        },
-        '^': (a, b) => { 
-            return Math.pow(a, b); 
-        },
-        '%': (a, b) => {
-            return a % b;
-        },
-        'CIR': (a, b) => {
-            return Math.sin(Math.sqrt(a * a + b * b) * Math.PI / 180.00);
-        }
+        '+': (a, b) => a + b,
+        '-': (a, b) => a - b,
+        '/': (a, b) => a / b,
+        '*': (a, b) => a * b, 
+        '^': (a, b) => Math.pow(a, b),
+        '%': (a, b) => a % b,
+        'CIR': (a, b) => Math.sin(Math.sqrt(a * a + b * b) * Math.PI / 180.00)
     },
     single: {
-        'sqrt': (a) => {
-            return Math.sqrt(Math.abs(a));
-        },
-        'double': (a) => {
-            return Math.pow(a, 2);
-        },
-        'triple': (a) => {
-            return Math.pow(a, 3);
-        },
-        'sin': (a) => {
-            return Math.sin(a % 3.16)
-        },
-        'cos': (a) => {
-            return Math.cos(a % 3.16)
-        },
-        'tan': (a) => {
-            return Math.tan(a % 3.16)
-        },
-        'log': (a) => {
-            return Math.log(Math.abs(a));
-        }
+        'sqrt': a => Math.sqrt(Math.abs(a)),
+        'double': a => Math.pow(a, 2),
+        'triple': a => Math.pow(a, 3),
+        'sin': a => Math.sin(a % 3.16),
+        'cos': a => Math.cos(a % 3.16),
+        'tan': a => Math.tan(a),
+        'log': a => Math.log(Math.abs(a))
     }
 };
 
@@ -53,16 +25,15 @@ let operands = {
     'pX': (x, y) => x,
     'pY': (x, y) => y,
     'PIx': (x, y) => x * Math.PI,
+    'PIy': (x, y) => y * Math.PI,
     'cosY': (x, y) => Math.cos(y),
     'cosX': (x, y) => Math.cos(x),
     'sinY': (x, y) => Math.sin(x),
     'sinX': (x, y) => Math.sin(y),
-    'PIy': (x, y) => y * Math.PI,
+    'rand': (x, y) => getRandomArbitrary(0, 255),
     'randX': (x, y) => getRandomArbitrary(0, 255) * x,
     'randy': (x, y) => getRandomArbitrary(0, 255) * y,
-    'CIR': (a, b) => {
-        return Math.sin(Math.sqrt(a * a + b * b) * Math.PI / 180.00);
-    }
+    'CIR': (x, y) => Math.sin(Math.sqrt(x * x + y * y) * Math.PI / 180.00)
 }
 
 export const solveRpnExpression = function(expression, x, y) {
@@ -71,6 +42,7 @@ export const solveRpnExpression = function(expression, x, y) {
 
     while(expression.length) {
         let n = expression.shift();
+        
         if(!isNaN(parseFloat(n))) {
             operandStack.push(n);
         } else {
@@ -79,7 +51,8 @@ export const solveRpnExpression = function(expression, x, y) {
             } else if(operators.single.hasOwnProperty(n)) {
                 operatorStack.push(operators.single[n]);
             } else if(operands.hasOwnProperty(n)) {
-                operandStack.push(operands[n](x, y));
+                let r = operands[n](x, y);
+                operandStack.push(r);
             }
         }
     
@@ -87,7 +60,11 @@ export const solveRpnExpression = function(expression, x, y) {
             let f = operatorStack.pop();
             let a = operandStack.pop();
             let b = operandStack.pop();
-            operandStack.push(f(b, a));
+            let r = f(b, a);
+            if(isNaN(r)) { 
+                r = a;
+            }
+            operandStack.push(r);
         }
     }
     
@@ -96,14 +73,6 @@ export const solveRpnExpression = function(expression, x, y) {
     }
     
     return false;
-}
-
-function rpnToTree(stringExpression) {
-
-}
-
-function treeToRpn(tree) {
-
 }
 
 /**
