@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-            
+import GenerationSampleWorker from './GenerationSample.worker.js';
 
 export default class GenerationSample extends Component {
 
@@ -11,12 +11,13 @@ export default class GenerationSample extends Component {
     }
 
     componentDidMount() {
-
-        let worker = new Worker(this.props.config.useDecimalJs ? '/sample-worker-decimal.js' : '/sample-worker.js');
-
+        const worker = new GenerationSampleWorker();
+        
         let ctx = this.refs.canvas.getContext('2d');
         let image = ctx.getImageData(0, 0, this.refs.canvas.width, this.refs.canvas.height);
+
         worker.postMessage({
+            useDecimalJs: this.props.config.useDecimalJs,
             red: this.props.red,
             green: this.props.green,
             blue: this.props.blue,
