@@ -1,4 +1,8 @@
-let ids = 0;
+let ids = {
+    generations: 0,
+    samples: 0,
+    individuals: 0 
+};
 
 let operators = {
     double: {
@@ -121,14 +125,6 @@ function buildRpnExpression(operands, singleOperators, doubleOperators, minSubex
     return expression;
 }
 
-function rpnMutator(expression) {
-
-}
-
-function rpnBreeder(expressionA, expressionB) {
-
-}
-
 
 /** The following are taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random */
 function getRandomArbitrary(min, max) {
@@ -141,10 +137,10 @@ export const getRandomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-export const generatePopulation = (size, minDepth, maxDepth) => {
+export const generateIndividuals = (size, minDepth, maxDepth) => {
     
     
-    let population = [];
+    let individuals = [];
     if(size < 1) {
         throw new Error('Size cannot be less than one');
     }
@@ -176,7 +172,7 @@ export const generatePopulation = (size, minDepth, maxDepth) => {
         throw new Error('Size of population is too large');
     }
     for(let i = 0; i < size; i ++) {
-        population.push({
+        individuals.push({
             id: i + 1,
             expression: buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), minDepth, maxDepth, 0),
             fitness: 0
@@ -185,20 +181,49 @@ export const generatePopulation = (size, minDepth, maxDepth) => {
 
    
 
-    return population;
+    return individuals;
 }
 
-export const generateSamples = function(generation) {
+export const generateSamples = function(generation, config) {
     let samples = [];
 
-    for(var i = 0; i < generation.config.numSamples; i++) {
+    for(var i = 0; i < config.numSamples; i++) {
         samples.push({
-            id: ++ids,
-            red: generation.population.individuals[getRandomInt(0, generation.population.individuals.length)].id,
-            green: generation.population.individuals[getRandomInt(0, generation.population.individuals.length)].id,
-            blue:generation.population.individuals[getRandomInt(0, generation.population.individuals.length)].id,
+            id: ++ids.samples,
+            redIndividualId: generation.individuals[getRandomInt(0, generation.individuals.length)].id,
+            greenIndividualId: generation.individuals[getRandomInt(0, generation.individuals.length)].id,
+            blueIndividualId:generation.individuals[getRandomInt(0, generation.individuals.length)].id,
+            redThresholdMax: config.redThresholdMax, redThresholdMin: config.redThresholdMin,
+            greenThresholdMax: config.greenThresholdMax, greenThresholdMin: config.greenThresholdMin,
+            blueThresholdMax: config.blueThresholdMax, blueThresholdMin: config.blueThresholdMin,
+            width: config.sampleWidth, height: config.sampleHeight
         });
     }
 
     return samples;
+}
+
+export const createGeneration = function(generation = null) {
+
+    if(generation !== null) {
+        //Evolve a new generation
+        return {
+            id: ++ids.generations,
+            individuals: [],
+            minDepth: 0,
+            maxDepth: 12,
+            size: 24,
+            samples: []
+        };
+    }
+
+    return {
+        id: ++ids.generations,
+        individuals: [],
+        minDepth: 0,
+        maxDepth: 12,
+        size: 24,
+        samples: []
+    };
+
 }

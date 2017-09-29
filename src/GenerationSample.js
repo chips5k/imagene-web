@@ -17,11 +17,11 @@ export default class GenerationSample extends Component {
         let image = ctx.getImageData(0, 0, this.refs.canvas.width, this.refs.canvas.height);
 
         worker.postMessage({
-            useDecimalJs: this.props.config.useDecimalJs,
-            red: this.props.red,
-            green: this.props.green,
-            blue: this.props.blue,
-            config: this.props.config,
+            sample: this.props.sample,
+            redIndividual: this.props.redIndividual,
+            greenIndividual: this.props.greenIndividual,
+            blueIndividual: this.props.blueIndividual,
+            coordinateType: this.props.coordinateType,
             image: image,
         });
 
@@ -36,19 +36,19 @@ export default class GenerationSample extends Component {
 
     render() {
         return (
-            <div className="generation-sample" style={{maxWidth: this.props.config.sampleWidth + 'px'}}>
+            <div className="generation-sample" style={{maxWidth: this.props.sample.width + 'px'}}>
                 <div className="generation-sample__header">
                     <h3 className="generation-sample__title">Sample {this.props.sample.id}</h3>
                 </div>
                 <div className="generation-sample__canvas-wrap">
                     {this.state.processing && <div className="generation-sample__canvas-loader" />}
-                    <canvas ref="canvas" className="generation-sample__canvas" width={this.props.config.sampleWidth} height={this.props.config.sampleHeight} />
+                    <canvas ref="canvas" className="generation-sample__canvas" width={this.props.sample.width} height={this.props.sample.height} />
                 </div>
                 <div className="generation-sample__details">
                     <ul>
-                        <li><b>Red: </b> {this.props.red.expression.join(" ")}</li>
-                        <li><b>Green: </b> {this.props.green.expression.join(" ")}</li>
-                        <li><b>Blue: </b> {this.props.blue.expression.join(" ")}</li>
+                        <li><b>Red: </b> {this.props.redIndividual.expression.join(" ")}</li>
+                        <li><b>Green: </b> {this.props.greenIndividual.expression.join(" ")}</li>
+                        <li><b>Blue: </b> {this.props.blueIndividual.expression.join(" ")}</li>
                     </ul>
                 </div>
                 <div className="generation-sample__actions">

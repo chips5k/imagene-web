@@ -2,7 +2,10 @@ import { solveRpnExpression } from './core.js';
 
 
 onmessage = function(e) {
-    
+
+    console.log(e);
+
+
     let rgbRange = {
         min: { r: false, g: false, b: false, all: false},
         max: { r: false, g: false, b: false, all: false}
@@ -16,9 +19,9 @@ onmessage = function(e) {
         let y = Math.floor(i / 4 / e.data.image.width);
 
         
-        let r = solveRpnExpression(e.data.red.expression.slice(0), x, y);
-        let g = solveRpnExpression(e.data.green.expression.slice(0), x, y);
-        let b = solveRpnExpression(e.data.blue.expression.slice(0), x, y);
+        let r = solveRpnExpression(e.data.redIndividual.expression.slice(0), x, y);
+        let g = solveRpnExpression(e.data.greenIndividual.expression.slice(0), x, y);
+        let b = solveRpnExpression(e.data.blueIndividual.expression.slice(0), x, y);
 
         array[i] = r;
         array[i + 1] = g;
@@ -58,9 +61,9 @@ onmessage = function(e) {
     }
     
     let thresholdRanges = {
-        r: e.data.config.redThresholdMax - e.data.config.redThresholdMin,
-        g: e.data.config.greenThresholdMax - e.data.config.greenThresholdMin,
-        b: e.data.config.blueThresholdMax - e.data.config.blueThresholdMin
+        r: e.data.sample.redThresholdMax - e.data.sample.redThresholdMin,
+        g: e.data.sample.greenThresholdMax - e.data.sample.greenThresholdMin,
+        b: e.data.sample.blueThresholdMax - e.data.sample.blueThresholdMin
     }
 
     for(let i = 0; i < e.data.image.data.length; i+=4) {
@@ -70,9 +73,9 @@ onmessage = function(e) {
         let b = array[i + 2];
         let a = array[i + 3];
         
-        e.data.image.data[i] = ((r - rgbRange.min.r) * thresholdRanges.r / diffs.r) + e.data.config.redThresholdMin;
-        e.data.image.data[i + 1] = ((g - rgbRange.min.g) * thresholdRanges.g / diffs.g) + e.data.config.greenThresholdMin;
-        e.data.image.data[i + 2] = ((b - rgbRange.min.b) * thresholdRanges.b / diffs.b) + e.data.config.blueThresholdMin;
+        e.data.image.data[i] = ((r - rgbRange.min.r) * thresholdRanges.r / diffs.r) + e.data.sample.redThresholdMin;
+        e.data.image.data[i + 1] = ((g - rgbRange.min.g) * thresholdRanges.g / diffs.g) + e.data.sample.greenThresholdMin;
+        e.data.image.data[i + 2] = ((b - rgbRange.min.b) * thresholdRanges.b / diffs.b) + e.data.sample.blueThresholdMin;
         e.data.image.data[i + 3] = a;
     }   
     

@@ -435,9 +435,18 @@ body {
     cursor: pointer;
 }
 
+.tabs {
+    display:block;
+}
 
 .tabs__nav {
+    float:left;
     display:flex;
+    border-right:1px solid #ccc;
+}
+
+.tabs__body {
+    clear:both;
 }
 
 .tabs__link {
@@ -470,10 +479,13 @@ body {
 
 .tabs__tab {
     visibility:hidden;
-    padding:1rem;
     display:flex;
     overflow:auto;
     height: 0px;
+}
+
+.tabs__tab-content {
+    padding: 1rem;
 }
 
 .tabs__tab--active {

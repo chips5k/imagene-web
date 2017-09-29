@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Sample1 from './img/samples/1.png';
-import { Link } from 'react-router-dom';
 
 export default class Home extends Component {
 
@@ -23,8 +22,6 @@ export default class Home extends Component {
                                 <p>
                                     Proin sed sollicitudin libero. Suspendisse placerat sem varius sapien viverra, cursus porta mi mattis. Integer consequat ex libero, quis sollicitudin tellus imperdiet vitae. Quisque ac magna sed dolor tristique posuere at vitae nunc. Pellentesque ut erat convallis, posuere diam in, tempus dui. Nam suscipit enim leo, id facilisis sapien pellentesque pharetra. Vivamus elementum molestie ex, eu pellentesque nisi ornare id.
                                 </p>
-
-                                <Link to="/population" className="button button--primary">Create Population</Link>
                             </div>
 
                             

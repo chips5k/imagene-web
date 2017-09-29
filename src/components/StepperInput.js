@@ -13,10 +13,6 @@ export default class StepperFormControl extends Component {
         return this.state.value;
     }
 
-    componentWillReceiveProps(props) {
-        this.state = {...props}
-    }
-
     increase() {
         let maxValue = this.props.maxValue ? this.props.maxValue : false;
         let value = parseInt(this.state.value, 10) + 1;
@@ -32,10 +28,13 @@ export default class StepperFormControl extends Component {
     }
 
     decrease() {
-        let minValue = this.props.minValue ? this.props.minValue : 0;
+        let minValue = this.props.minValue !== false ? this.props.minValue : false;
         let value = parseInt(this.state.value, 10) - 1;
-        if(value < minValue) {
-            value = minValue;
+
+        if(minValue !== false) {
+            if(value < minValue) {
+                value = minValue;
+            }
         }
 
         this.setState({
@@ -44,12 +43,12 @@ export default class StepperFormControl extends Component {
     }
 
     onChange(e) {
-        let maxValue = this.props.maxValue ? this.props.maxValue : false;
-        let minValue = this.props.minValue ? this.props.minValue : 0;
+        let maxValue = this.props.maxValue !== false ? this.props.maxValue : false;
+        let minValue = this.props.minValue !== false ? this.props.minValue : false;
 
         let value = e.target.value;
 
-        if(maxValue) {
+        if(maxValue !== false) {
             if(value > maxValue) {
                 value = maxValue;
             }

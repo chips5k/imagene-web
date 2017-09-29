@@ -17,7 +17,6 @@ import reducers from './reducers'; // Or wherever you keep your reducers
 
 import App from './App';
 import Home from './Home';
-import Population from './Population';
 import Generation from './Generation';
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -27,14 +26,6 @@ const history = createHistory();
 const middleware = routerMiddleware(history);
 
 const initialState = {
-    population: {
-        individuals: [] ,
-        config: {
-            size: 24,
-            minDepth: 0, 
-            maxDepth: 12
-        }
-    },
     generations: []
 };
 
@@ -61,8 +52,7 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <App>
         <Route exact path="/" component={Home}/>
-        <Route exact path="/population" component={Population}/>
-        <Route exact path="/generations/:id?" component={Generation}/>
+        <Route exact path="/generations/:id" component={Generation}/>
       </App>
     </ConnectedRouter>
   </Provider>,
