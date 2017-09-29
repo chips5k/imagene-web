@@ -61,6 +61,12 @@ export default {
 
                 return state;
 
+            case 'CACHE_SAMPLE_DATA':
+
+                //TODO
+                return state;
+                break;
+
             default:
                 return state;
         }

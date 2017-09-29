@@ -1,18 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import FormControl from './components/FormControl';
 import StepperInput from './components/StepperInput';
 import ColourRangeInput from './components/ColourRangeInput';
-import { generateIndividuals, createGeneration, generateSamples } from './actions';
+import { generateIndividuals, createGeneration, generateSamples, cacheSampleData } from './actions';
 import GenerationSample from './GenerationSample';
 
 class Generation extends Component {
 
     constructor(props) {
         super(props);
+        
         this.state = {
             activeTab: 'individuals'
         };
+    }
+
+    componentDidMount() {
+        if(!this.props.generation) {
+            this.props.push('/');
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(!nextProps.generation) {
+            this.props.push('/');
+        }
     }
 
     onClickGenerateIndividuals() {
@@ -34,6 +48,16 @@ class Generation extends Component {
                 blueThresholdMax: this.refs.blueThreshold.max
             }
         );
+
+        if(this.state.activeTab === 'individuals') {
+            this.setState({
+                activeTab: 'asymmetric'
+            });
+        }
+    }
+
+    onClickRemoveSample(e, sampleId) {
+        this.props.removeSample(this.props.generation.id, sampleId);
     }
 
     renderNotFound() {
@@ -58,6 +82,10 @@ class Generation extends Component {
         });
     }
 
+    cacheSampleData(sample, type, data) {
+        this.props.cacheSampleData(this.props.generation, sample, type, data);
+    }
+
     renderGeneration() {
 
         let activeClass = (className, n) => {
@@ -67,79 +95,119 @@ class Generation extends Component {
         return (
             <div className="main">
                 <div className="main__header">
-                    <div className="main__title">Generations {this.props.generation && <span><i className="fa fa-angle-double-right" style={{marginLeft:'1rem', marginRight: '1rem'}}></i> Generation {this.props.generation.id}</span>}</div>
+                    <div className="main__title">Generations <span><i className="fa fa-angle-double-right" style={{marginLeft:'1rem', marginRight: '1rem'}}></i> Generation {this.props.generation.id}</span></div>
                 </div>
                 <div className="main__body"> 
                     <div className="main__content">
+                        <h2>Generation {this.props.generation.id}</h2>
                         <div>
-                            <h2>Samples</h2>
                             <div className="tabs">
                                 <div className="tabs__nav">
+                                    <a  className={activeClass('tabs__link', 'individuals')}  onClick={this.handleTabChange.bind(this, "individuals")}>Individuals</a>
                                     <a className={activeClass('tabs__link', 'asymmetric')} onClick={this.handleTabChange.bind(this, "asymmetric")}>Asymmetric</a>
                                     <a  className={activeClass('tabs__link', 'symmetric')}  onClick={this.handleTabChange.bind(this, "symmetric")}>Symmetric</a>
                                     <a  className={activeClass('tabs__link', 'polar')}  onClick={this.handleTabChange.bind(this, "polar")}>Polar Coordinates</a>
-                                    <a  className={activeClass('tabs__link', 'individuals')}  onClick={this.handleTabChange.bind(this, "individuals")}>Individuals</a>
+                                    <a  className={activeClass('tabs__link', 'polar-symmetric')}  onClick={this.handleTabChange.bind(this, "polar-symmetric")}>Polar Coordinates (Symmetric)</a>
                                 </div>
 
                                 <div className="tabs__body">
                                     <div className={activeClass('tabs__tab', 'asymmetric')}>
                                         <div className="tabs__tab-content">
                                             <div className="flex-grid">
-                                                {this.props.generation.samples.map(s => 
+
+                                                {this.state.activeTab === 'asymmetric' && this.props.generation.samples.map(s => 
                                                     <GenerationSample 
                                                         key={s.id} 
                                                         sample={s} 
                                                         redIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                         greenIndividual={this.props.generation.individuals.find(n => s.greenIndividualId === n.id)}
                                                         blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
-                                                        type="symmetric"
+                                                        coordinateType="cartesian"
+                                                        symmetric={false}
+                                                        cacheSampleData={this.props.cacheSampleData.bind(this)}
                                                     />
                                                 )}
+                                                
                                             </div>
+                                            {this.props.generation.individuals.length === 0  && <p>You have not generated any individuals, please use the sidebar to proceed.</p>}
+                                            {this.props.generation.samples.length === 0 && <p>You have not generated any samples, use the sidebar to proceed.</p>}
                                         </div>
                                     </div>
 
                                     <div className={activeClass('tabs__tab', 'symmetric')}>
                                         <div className="tabs__tab-content">
                                             <div className="flex-grid">
-                                                {this.props.generation.samples.map(s => 
+                                                {this.state.activeTab === 'symmetric' && this.props.generation.samples.map(s => 
                                                     <GenerationSample 
                                                         key={s.id} 
                                                         sample={s} 
                                                         redIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                         greenIndividual={this.props.generation.individuals.find(n => s.greenIndividualId === n.id)}
                                                         blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
-                                                        type="asymmetric"
+                                                        coordinateType="cartesian"
+                                                        symmetric={true}
+                                                        cacheSampleData={this.props.cacheSampleData.bind(this)}
                                                     />
                                                 )}
                                             </div>
+                                            {this.props.generation.individuals.length === 0  && <p>You have not generated any individuals, please use the sidebar to proceed.</p>}
+                                            {this.props.generation.samples.length === 0 && <p>You have not generated any samples, use the sidebar to proceed.</p>}
                                         </div>
                                     </div>
 
                                     <div className={activeClass('tabs__tab', 'polar')}>
                                         <div className="tabs__tab-content">
                                             <div className="flex-grid">
-                                            {this.props.generation.samples.map(s => 
+                                            {this.state.activeTab === 'polar' && this.props.generation.samples.map(s => 
                                                 <GenerationSample 
                                                     key={s.id} 
                                                     sample={s} 
                                                     redIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                     greenIndividual={this.props.generation.individuals.find(n => s.greenIndividualId === n.id)}
                                                     blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
-                                                    type="polar"
+                                                    coordinateType="polar"
+                                                    symmetric={false}
+                                                    cacheSampleData={this.props.cacheSampleData.bind(this)}
                                                 />
                                             )}
+                                            
                                             </div>
+                                            {this.props.generation.individuals.length === 0  && <p>You have not generated any individuals, please use the sidebar to proceed.</p>}
+                                            {this.props.generation.samples.length === 0 && <p>You have not generated any samples, use the sidebar to proceed.</p>}
+                                        </div>
+                                    </div>
+
+                                    <div className={activeClass('tabs__tab', 'polar-symmetric')}>
+                                        <div className="tabs__tab-content">
+                                            <div className="flex-grid">
+                                            {this.state.activeTab === 'polar-symmetric' && this.props.generation.samples.map(s => 
+                                                <GenerationSample 
+                                                    key={s.id} 
+                                                    sample={s} 
+                                                    redIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
+                                                    greenIndividual={this.props.generation.individuals.find(n => s.greenIndividualId === n.id)}
+                                                    blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
+                                                    coordinateType="polar"
+                                                    symmetric={true}
+                                                    cacheSampleData={this.props.cacheSampleData.bind(this)}
+                                                />
+                                            )}
+                                            
+                                            </div>
+                                            {this.props.generation.individuals.length === 0  && <p>You have not generated any individuals, please use the sidebar to proceed.</p>}
+                                            {this.props.generation.samples.length === 0 && <p>You have not generated any samples, use the sidebar to proceed.</p>}
                                         </div>
                                     </div>
 
                                     <div className={activeClass('tabs__tab', 'individuals')}>
                                         <div className="tabs__tab-content">
                                             <ul>
-                                                {this.props.generation.individuals.map((n, i) => 
+                                                {this.state.activeTab === 'individuals' && this.props.generation.individuals.map((n, i) => 
                                                     <li key={i}>{n.expression.join(" ")}</li>
                                                 )}
+                                                
                                             </ul>
+                                            {this.props.generation.individuals.length === 0  && <p>You have not generated any individuals, please use the sidebar to proceed.</p>}
                                         </div>
                                     </div>
                                 </div>
@@ -231,7 +299,7 @@ class Generation extends Component {
     }
 
     render() {
-        console.log(this.props);
+        
         if(this.props.generation) {
             return this.renderGeneration();
         }
@@ -251,7 +319,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
     generateSamples,
     generateIndividuals,
-    createGeneration
+    createGeneration,
+    push,
+    cacheSampleData
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Generation);
