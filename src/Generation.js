@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import FormControl from './components/FormControl';
 import StepperInput from './components/StepperInput';
 import ColourRangeInput from './components/ColourRangeInput';
-import { generateIndividuals, createGeneration, generateSamples, cacheSampleData } from './actions';
+import { generateIndividuals, createGeneration, generateSamples } from './actions';
 import GenerationSample from './GenerationSample';
 
 class Generation extends Component {
@@ -82,10 +82,6 @@ class Generation extends Component {
         });
     }
 
-    cacheSampleData(sample, type, symmetric, data) {
-        this.props.cacheSampleData(this.props.generation, sample, type, symmetric, data);
-    }
-
     renderGeneration() {
 
         let activeClass = (className, n) => {
@@ -115,7 +111,7 @@ class Generation extends Component {
                                         <div className="tabs__tab-content">
                                             <div className="flex-grid">
 
-                                                {this.state.activeTab === 'cartesian' && this.props.generation.samples.map(s => 
+                                                {this.props.generation.samples.map(s => 
                                                     <GenerationSample 
                                                         key={s.id} 
                                                         sample={s} 
@@ -124,7 +120,8 @@ class Generation extends Component {
                                                         blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                         coordinateType="cartesian"
                                                         symmetric={false}
-                                                        cacheSampleData={this.cacheSampleData.bind(this)}
+                                                        active={this.state.activeTab === 'cartesian'}
+                                                    
                                                     />
                                                 )}
                                                 
@@ -137,7 +134,7 @@ class Generation extends Component {
                                     <div className={activeClass('tabs__tab', 'cartesian-symmetric')}>
                                         <div className="tabs__tab-content">
                                             <div className="flex-grid">
-                                                {this.state.activeTab === 'cartesian-symmetric' && this.props.generation.samples.map(s => 
+                                                {this.props.generation.samples.map(s => 
                                                     <GenerationSample 
                                                         key={s.id} 
                                                         sample={s} 
@@ -146,7 +143,8 @@ class Generation extends Component {
                                                         blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                         coordinateType="cartesian"
                                                         symmetric={true}
-                                                        cacheSampleData={this.cacheSampleData.bind(this)}
+                                                        active={this.state.activeTab === 'cartesian-symmetric'}
+                                                    
                                                     />
                                                 )}
                                             </div>
@@ -158,19 +156,19 @@ class Generation extends Component {
                                     <div className={activeClass('tabs__tab', 'polar')}>
                                         <div className="tabs__tab-content">
                                             <div className="flex-grid">
-                                            {this.state.activeTab === 'polar' && this.props.generation.samples.map(s => 
-                                                <GenerationSample 
-                                                    key={s.id} 
-                                                    sample={s} 
-                                                    redIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
-                                                    greenIndividual={this.props.generation.individuals.find(n => s.greenIndividualId === n.id)}
-                                                    blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
-                                                    coordinateType="polar"
-                                                    symmetric={false}
-                                                    cacheSampleData={this.cacheSampleData.bind(this)}
-                                                />
-                                            )}
-                                            
+                                                {this.props.generation.samples.map(s => 
+                                                    <GenerationSample 
+                                                        key={s.id} 
+                                                        sample={s} 
+                                                        redIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
+                                                        greenIndividual={this.props.generation.individuals.find(n => s.greenIndividualId === n.id)}
+                                                        blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
+                                                        coordinateType="polar"
+                                                        symmetric={false}
+                                                        active={this.state.activeTab === 'polar'}
+                                                    
+                                                    />
+                                                )}
                                             </div>
                                             {this.props.generation.individuals.length === 0  && <p>You have not generated any individuals, please use the sidebar to proceed.</p>}
                                             {this.props.generation.samples.length === 0 && <p>You have not generated any samples, use the sidebar to proceed.</p>}
@@ -180,7 +178,7 @@ class Generation extends Component {
                                     <div className={activeClass('tabs__tab', 'polar-symmetric')}>
                                         <div className="tabs__tab-content">
                                             <div className="flex-grid">
-                                            {this.state.activeTab === 'polar-symmetric' && this.props.generation.samples.map(s => 
+                                            {this.props.generation.samples.map(s => 
                                                 <GenerationSample 
                                                     key={s.id} 
                                                     sample={s} 
@@ -189,7 +187,8 @@ class Generation extends Component {
                                                     blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                     coordinateType="polar"
                                                     symmetric={true}
-                                                    cacheSampleData={this.cacheSampleData.bind(this)}
+                                                    active={this.state.activeTab === 'polar-symmetric'}
+                                                
                                                 />
                                             )}
                                             
@@ -202,10 +201,9 @@ class Generation extends Component {
                                     <div className={activeClass('tabs__tab', 'individuals')}>
                                         <div className="tabs__tab-content">
                                             <ul>
-                                                {this.state.activeTab === 'individuals' && this.props.generation.individuals.map((n, i) => 
+                                                {this.props.generation.individuals.map((n, i) => 
                                                     <li key={i}>{n.expression.join(" ")}</li>
                                                 )}
-                                                
                                             </ul>
                                             {this.props.generation.individuals.length === 0  && <p>You have not generated any individuals, please use the sidebar to proceed.</p>}
                                         </div>
@@ -320,8 +318,7 @@ const mapDispatchToProps = {
     generateSamples,
     generateIndividuals,
     createGeneration,
-    push,
-    cacheSampleData
+    push
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Generation);

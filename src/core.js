@@ -35,8 +35,8 @@ let operands = {
     'sinY': (x, y) => Math.sin(x),
     'sinX': (x, y) => Math.sin(y),
     'rand': (x, y) => getRandomArbitrary(0, 255),
-    'randX': (x, y) => getRandomArbitrary(0, 255) * x,
-    'randy': (x, y) => getRandomArbitrary(0, 255) * y,
+    'randX': (x, y) => Math.random * x,
+    'randy': (x, y) => Math.random * y,
     'CIR': (x, y) => Math.sin(Math.sqrt(x * x + y * y) * Math.PI / 180.00)
 }
 
@@ -56,6 +56,9 @@ export const solveRpnExpression = function(expression, x, y) {
                 operatorStack.push(operators.single[n]);
             } else if(operands.hasOwnProperty(n)) {
                 let r = operands[n](x, y);
+                if(isNaN(r)) {
+                    r = getRandomInt(x > y ? y : x, y);
+                }
                 operandStack.push(r);
             }
         }
