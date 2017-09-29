@@ -196,7 +196,8 @@ export const generateSamples = function(generation, config) {
             redThresholdMax: config.redThresholdMax, redThresholdMin: config.redThresholdMin,
             greenThresholdMax: config.greenThresholdMax, greenThresholdMin: config.greenThresholdMin,
             blueThresholdMax: config.blueThresholdMax, blueThresholdMin: config.blueThresholdMin,
-            width: config.sampleWidth, height: config.sampleHeight
+            width: config.sampleWidth, height: config.sampleHeight,
+            cache: {}
         });
     }
 

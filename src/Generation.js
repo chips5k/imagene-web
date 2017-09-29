@@ -51,7 +51,7 @@ class Generation extends Component {
 
         if(this.state.activeTab === 'individuals') {
             this.setState({
-                activeTab: 'asymmetric'
+                activeTab: 'cartesian'
             });
         }
     }
@@ -82,8 +82,8 @@ class Generation extends Component {
         });
     }
 
-    cacheSampleData(sample, type, data) {
-        this.props.cacheSampleData(this.props.generation, sample, type, data);
+    cacheSampleData(sample, type, symmetric, data) {
+        this.props.cacheSampleData(this.props.generation, sample, type, symmetric, data);
     }
 
     renderGeneration() {
@@ -103,19 +103,19 @@ class Generation extends Component {
                         <div>
                             <div className="tabs">
                                 <div className="tabs__nav">
-                                    <a  className={activeClass('tabs__link', 'individuals')}  onClick={this.handleTabChange.bind(this, "individuals")}>Individuals</a>
-                                    <a className={activeClass('tabs__link', 'asymmetric')} onClick={this.handleTabChange.bind(this, "asymmetric")}>Asymmetric</a>
-                                    <a  className={activeClass('tabs__link', 'symmetric')}  onClick={this.handleTabChange.bind(this, "symmetric")}>Symmetric</a>
-                                    <a  className={activeClass('tabs__link', 'polar')}  onClick={this.handleTabChange.bind(this, "polar")}>Polar Coordinates</a>
-                                    <a  className={activeClass('tabs__link', 'polar-symmetric')}  onClick={this.handleTabChange.bind(this, "polar-symmetric")}>Polar Coordinates (Symmetric)</a>
+                                    <a  className={activeClass('tabs__link', 'individuals')}  onClick={this.handleTabChange.bind(this, 'individuals')}>Individuals</a>
+                                    <a className={activeClass('tabs__link', 'cartesian')} onClick={this.handleTabChange.bind(this, 'cartesian')}>Cartesian</a>
+                                    <a  className={activeClass('tabs__link', 'cartesian-symmetric')}  onClick={this.handleTabChange.bind(this, 'cartesian-symmetric')}>Cartesian (Symmetric)</a>
+                                    <a  className={activeClass('tabs__link', 'polar')}  onClick={this.handleTabChange.bind(this, 'polar')}>Polar Coordinates</a>
+                                    <a  className={activeClass('tabs__link', 'polar-symmetric')}  onClick={this.handleTabChange.bind(this, 'polar-symmetric')}>Polar Coordinates (Symmetric)</a>
                                 </div>
 
                                 <div className="tabs__body">
-                                    <div className={activeClass('tabs__tab', 'asymmetric')}>
+                                    <div className={activeClass('tabs__tab', 'cartesian')}>
                                         <div className="tabs__tab-content">
                                             <div className="flex-grid">
 
-                                                {this.state.activeTab === 'asymmetric' && this.props.generation.samples.map(s => 
+                                                {this.state.activeTab === 'cartesian' && this.props.generation.samples.map(s => 
                                                     <GenerationSample 
                                                         key={s.id} 
                                                         sample={s} 
@@ -124,7 +124,7 @@ class Generation extends Component {
                                                         blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                         coordinateType="cartesian"
                                                         symmetric={false}
-                                                        cacheSampleData={this.props.cacheSampleData.bind(this)}
+                                                        cacheSampleData={this.cacheSampleData.bind(this)}
                                                     />
                                                 )}
                                                 
@@ -134,10 +134,10 @@ class Generation extends Component {
                                         </div>
                                     </div>
 
-                                    <div className={activeClass('tabs__tab', 'symmetric')}>
+                                    <div className={activeClass('tabs__tab', 'cartesian-symmetric')}>
                                         <div className="tabs__tab-content">
                                             <div className="flex-grid">
-                                                {this.state.activeTab === 'symmetric' && this.props.generation.samples.map(s => 
+                                                {this.state.activeTab === 'cartesian-symmetric' && this.props.generation.samples.map(s => 
                                                     <GenerationSample 
                                                         key={s.id} 
                                                         sample={s} 
@@ -146,7 +146,7 @@ class Generation extends Component {
                                                         blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                         coordinateType="cartesian"
                                                         symmetric={true}
-                                                        cacheSampleData={this.props.cacheSampleData.bind(this)}
+                                                        cacheSampleData={this.cacheSampleData.bind(this)}
                                                     />
                                                 )}
                                             </div>
@@ -167,7 +167,7 @@ class Generation extends Component {
                                                     blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                     coordinateType="polar"
                                                     symmetric={false}
-                                                    cacheSampleData={this.props.cacheSampleData.bind(this)}
+                                                    cacheSampleData={this.cacheSampleData.bind(this)}
                                                 />
                                             )}
                                             
@@ -189,7 +189,7 @@ class Generation extends Component {
                                                     blueIndividual={this.props.generation.individuals.find(n => s.redIndividualId === n.id)}
                                                     coordinateType="polar"
                                                     symmetric={true}
-                                                    cacheSampleData={this.props.cacheSampleData.bind(this)}
+                                                    cacheSampleData={this.cacheSampleData.bind(this)}
                                                 />
                                             )}
                                             

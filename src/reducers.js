@@ -63,9 +63,28 @@ export default {
 
             case 'CACHE_SAMPLE_DATA':
 
-                //TODO
+                if(index !== -1) {
+                    let sampleIndex = action.generation.samples.findIndex(n => n.id === action.sample.id);
+                    if(sampleIndex !== -1) {
+                        let generation = {
+                            ...action.generation
+                        };
+
+                        let sample = {
+                            ...action.sample
+                        };
+
+                        let cacheKey = action.coordinateType + (action.symmetric ? '-symmetric' : '');
+
+                        sample.cache[cacheKey] = action.data;
+                        generation.samples = [...generation.samples.slice(0, sampleIndex), sample, ...generation.samples.slice(sampleIndex + 1)];
+
+                        return [...state.slice(0, index), generation, ...state.slice(index + 1)];
+
+                    }
+                }
+
                 return state;
-                break;
 
             default:
                 return state;

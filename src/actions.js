@@ -18,7 +18,7 @@ export const createGeneration = (generation) => ({
     generation
 });
 
-export const cacheSampleData = (generation, sample, coordinateType, data) => ({
+export const cacheSampleData = (generation, sample, coordinateType, symmetric, data) => ({
     type: 'CACHE_SAMPLE_DATA',
-    generation, sample, coordinateType, data
+    generation, sample, coordinateType, symmetric, data
 });
