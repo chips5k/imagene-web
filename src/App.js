@@ -61,7 +61,7 @@ class App extends Component {
 
                             {this.props.generations.length === 0 && 
                             <a href="" className={navLinkClass()} onClick={this.newGeneration.bind(this)} >
-                                <i className="sidebar__nav-icon fa fa-upload" /> New
+                                <i className="sidebar__nav-icon fa fa-upload" /> New Generation
                             </a>}
 
                             <Link to="/import" className={navLinkClass("/import")}>
