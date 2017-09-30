@@ -74,11 +74,25 @@ export default {
                             sample.fitness--;
                         }
 
-                    
                         let samples = [...action.generation.samples.slice(0, sampleIndex), sample, ...action.generation.samples.slice(sampleIndex + 1)];
                         
+
+                        //Find the individuals used by this sample and cascade the fitness values
+                        let individuals = [...action.generation.individuals];
+                        let fitness = sample.fitness / 3;
+                        let individualIds = [sample.redIndividualId, sample.blueIndividualId, sample.greenIndividualId];
+
+                        individuals = individuals.map(n => {
+                            if(individualIds.indexOf(n.id) !== -1) {
+                                n.fitness += (fitness - n.fitness);
+                            };
+                            return n;
+                        });
+                        
+
                         let generation = {
                             ...action.generation,
+                            individuals,
                             samples: samples
                         };
                         

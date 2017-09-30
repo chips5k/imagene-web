@@ -241,28 +241,29 @@ export const createGeneration = function(generation = null) {
 
 
         let selectedIndividualIndex;
+        let iteration = 0;
+        let limit = 25;
+        while(individuals.length < generation.size && iteration < limit) {
 
-        while(individuals.length < generation.size) {
+            iteration++;
 
             //Determine what to do this iteration
-            let method = rouletteWheelSelection(methods);
+            let method = methods[rouletteWheelSelection(methods)];
 
-            switch(method.type) {
+            switch(method.type) {   
                 case 'elitism':
-
                     selectedIndividualIndex = rouletteWheelSelection(previousIndividuals);
                     if(selectedIndividualIndex !== -1) {
                         individuals.push(previousIndividuals.splice(selectedIndividualIndex, 1)[0]);
                     }
-
+                    
                     break;
 
                 //Crossover
                 case 'crossover':
-                    
                     //Select two parents for crossover
                     let parentAIndex = rouletteWheelSelection(previousIndividuals);
-                    let parentBIndex = rouletteWheelSelection(previousIndividuals, parentAIndex);
+                    let parentBIndex = rouletteWheelSelection(previousIndividuals, [parentAIndex]);
 
                     if(parentAIndex !== -1 && parentBIndex !== -1) {
                         //determine number of children to produce 
@@ -278,15 +279,18 @@ export const createGeneration = function(generation = null) {
 
                 //Mutation
                 case 'mutation':
-                    let selectedIndividualIndex = rouletteWheelSelection(previousIndividuals);
+                    selectedIndividualIndex = rouletteWheelSelection(previousIndividuals);
                     if(selectedIndividualIndex !== -1) {
                         individuals.push(mutateIndividual(previousIndividuals.splice(selectedIndividualIndex, 1)[0]));
                     }
 
                     break;
+                default:
+                    break;
             }
         }
 
+        console.log(individuals);
         //Evolve a new generation
         return {
             id: ++ids.generations,
@@ -314,20 +318,38 @@ export const createGeneration = function(generation = null) {
 export const rouletteWheelSelection = function(individuals, excludedIndexes) {
         
     //[Sum] Calculate sum of all chromosome fitnesses in population - sum S.
-    let s = individuals.reduce((a, n) => a + n.fitness);
-
+    let s = individuals.map(n => n.fitness).reduce((a, n) => a + n);
+    if(individuals.length > 3) {
+        console.log('Sum: ', s);
+    }
+    
     //[Select] Generate random number from interval (0,S) - r.
-    let r = Math.getRandomInt(0, s);
+    let r = getRandomArbitrary(0, s);
+    if(individuals.length > 3) {
+        console.log('Rand: ', r);
+    }
 
     let c = 0;
     // [Loop] Go through the population and sum fitnesses from 0 - sum s.
     for(var i = 0; i < individuals.length; i++) {
         c += individuals[i].fitness;
-        
-        //When the sum s is greater then r, stop and return the chromosome where you are.
-        if(c > r && excludedIndexes.indexOf(i) !== -1) {
-            return i
+        if(individuals.length > 3) {
         }
+        //When the sum s is greater then r, stop and return the chromosome where you are.
+        if(c > r) {
+            if(excludedIndexes) {
+                if(excludedIndexes.indexOf(i) === -1) {
+                    return i;
+                }
+            } else {
+                return i;
+            }
+        }
+    }
+    
+    
+    if(!excludedIndexes || excludedIndexes.indexOf(individuals.length - 1) !== -1) {
+        return individuals.length - 1;
     }
     
     return -1;

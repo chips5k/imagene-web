@@ -169,21 +169,29 @@ body {
 .main__sidebar {
     background: rgb(241, 243, 242);
     width:400px;
+    overflow-y: auto;
+    bottom:0px;
+    top:100px;
+    padding-bottom:100px;
 }
 
 
 .main-sidebar-panel {
     overflow-y: auto;
+    
+    
 }
 
 .main-sidebar-panel__header {
-    color: #555;
+    color: white;
+    background: #999;
     border-bottom:1px solid #E4E4E4;
     
 }
 
 .main-sidebar-panel__title {
-    padding:1.5rem;
+    padding:0.5rem 1.5rem;
+    font-size:0.9rem;
 }
 
 .main-sidebar-panel__header .fa {
@@ -198,9 +206,18 @@ body {
 }
 
 .main-sidebar-panel__actions {
-    padding:1.5rem;
-    border-bottom:1px solid #E4E4E4;
     border-top:1px solid #E4E4E4;
+    border-bottom:1px solid #E4E4E4;
+    display:flex;
+    
+}
+
+.main-sidebar-panel__action-button {
+    background: #eee;
+    border:none;
+    padding:0.5rem 1.5rem;
+    flex:1;
+    border-right: 1px solid #E4E4E4;
 }
 
 .media {
@@ -259,92 +276,6 @@ body {
     border:1px solid #198fc1;
     color: white;
 }
-
-.population-config {
-   box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.5);
-}
-.population-config__header {
-    margin-top:4px;
-    background: linear-gradient(45deg, rgba(36,36,36,1) 0%, rgba(23,23,23,1) 100%);
-    
-    padding: 1.3rem 1rem;
-    display:flex;
-    color: white;
-    font-size: 1rem;
-}   
-
-.population-config__title {
-    flex: 1;
-    font-weight: normal;
-    font-size:1rem;
-    margin:0;
-    padding:0;
-}
-
-.population-config__body {
-    transition: max-height 500ms, opacity 500ms;
-    overflow:hidden;
-    max-height: 150px;
-    opacity: 1;
-    background: #f7f7f7;
-}
-
-.population-config__content {
-    padding: 1rem;
-}
-
-.population-config__actions {
-    text-align:right;
-}
-
-.population-config--collapsed .population-config__body {
-    max-height:0px;
-    opacity: 0;
-}
-
-/** Generation Config **/
-
-.generation-config {
-    box-shadow: 0px 3px 15px 0px rgba(0, 0, 0, 0.5);
- }
- .generation-config__header {
-     background: linear-gradient(45deg, rgba(74,74,74,1) 0%, rgba(51,51,51,1) 100%);
-     
-     padding: 1.3rem 1rem;
-     display:flex;
-     color: white;
-     font-size: 1rem;
- }   
- 
- .generation-config__title {
-     flex: 1;
-     font-weight: normal;
-     font-size:1rem;
-     margin:0;
-     padding:0;
- }
- 
- .generation-config__body {
-     transition: max-height 500ms, opacity 500ms;
-     overflow:hidden;
-     max-height: 350px;
-     opacity: 1;
-     background: #f7f7f7;
- }
- 
- .generation-config__content {
-     padding: 1rem;
- }
- 
- .generation-config__actions {
-     text-align:right;
- }
- 
- .generation-config--collapsed .generation-config__body {
-     max-height:0px;
-     opacity: 0;
- }
-
 
 
 .text-input {

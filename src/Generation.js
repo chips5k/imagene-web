@@ -92,6 +92,8 @@ class Generation extends Component {
 
     onClickEvolveNewGeneration(e) {
         e.preventDefault();
+        this.props.createGeneration(this.props.generation);
+        
     }
 
     renderGeneration() {
@@ -253,12 +255,9 @@ class Generation extends Component {
                                     </div>
                                 </div>
                                 <div className="main-sidebar-panel__actions">
-                                    <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickGenerateIndividuals.bind(this)}>
-                                        <i className="fa fa-check"></i> Generate
+                                    <button className="main-sidebar-panel__action-button" onClick={this.onClickGenerateIndividuals.bind(this)}>
+                                        <i className="fa fa-refresh"></i> Generate
                                     </button>
-                                    <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickEvolveNewGeneration.bind(this)}>
-                                    <i className="fa fa-check"></i> Evolve New Generation
-                                </button> 
                                 </div>
                             </div>
                         }
@@ -302,9 +301,27 @@ class Generation extends Component {
                                 </div>  
                             </div>
                             <div className="main-sidebar-panel__actions">
-                                <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickGenerateSamples.bind(this)}>
-                                    <i className="fa fa-check"></i> Generate New Samples
+                                <button className="main-sidebar-panel__action-button" onClick={this.onClickGenerateSamples.bind(this)}>
+                                    <i className="fa fa-refresh"></i> Generate
                                 </button> 
+                            </div>
+                        </div>}
+
+                        
+                        {this.props.generation.samples.length > 0 && 
+                        <div className="main-sidebar-panel">
+                            <div className="main-sidebar-panel__header">
+                                <div className="main-sidebar-panel__title">
+                                    Evolve New Generation
+                                </div>
+                            </div>
+                            <div className="main-sidebar-panel__body">
+                                <p>When you are happy with the fitness values of this population/sample set, click the button below to evolve a new generation.</p>
+                            </div>
+                            <div className="main-sidebar-panel__actions">
+                                <button className="main-sidebar-panel__action-button" onClick={this.onClickEvolveNewGeneration.bind(this)}>
+                                    <i className="fa fa-refresh"></i> Evolve New Generation
+                                </button>
                             </div>
                         </div>}
                     </div>

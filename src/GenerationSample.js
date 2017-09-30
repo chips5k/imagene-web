@@ -143,9 +143,9 @@ export default class GenerationSample extends Component {
                 <div className="generation-sample__actions">
                     <div className="generation-sample__fitness">{this.props.sample.fitness}</div>
                     <div className="generation-sample__controls">
-                        <button><i className={this.state.showDetail ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={this.toggleDetails.bind(this)}></i></button>
-                        <button><i className="fa fa-plus" onClick={this.increaseFitness.bind(this)}></i></button>
-                        <button><i className="fa fa-minus" onClick={this.decreaseFitness.bind(this)}></i></button>
+                        <button onClick={this.toggleDetails.bind(this)}><i className={this.state.showDetail ? 'fa fa-eye' : 'fa fa-eye-slash'}></i></button>
+                        <button onClick={this.increaseFitness.bind(this)}><i className="fa fa-plus"></i></button>
+                        <button onClick={this.decreaseFitness.bind(this)}><i className="fa fa-minus"></i></button>
                     </div>
                 </div>
             </div>
