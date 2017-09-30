@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import FormControl from './components/FormControl';
 import StepperInput from './components/StepperInput';
 import ColourRangeInput from './components/ColourRangeInput';
-import { generateIndividuals, createGeneration, generateSamples } from './actions';
+import { generateIndividuals, createGeneration, generateSamples, increaseSampleFitness, decreaseSampleFitness } from './actions';
 import GenerationSample from './GenerationSample';
 
 class Generation extends Component {
@@ -82,6 +82,18 @@ class Generation extends Component {
         });
     }
 
+    increaseFitness(sample) {
+        this.props.increaseSampleFitness(this.props.generation, sample);
+    }
+
+    decreaseFitness(sample) {
+        this.props.decreaseSampleFitness(this.props.generation, sample);
+    }
+
+    onClickEvolveNewGeneration(e) {
+        e.preventDefault();
+    }
+
     renderGeneration() {
 
         let activeClass = (className, n) => {
@@ -121,7 +133,8 @@ class Generation extends Component {
                                                         coordinateType="cartesian"
                                                         symmetric={false}
                                                         active={this.state.activeTab === 'cartesian'}
-                                                    
+                                                        increaseFitness={this.increaseFitness.bind(this, s)}
+                                                        decreaseFitness={this.decreaseFitness.bind(this, s)}
                                                     />
                                                 )}
                                                 
@@ -144,7 +157,8 @@ class Generation extends Component {
                                                         coordinateType="cartesian"
                                                         symmetric={true}
                                                         active={this.state.activeTab === 'cartesian-symmetric'}
-                                                    
+                                                        increaseFitness={this.increaseFitness.bind(this, s)}
+                                                        decreaseFitness={this.decreaseFitness.bind(this, s)}
                                                     />
                                                 )}
                                             </div>
@@ -166,7 +180,8 @@ class Generation extends Component {
                                                         coordinateType="polar"
                                                         symmetric={false}
                                                         active={this.state.activeTab === 'polar'}
-                                                    
+                                                        increaseFitness={this.increaseFitness.bind(this, s)}
+                                                        decreaseFitness={this.decreaseFitness.bind(this, s)}
                                                     />
                                                 )}
                                             </div>
@@ -188,7 +203,8 @@ class Generation extends Component {
                                                     coordinateType="polar"
                                                     symmetric={true}
                                                     active={this.state.activeTab === 'polar-symmetric'}
-                                                
+                                                    increaseFitness={this.increaseFitness.bind(this, s)}
+                                                    decreaseFitness={this.decreaseFitness.bind(this, s)}
                                                 />
                                             )}
                                             
@@ -202,7 +218,7 @@ class Generation extends Component {
                                         <div className="tabs__tab-content">
                                             <ul>
                                                 {this.props.generation.individuals.map((n, i) => 
-                                                    <li key={i}>{n.expression.join(" ")}</li>
+                                                    <li key={i}><b>Fitness:</b> {n.fitness}, <b>Expression:</b> {n.expression.join(" ")}</li>
                                                 )}
                                             </ul>
                                             {this.props.generation.individuals.length === 0  && <p>You have not generated any individuals, please use the sidebar to proceed.</p>}
@@ -218,7 +234,7 @@ class Generation extends Component {
                             <div className="main-sidebar-panel">
                                 <div className="main-sidebar-panel__header">
                                     <div className="main-sidebar-panel__title">
-                                        Generation Configuration
+                                        Population
                                     </div>
                                 </div>
                                 <div className="main-sidebar-panel__body">
@@ -238,8 +254,11 @@ class Generation extends Component {
                                 </div>
                                 <div className="main-sidebar-panel__actions">
                                     <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickGenerateIndividuals.bind(this)}>
-                                        <i className="fa fa-check"></i> (re)generate
+                                        <i className="fa fa-check"></i> Generate
                                     </button>
+                                    <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickEvolveNewGeneration.bind(this)}>
+                                    <i className="fa fa-check"></i> Evolve New Generation
+                                </button> 
                                 </div>
                             </div>
                         }
@@ -284,7 +303,7 @@ class Generation extends Component {
                             </div>
                             <div className="main-sidebar-panel__actions">
                                 <button style={{marginRight: '1rem'}} className="button button--save" onClick={this.onClickGenerateSamples.bind(this)}>
-                                    <i className="fa fa-check"></i> Generate
+                                    <i className="fa fa-check"></i> Generate New Samples
                                 </button> 
                             </div>
                         </div>}
@@ -318,7 +337,9 @@ const mapDispatchToProps = {
     generateSamples,
     generateIndividuals,
     createGeneration,
-    push
+    push,
+    increaseSampleFitness,
+    decreaseSampleFitness
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Generation);

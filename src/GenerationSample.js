@@ -6,8 +6,8 @@ export default class GenerationSample extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            processing: true
-
+            processing: true,
+            showDetails: false
         };
     }
 
@@ -99,32 +99,54 @@ export default class GenerationSample extends Component {
         }
     }
 
+    toggleDetails() {
+        this.setState({
+            showDetails: !this.state.showDetails
+        });
+    }
+
 
     componentDidMount() {
         if(this.props.active) {
             this.generate();
         }
     }
-    
+
+    increaseFitness(e) {
+        e.preventDefault();
+        this.props.increaseFitness();
+    }
+
+    decreaseFitness(e) {
+        e.preventDefault();
+        this.props.decreaseFitness();
+    }
+
     render() {
         return (
             <div className="generation-sample" style={{maxWidth: this.props.sample.width + 'px'}}>
                 <div className="generation-sample__header">
                     <h3 className="generation-sample__title">Sample {this.props.sample.id} ({this.props.symmetric ? 'Symmetric' : 'Asymmetric'})</h3>
+                    <button className="generation-sample__edit-button" onClick={this.props.editSample}><i className="fa fa-cog"></i></button>
                 </div>
                 <div className="generation-sample__canvas-wrap">
                     {this.state.processing && <div className="generation-sample__canvas-loader" />}
                     <canvas ref="canvas" className="generation-sample__canvas" width={this.props.sample.width} height={this.props.sample.height} />
                 </div>
-                <div className="generation-sample__details">
+                <div className={this.state.showDetails ? 'generation-sample__details generation-sample__details--open' : 'generation-sample__details'}>
                     <ul>
-                        <li><b>Red: </b> {this.props.redIndividual.expression.join(" ")}</li>
-                        <li><b>Green: </b> {this.props.greenIndividual.expression.join(" ")}</li>
-                        <li><b>Blue: </b> {this.props.blueIndividual.expression.join(" ")}</li>
+                        <li><b>Red: </b><br/><b>Fitness:</b> {this.props.redIndividual.fitness}, <b>Expression:</b> {this.props.redIndividual.expression.join(" ")}</li>
+                        <li><b>Green: </b><br/><b>Fitness:</b> {this.props.greenIndividual.fitness}, <b>Expression:</b> {this.props.greenIndividual.expression.join(" ")}</li>
+                        <li><b>Blue: </b><br/><b>Fitness:</b> {this.props.blueIndividual.fitness}, <b>Expression:</b> {this.props.blueIndividual.expression.join(" ")}</li>
                     </ul>
                 </div>
                 <div className="generation-sample__actions">
-
+                    <div className="generation-sample__fitness">{this.props.sample.fitness}</div>
+                    <div className="generation-sample__controls">
+                        <button><i className={this.state.showDetail ? 'fa fa-eye' : 'fa fa-eye-slash'} onClick={this.toggleDetails.bind(this)}></i></button>
+                        <button><i className="fa fa-plus" onClick={this.increaseFitness.bind(this)}></i></button>
+                        <button><i className="fa fa-minus" onClick={this.decreaseFitness.bind(this)}></i></button>
+                    </div>
                 </div>
             </div>
         );

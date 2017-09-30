@@ -1,5 +1,5 @@
 import { createGeneration, generateIndividuals, generateSamples } from './core';
-
+import { cloneDeep } from 'lodash';
 
 export default {
     generations: (state = [], action) => {
@@ -60,7 +60,34 @@ export default {
                 }
 
                 return state;
-                
+            
+            case 'INCREASE_SAMPLE_FITNESS':
+            case 'DECREASE_SAMPLE_FITNESS':
+                if(index !== -1) {
+
+                    let sampleIndex = action.generation.samples.findIndex(n => action.sample.id === n.id);
+                    if(sampleIndex !== -1) {
+                        let sample = cloneDeep(action.sample);
+                        if(action.type === 'INCREASE_SAMPLE_FITNESS') {
+                            sample.fitness++;
+                        } else {
+                            sample.fitness--;
+                        }
+
+                    
+                        let samples = [...action.generation.samples.slice(0, sampleIndex), sample, ...action.generation.samples.slice(sampleIndex + 1)];
+                        
+                        let generation = {
+                            ...action.generation,
+                            samples: samples
+                        };
+                        
+                        return [...state.slice(0, index), generation, ...state.slice(index + 1)];
+                    }
+                }
+
+                return state;
+
             default:
                 return state;
         }

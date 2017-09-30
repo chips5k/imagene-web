@@ -17,3 +17,14 @@ export const createGeneration = (generation) => ({
     type: 'NEW_GENERATION',
     generation
 });
+
+
+export const increaseSampleFitness = (generation, sample) => ({
+    type: 'INCREASE_SAMPLE_FITNESS',
+    generation, sample
+})
+
+export const decreaseSampleFitness = (generation, sample) => ({
+    type: 'DECREASE_SAMPLE_FITNESS',
+    generation, sample
+})

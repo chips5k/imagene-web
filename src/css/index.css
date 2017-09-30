@@ -506,6 +506,7 @@ body {
 
 .generation-sample__header {
     border-bottom:1px solid #ccc;
+    display:flex;
 }
 
 .generation-sample__title {
@@ -513,6 +514,7 @@ body {
     font-size: 0.7rem;
     font-weight: normal;
     white-space: nowrap;
+    flex: 1;
 }
 .generation-sample__canvas {
     width:100%;
@@ -523,9 +525,25 @@ body {
     display:none;
 }
 
-.generation-sample__actions {
-    display:none;
+.generation-sample__details--open {
+    display:block;
 }
+
+
+.generation-sample__actions {
+    display:flex;
+}
+
+.generation-sample__fitness {
+    flex: 1;
+}
+
+.generation-sample__controls {
+
+}
+
+
+
 .generation-sample__canvas-wrap {
     display:flex;
     align-items: middle;
