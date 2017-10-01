@@ -1,4 +1,7 @@
 import { cloneDeep } from 'lodash';
+import Random from 'random-js';
+
+var random = new Random(Random.engines.mt19937().autoSeed());
 
 let ids = {
     generations: 0,
@@ -30,6 +33,7 @@ let operators = {
 let operands = {
     'pX': (x, y) => x,
     'pY': (x, y) => y,
+    'PI': (x, y) => Math.PI,
     'PIx': (x, y) => x * Math.PI,
     'PIy': (x, y) => y * Math.PI,
     'cosY': (x, y) => Math.cos(y),
@@ -37,8 +41,8 @@ let operands = {
     'sinY': (x, y) => Math.sin(x),
     'sinX': (x, y) => Math.sin(y),
     'rand': (x, y) => getRandomArbitrary(0, 255),
-    'randX': (x, y) => Math.random * x,
-    'randy': (x, y) => Math.random * y,
+    'randX': (x, y) => getRandomArbitrary(0, 255) * x,
+    'randy': (x, y) => getRandomArbitrary(0, 255) * y,
     'CIR': (x, y) => Math.sin(Math.sqrt(x * x + y * y) * Math.PI / 180.00)
 }
 
@@ -97,7 +101,7 @@ function buildRpnExpression(operands, singleOperators, doubleOperators, minSubex
 
     //Todo randomize whether or not to nest
 
-    let type = getRandomInt(1, 3);
+    let type = getRandomInt(1, 2);
     
 
 
@@ -107,11 +111,11 @@ function buildRpnExpression(operands, singleOperators, doubleOperators, minSubex
             let currentMaxSubExpressions = getRandomInt(minSubexpressions, maxSubexpressions);
             expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
             expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
-            expression = expression.concat((doubleOperators[getRandomInt(0, doubleOperators.length)]));
+            expression = expression.concat((doubleOperators[getRandomInt(0, doubleOperators.length - 1)]));
         } else {
-            expression = expression.concat((operands[getRandomInt(0, operands.length)]));
-            expression = expression.concat((operands[getRandomInt(0, operands.length)]));
-            expression = expression.concat((doubleOperators[getRandomInt(0, doubleOperators.length)]));
+            expression = expression.concat((operands[getRandomInt(0, operands.length - 1)]));
+            expression = expression.concat((operands[getRandomInt(0, operands.length - 1)]));
+            expression = expression.concat((doubleOperators[getRandomInt(0, doubleOperators.length - 1)]));
         }
     } else {
         if(currentDepth < maxSubexpressions) {
@@ -119,11 +123,11 @@ function buildRpnExpression(operands, singleOperators, doubleOperators, minSubex
             expression = expression.concat(buildRpnExpression(operands, singleOperators, doubleOperators, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
             
         } else {
-            expression = expression.concat((operands[getRandomInt(0, operands.length)]));
+            expression = expression.concat((operands[getRandomInt(0, operands.length - 1)]));
         }
         
         
-        expression = expression.concat((singleOperators[getRandomInt(0, singleOperators.length)]));
+        expression = expression.concat((singleOperators[getRandomInt(0, singleOperators.length - 1)]));
     }
     
 
@@ -133,13 +137,11 @@ function buildRpnExpression(operands, singleOperators, doubleOperators, minSubex
 
 /** The following are taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random */
 function getRandomArbitrary(min, max) {
-    return Math.random() * (max - min) + min;
+    return random.real(min, max, true);
 }
 
 export const getRandomInt = function(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    return random.integer(min, max);
 }
 
 export const generateIndividuals = (size, minDepth, maxDepth) => {
@@ -194,9 +196,9 @@ export const generateSamples = function(generation, config) {
     for(var i = 0; i < config.numSamples; i++) {
         samples.push({
             id: ++ids.samples,
-            redIndividualId: generation.individuals[getRandomInt(0, generation.individuals.length)].id,
-            greenIndividualId: generation.individuals[getRandomInt(0, generation.individuals.length)].id,
-            blueIndividualId:generation.individuals[getRandomInt(0, generation.individuals.length)].id,
+            redIndividualId: generation.individuals[getRandomInt(0, generation.individuals.length - 1)].id,
+            greenIndividualId: generation.individuals[getRandomInt(0, generation.individuals.length - 1)].id,
+            blueIndividualId:generation.individuals[getRandomInt(0, generation.individuals.length - 1)].id,
             redThresholdMax: config.redThresholdMax, redThresholdMin: config.redThresholdMin,
             greenThresholdMax: config.greenThresholdMax, greenThresholdMin: config.greenThresholdMin,
             blueThresholdMax: config.blueThresholdMax, blueThresholdMin: config.blueThresholdMin,
@@ -210,11 +212,61 @@ export const generateSamples = function(generation, config) {
 }
 
 function mutateIndividual(individual) {
-    return {...individual};
+
+    let expression = [...individual.expression];
+    
+    let index = getRandomInt(0, expression.length - 1);
+
+    let item = expression[index];
+
+    if(operators.single.hasOwnProperty(item)) {
+
+        let singleOperatorsIndexed = Object.keys(operators.single);
+        //Swap item for another operand
+        expression.splice(index, 1, singleOperatorsIndexed[getRandomInt(0, singleOperatorsIndexed.length - 1)]);
+    }
+
+    if(operators.double.hasOwnProperty(item)) {
+        let doubleOperatorsIndexed = Object.keys(operators.single);
+        //Swap item for another operand
+        expression.splice(index, 1, doubleOperatorsIndexed[getRandomInt(0, doubleOperatorsIndexed.length - 1)]);
+    }
+
+    if(operands.hasOwnProperty(item)) {
+        let chance = getRandomInt(0, 1);
+        switch(chance) {
+            case 0:
+                let operandsIndexed = Object.keys(operands);
+                //Swap item for another operand
+                expression.splice(index, 1, operandsIndexed[getRandomInt(0, operandsIndexed.length - 1)]);
+                break;
+            case 1:
+            default:
+                //Swap item for a subexpression
+                expression.splice(index, 1, ...buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), 0, 6, 0))
+                break;
+        }
+    }
+    return {...individual, expression};
 }
 
 function crossOverIndividuals(individualA, individualB) {
-    return { ...individualA }
+
+    let selection = getRandomInt(0, 1);
+    let parentFrom = selection === 1 ? individualB : individualA;
+    let parentTo = selection === 1 ? individualA : individualB;
+    
+
+    let fromIndex = getRandomInt(0, parentFrom.expression.length - 1);
+    //Find all operator nodes
+    let expression = parentFrom.expression.slice(0, fromIndex);
+
+    let toIndex = getRandomInt(0, parentTo.expression.length - 1);
+
+    let individual = {...parentTo, id: ++ids.individuals, expression: [...parentTo.expression]};
+    individual.expression.splice(0, toIndex, ...expression);
+
+    return individual;
 }
 
 export const createGeneration = function(generation = null) {
@@ -242,8 +294,8 @@ export const createGeneration = function(generation = null) {
 
         let selectedIndividualIndex;
         let iteration = 0;
-        let limit = 25;
-        while(individuals.length < generation.size && iteration < limit) {
+        let limit = generation.size;
+        while(individuals.length < limit && iteration < limit) {
 
             iteration++;
 
@@ -255,6 +307,8 @@ export const createGeneration = function(generation = null) {
                     selectedIndividualIndex = rouletteWheelSelection(previousIndividuals);
                     if(selectedIndividualIndex !== -1) {
                         individuals.push(previousIndividuals.splice(selectedIndividualIndex, 1)[0]);
+                    } else {
+                        limit--;
                     }
                     
                     break;
@@ -282,6 +336,8 @@ export const createGeneration = function(generation = null) {
                     selectedIndividualIndex = rouletteWheelSelection(previousIndividuals);
                     if(selectedIndividualIndex !== -1) {
                         individuals.push(mutateIndividual(previousIndividuals.splice(selectedIndividualIndex, 1)[0]));
+                    } else {
+                        limit--;
                     }
 
                     break;
@@ -290,7 +346,6 @@ export const createGeneration = function(generation = null) {
             }
         }
 
-        console.log(individuals);
         //Evolve a new generation
         return {
             id: ++ids.generations,
@@ -319,22 +374,17 @@ export const rouletteWheelSelection = function(individuals, excludedIndexes) {
         
     //[Sum] Calculate sum of all chromosome fitnesses in population - sum S.
     let s = individuals.map(n => n.fitness).reduce((a, n) => a + n);
-    if(individuals.length > 3) {
-        console.log('Sum: ', s);
-    }
+  
     
     //[Select] Generate random number from interval (0,S) - r.
     let r = getRandomArbitrary(0, s);
-    if(individuals.length > 3) {
-        console.log('Rand: ', r);
-    }
+    
 
     let c = 0;
     // [Loop] Go through the population and sum fitnesses from 0 - sum s.
     for(var i = 0; i < individuals.length; i++) {
         c += individuals[i].fitness;
-        if(individuals.length > 3) {
-        }
+        
         //When the sum s is greater then r, stop and return the chromosome where you are.
         if(c > r) {
             if(excludedIndexes) {
@@ -345,11 +395,6 @@ export const rouletteWheelSelection = function(individuals, excludedIndexes) {
                 return i;
             }
         }
-    }
-    
-    
-    if(!excludedIndexes || excludedIndexes.indexOf(individuals.length - 1) !== -1) {
-        return individuals.length - 1;
     }
     
     return -1;

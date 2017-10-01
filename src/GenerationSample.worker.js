@@ -13,15 +13,15 @@ onmessage = function(e) {
     for(let i = 0; i < e.data.image.data.length; i += 4) {
        
         let x = i / 4 % e.data.image.width;
-        let y = Math.floor(i / 4 / e.data.image.width);
-        let evaluateX = x;
-        let evaluateY = y;
+        let y = Math.floor(i / 4 / e.data.image.height);
+        let evaluateX = x + 1;
+        let evaluateY = y + 1;
 
         if(e.data.coordinateType === 'polar') { 
             let r, a;
-            evaluateX -= e.data.image.width / 2;
-            evaluateY -= e.data.image.height / 2;
-            r = Math.sqrt(Math.pow(evaluateX, 2), Math.pow(evaluateY, 2));
+            evaluateX -= (e.data.image.width / 2);
+            evaluateY -= (e.data.image.height / 2);
+            r = Math.sqrt(Math.pow(evaluateX, 2) + Math.pow(evaluateY, 2));
 
             /* -90 to +270 */
             // if (x == 0 && y == 0) {
@@ -70,7 +70,7 @@ onmessage = function(e) {
 
             evaluateX = r;
             evaluateY = a;
-       
+    
         }
 
         
@@ -82,6 +82,7 @@ onmessage = function(e) {
         array[i + 1] = g;
         array[i + 2] = b;
         array[i + 3] = 255;
+       
        
         if(rgbRange.min.r === false || r < (rgbRange.min.r)) {
             rgbRange.min.r = r;
