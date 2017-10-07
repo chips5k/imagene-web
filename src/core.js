@@ -269,7 +269,7 @@ function crossOverIndividuals(individualA, individualB) {
     return individual;
 }
 
-export const createGeneration = function(generation = null) {
+export const evolveIndividuals = function(individuals) {
 
     if(generation !== null) {
 
@@ -366,6 +366,23 @@ export const createGeneration = function(generation = null) {
         samples: []
     };
 
+}
+
+export const createSample = (generationId, individuals, width, height, redThreshold, greenThreshold, blueThreshold) => {
+    let indexes = [];
+    
+    indexes.push(rouletteWheelSelection(individuals)); 
+    indexes.push(rouletteWheelSelection(individuals, indexes)); 
+    indexes.push(rouletteWheelSelection(individuals, indexes)); 
+    
+    return {
+        generationId,
+        redIndividual: individuals[indexes[0]].id,
+        greenIndividual: individuals[indexes[1]].id,
+        blueIndividual: individuals[indexes[2]].id,
+        width, height,
+        redThreshold, greenThreshold, blueThreshold
+    }
 }
 
 

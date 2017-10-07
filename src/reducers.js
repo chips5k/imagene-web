@@ -107,3 +107,39 @@ export default {
         }
     }
 };
+
+export const individuals = (state = [], action) => {
+
+    switch(action.type) {
+        case 'GENERATE_POPULATION':
+
+            let id = 0;
+            return [...action.individuals.map(n => { return { ...n, id: ++id }; })];
+
+        break;
+
+        case 'EVOLVE_POPULATION':
+
+           
+            let lastId = state.reduce((n, a) => { return Math.max(n, a.id) }, 0);
+            
+            return [...state, ...action.individuals.map(n => { return {...n, id: ++lastId }})];
+
+        default:
+            return state;
+    }
+}
+
+export const generations = (state = [], action) => {
+    switch(action.type) {
+        case 'GENERATE_POPULATION':
+            console.log('wtf');
+            return [{id: action.generationId }];
+
+        case 'EVOLVE_POPULATION':
+            return [...state, {id: action.generationId }];
+
+        default:   
+            return state;
+    }
+}
