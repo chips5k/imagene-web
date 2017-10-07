@@ -1,44 +1,37 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { Route } from 'react-router';
 import { ConnectedRouter } from 'react-router-redux';
-import store, { history } from '../store/store';
-import Layout from './components/Layout';
-import Home from './components/Home';
-import Sidebar from './components/Sidebar';
-import Generation from './components/Generation';
-
-import { createGeneration } from './actions.js';
-import { push } from 'react-router-redux';
+import Layout from '../components/Layout';
+import Home from '../components/Home';
+import Sidebar from '../components/Sidebar';
+import Generation from '../components/Generation';
+import * as actionCreators from '../actions/actions';
 import { connect } from 'react-redux';
 
-// newGeneration(e) {
-//     e.preventDefault();
-//     this.props.createGeneration();
-//     this.props.push('/generations/1');
-// }
 
-export default function App(props) {
+function App(props) {
     return (
-        <Provider store={store}>
-            { /* ConnectedRouter will use the store from Provider automatically */ }
-            <ConnectedRouter history={history}>
+        <ConnectedRouter history={props.history}>
             <Layout>
-                <Sidebar />
+                <Sidebar location={props.location} generations={props.generations} />
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/generation/:id?" component={Generation}/>
-            </Layout>
-            </ConnectedRouter>
-        </Provider>
+            </Layout> 
+        </ConnectedRouter>
     );
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = (state, ownProps) => {
+    
+    return {
+        ...state,
+        location: ownProps.history.location.pathname
+    }
+    
+};
 
 const mapDispatchToProps = {
-    createGeneration,
-    push
-}
+    ...actionCreators
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

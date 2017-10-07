@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GenerationSampleWorker from './GenerationSample.worker.js';
+import GenerationSampleWorker from '../lib/GenerationSample.worker.js';
 
 export default class GenerationSample extends Component {
 

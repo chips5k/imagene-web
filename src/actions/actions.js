@@ -1,4 +1,4 @@
-import * as core from './core.js';
+import * as core from '../lib/core.js';
 
 /**
  * Generate Population

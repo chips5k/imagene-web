@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function(props) {
+export default function Sidebar(props) {
+    
     let navLinkClass = (n) => {
-        return "sidebar__nav-link" + (this.props.router.location.pathname === n ? ' sidebar__nav-link--active' : '');
+        return "sidebar__nav-link" + (props.location === n ? ' sidebar__nav-link--active' : '');
     }
     
     return (
@@ -43,7 +44,7 @@ export default function(props) {
                         <i className="sidebar__nav-icon fa fa-question " /> Help
                     </Link>
 
-                    {this.props.generations.length === 0 && 
+                    {props.generations.length === 0 && 
                     <Link to="/generations" className={navLinkClass()} onClick={props.newGeneration} >
                         <i className="sidebar__nav-icon fa fa-upload" /> New Generation
                     </Link>}
@@ -57,14 +58,14 @@ export default function(props) {
                     </Link>
                 </div>
 
-                {this.props.generations.length > 0 &&
+                {props.generations.length > 0 &&
                     <div className="sidebar__nav-group">
                         <div className="sidebar__nav-group-header">
                             <div className="sidebar__nav-group-title">Generations</div>
                             <i className="sidebar__nav-group-toggle fa fa-angle-down"></i>
                         </div>
 
-                        {this.props.generations.map(n => 
+                        {props.generations.map(n => 
                             <Link to={"/generations/" + n.id}  className={navLinkClass("/generations/" + n.id)} key={n.id}>
                                 <i className="sidebar__nav-icon fa fa-sitemap" /> Generation {n.id}
                             </Link>

@@ -269,103 +269,82 @@ function crossOverIndividuals(individualA, individualB) {
     return individual;
 }
 
-export const evolveIndividuals = function(individuals) {
+export const evolveIndividuals = function(sourceIndividuals) {
 
-    if(generation !== null) {
+    let individuals = [];
+    let previousIndividuals = cloneDeep(sourceIndividuals);
 
-        let individuals = [];
-        let previousIndividuals = cloneDeep(generation.individuals);
-
-        let methods = [
-            {
-                type: 'elitism',
-                fitness: 0.5
-            }, 
-            {
-                type: 'crossover',
-                fitness: 0.5
-            }, 
-            {
-                type: 'mutation',
-                fitness: 0.5
-            }
-        ];
-
-
-        let selectedIndividualIndex;
-        let iteration = 0;
-        let limit = generation.size;
-        while(individuals.length < limit && iteration < limit) {
-
-            iteration++;
-
-            //Determine what to do this iteration
-            let method = methods[rouletteWheelSelection(methods)];
-
-            switch(method.type) {   
-                case 'elitism':
-                    selectedIndividualIndex = rouletteWheelSelection(previousIndividuals);
-                    if(selectedIndividualIndex !== -1) {
-                        individuals.push(previousIndividuals.splice(selectedIndividualIndex, 1)[0]);
-                    } else {
-                        limit--;
-                    }
-                    
-                    break;
-
-                //Crossover
-                case 'crossover':
-                    //Select two parents for crossover
-                    let parentAIndex = rouletteWheelSelection(previousIndividuals);
-                    let parentBIndex = rouletteWheelSelection(previousIndividuals, [parentAIndex]);
-
-                    if(parentAIndex !== -1 && parentBIndex !== -1) {
-                        //determine number of children to produce 
-                        let numChildren = getRandomInt(1, 3);
-
-                        //Generate children via crossover
-                        for(let i = 0; i < numChildren; i++) {
-                            individuals.push(crossOverIndividuals(previousIndividuals[parentAIndex], previousIndividuals[parentBIndex]));
-                        }
-                    }
-
-                    break;
-
-                //Mutation
-                case 'mutation':
-                    selectedIndividualIndex = rouletteWheelSelection(previousIndividuals);
-                    if(selectedIndividualIndex !== -1) {
-                        individuals.push(mutateIndividual(previousIndividuals.splice(selectedIndividualIndex, 1)[0]));
-                    } else {
-                        limit--;
-                    }
-
-                    break;
-                default:
-                    break;
-            }
+    let methods = [
+        {
+            type: 'elitism',
+            fitness: 0.5
+        }, 
+        {
+            type: 'crossover',
+            fitness: 0.5
+        }, 
+        {
+            type: 'mutation',
+            fitness: 0.5
         }
+    ];
 
-        //Evolve a new generation
-        return {
-            id: ++ids.generations,
-            individuals: individuals,
-            minDepth: null,
-            maxDepth: null,
-            size: individuals.length,
-            samples: []
-        };
+
+    let selectedIndividualIndex;
+    let iteration = 0;
+    let limit = individuals.length;
+    while(individuals.length < limit && iteration < limit) {
+
+        iteration++;
+
+        //Determine what to do this iteration
+        let method = methods[rouletteWheelSelection(methods)];
+
+        switch(method.type) {   
+            case 'elitism':
+                selectedIndividualIndex = rouletteWheelSelection(previousIndividuals);
+                if(selectedIndividualIndex !== -1) {
+                    individuals.push(previousIndividuals.splice(selectedIndividualIndex, 1)[0]);
+                } else {
+                    limit--;
+                }
+                
+                break;
+
+            //Crossover
+            case 'crossover':
+                //Select two parents for crossover
+                let parentAIndex = rouletteWheelSelection(previousIndividuals);
+                let parentBIndex = rouletteWheelSelection(previousIndividuals, [parentAIndex]);
+
+                if(parentAIndex !== -1 && parentBIndex !== -1) {
+                    //determine number of children to produce 
+                    let numChildren = getRandomInt(1, 3);
+
+                    //Generate children via crossover
+                    for(let i = 0; i < numChildren; i++) {
+                        individuals.push(crossOverIndividuals(previousIndividuals[parentAIndex], previousIndividuals[parentBIndex]));
+                    }
+                }
+
+                break;
+
+            //Mutation
+            case 'mutation':
+                selectedIndividualIndex = rouletteWheelSelection(previousIndividuals);
+                if(selectedIndividualIndex !== -1) {
+                    individuals.push(mutateIndividual(previousIndividuals.splice(selectedIndividualIndex, 1)[0]));
+                } else {
+                    limit--;
+                }
+
+                break;
+            default:
+                break;
+        }
     }
 
-    return {
-        id: ++ids.generations,
-        individuals: [],
-        minDepth: 0,
-        maxDepth: 12,
-        size: 24,
-        samples: []
-    };
-
+    return individuals;
 }
 
 export const createSample = (generationId, individuals, width, height, redThreshold, greenThreshold, blueThreshold) => {

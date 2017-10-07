@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Sample1 from './img/samples/1.png';
+import Sample1 from '../assets/img/samples/1.png';
 
 export default class Home extends Component {
 

@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import FormControl from './components/FormControl';
-import StepperInput from './components/StepperInput';
-import ColourRangeInput from './components/ColourRangeInput';
-import { generateIndividuals, createGeneration, generateSamples, increaseSampleFitness, decreaseSampleFitness } from './actions';
+import FormControl from './FormControl';
+import StepperInput from './StepperInput';
+import ColourRangeInput from './ColourRangeInput';
 import GenerationSample from './GenerationSample';
 
-class Generation extends Component {
+export default class Generation extends Component {
 
     constructor(props) {
         super(props);
@@ -30,7 +27,7 @@ class Generation extends Component {
     }
 
     onClickGenerateIndividuals() {
-        this.props.generateIndividuals(this.props.generation, this.refs.size.value, this.refs.minDepth.value, this.refs.maxDepth.value);
+        this.props.generatePopulation(this.props.generation, this.refs.size.value, this.refs.minDepth.value, this.refs.maxDepth.value);
     }
 
     onClickGenerateSamples() {
@@ -341,22 +338,3 @@ class Generation extends Component {
         return this.renderNotFound();
     }
 }
-
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        ...state,
-        generation: state.generations.find(n => n.id === parseInt(ownProps.match.params.id, 10))
-    };
-};
-
-const mapDispatchToProps = {
-    generateSamples,
-    generateIndividuals,
-    createGeneration,
-    push,
-    increaseSampleFitness,
-    decreaseSampleFitness
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Generation);
