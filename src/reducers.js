@@ -133,13 +133,27 @@ export const individuals = (state = [], action) => {
 export const generations = (state = [], action) => {
     switch(action.type) {
         case 'GENERATE_POPULATION':
-            console.log('wtf');
-            return [{id: action.generationId }];
+            return [{id: action.generationId, individuals: action.individuals.map(n => n.id )}];
 
         case 'EVOLVE_POPULATION':
-            return [...state, {id: action.generationId }];
+            return [...state, { id: action.generationId, individuals: action.individuals.map(n => n.id) }];
 
         default:   
+            return state;
+    }
+}
+
+export const config = (state = { numberOfIndividuals: 0, minExpressionDepth: 0, maxExpressionDepth: 12}, action) => {
+    switch(action.type) {
+        case 'GENERATE_POPULATION':
+        
+            return {
+                numberOfIndividuals: action.individuals.length,
+                minExpressionDepth: action.minExpressionDepth,
+                maxExpressionDepth: action.maxExpressionDepth
+            };
+
+        default:
             return state;
     }
 }

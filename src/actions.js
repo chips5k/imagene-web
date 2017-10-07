@@ -8,9 +8,12 @@ import * as core from './core.js';
  */
 export const generatePopulation = (numIndividuals, minExpressionDepth, maxExpressionDepth) => {
 
+    let lastId = 0;
+
     return {
         type: 'GENERATE_POPULATION',
-        individuals: core.generateIndividuals(numIndividuals, minExpressionDepth, maxExpressionDepth),
+        generationId: 1,
+        individuals: core.generateIndividuals(numIndividuals, minExpressionDepth, maxExpressionDepth).map(n => { return {...n, generationId: 1, id: ++lastId }; }),
         minExpressionDepth,
         maxExpressionDepth
     };
@@ -21,109 +24,42 @@ export const generatePopulation = (numIndividuals, minExpressionDepth, maxExpres
  * @param {integer} generationId the generation id of the received individuals 
  * @param {array} individuals the individuals to evolve 
  */
-export const evolvePopulation = (generationId, individuals) => {
+export const evolvePopulation = (sourceGenerationId, individuals, lastIndividualId) => {
+
+    let generationId = ++sourceGenerationId;
+
     return {
         type: 'EVOLVE_POPULATION',
-        individuals: core.evolveIndividuals(individuals)
+        generationId,
+        individuals: core.evolveIndividuals(individuals).map(n => { return {...n, generationId, id: ++lastIndividualId }; })
     };
 };
 
-export const generateSamples = (generationId, individuals, numSamples, width, height, redThreshold, greenThreshold, blueThreshold) => {
+/**
+ * Generate Samples from supplied data
+ * @param {id} generationId Id of the generation the sample will belong to
+ * @param {array} individuals array of individual objects from which to generate samples
+ * @param {integer} numSamples number of sample objects to create
+ * @param {int} width desired sample data width (image width)
+ * @param {int} height desired sample data height (image height)
+ * @param {[0, 255]} redThreshold array containing min/max red colour values
+ * @param {[0, 255]} greenThreshold array containing min/max green colour values
+ * @param {[0, 255]} blueThreshold array containing min/max blue colour values
+ * @param {integer} lastSampleId (last sample id in the store)
+ */
+export const generateSamples = (generationId, individuals, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
     
     let samples = [];
     for(let i = 0; i < numSamples; i++) {
-        samples.push(core.createSample(generationId, individuals, width, height, redThreshold, greenThreshold, blueThreshold))
+        samples.push({...core.createSample(generationId, individuals, width, height, redThreshold, greenThreshold, blueThreshold), generationId, id: ++lastSampleId});
     }
 
     return {
         type: 'GENERATE_SAMPLES',
+        generationId,
         samples
     }
 };
 
 
-// export const generateIndividuals = (generation, size, minDepth, maxDepth) => ({
-//     type: 'GENERATE_INDIVIDUALS',
-//     generation,
-//     size,
-//     minDepth,
-//     maxDepth
-// });
 
-
-
-
-export const increaseSampleFitness = (generation, sample) => ({
-    type: 'INCREASE_SAMPLE_FITNESS',
-    generation, sample
-})
-
-export const decreaseSampleFitness = (generation, sample) => ({
-    type: 'DECREASE_SAMPLE_FITNESS',
-    generation, sample
-})
-
-/** New Action Creators */
-
-/*
-export const updateOperandFitness = () => {
-    // - all of the above update the fitness values of operands, and operators
-}
-export const updateDoubleOperatorFitness = () => {
-    // - all of the above update the fitness values of operands, and operators
-}   
-export const updateSingleOperatorFitness = () => {
-    // - all of the above update the fitness values of operands, and operators
-}
-
-export const createInitialGeneration = () => {
-    // - creates a new generation object with id 1
-    // - removes all generations, individuals and samples from the store
-    // - adds the new generation to the store
-}
-
-export const createInitialGenerationPopulation = () => {
-    // - creates a set of individuals from specified config
-    // - assigns individual ids to the initial generation
-    // - updates the store with the new individuals
-    // - updates the store with the updated generation
-    // - updates initialGenerationConfig in the store
-}
-
-export const createSamples = () => {
-    // - creates a set of samples for selected generation, based on config panel
-    // - assigns the sample ids to the selected generation
-    // - updates the store with the updated generation
-    // - adds the samples to the store
-}
-
-export const updateSampleFitness = () => {
-    // - updates fitness value of a sample
-    // - distributes fitness value to underlying r,g,b individuals
-    // - updates individuals in store
-    // - updates sample in store
- }
-
-export const evolveNewGeneration = () => {
-    // - creates a new generation object
-    // - generates new individuals from previous generation
-    // - updates store with new individuals
-    // - assigns individuals to new generation
-    // - updates store with new generation
-}
-
-export const updateSample = () => {
-    // - updates store with current data for sample
-}
-
-export const updateSamples = () => {
-    // - updates a set of samples
-}*/
-
-
-/** Helper Functions */
-/*
-export const getLatestGenerationId = () => {
-    //derived value
-}
-*/
