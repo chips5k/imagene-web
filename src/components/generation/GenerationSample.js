@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GenerationSampleWorker from '../lib/GenerationSample.worker.js';
+import GenerationSampleWorker from '../../lib/GenerationSample.worker.js';
 
 export default class GenerationSample extends Component {
 
@@ -21,9 +21,6 @@ export default class GenerationSample extends Component {
         
         worker.postMessage({
             sample: this.props.sample,
-            redIndividual: this.props.redIndividual,
-            greenIndividual: this.props.greenIndividual,
-            blueIndividual: this.props.blueIndividual,
             coordinateType: this.props.coordinateType,
             image: image,
         });
@@ -92,11 +89,11 @@ export default class GenerationSample extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(!this.props.active && nextProps.active) {
-            if(this.state.processing !== false) {
-                this.generate();
-            }
-        }
+        // if(!this.props.active && nextProps.active) {
+        //     if(this.state.processing !== false) {
+        //         this.generate();
+        //     }
+        // }
     }
 
     toggleDetails() {
@@ -107,19 +104,19 @@ export default class GenerationSample extends Component {
 
 
     componentDidMount() {
-        if(this.props.active) {
+        //if(this.props.active) {
             this.generate();
-        }
+        //}
     }
 
-    increaseFitness(e) {
+    onClickIncreaseFitness(e) {
         e.preventDefault();
-        this.props.increaseFitness();
+        this.props.onClickIncreaseFitness();
     }
 
-    decreaseFitness(e) {
+    onClickDecreaseFitness(e) {
         e.preventDefault();
-        this.props.decreaseFitness();
+        this.props.onClickDecreaseFitness();
     }
 
     render() {
@@ -135,17 +132,17 @@ export default class GenerationSample extends Component {
                 </div>
                 <div className={this.state.showDetails ? 'generation-sample__details generation-sample__details--open' : 'generation-sample__details'}>
                     <ul>
-                        <li><b>Red: </b><br/><b>Fitness:</b> {this.props.redIndividual.fitness}, <b>Expression:</b> {this.props.redIndividual.expression.join(" ")}</li>
-                        <li><b>Green: </b><br/><b>Fitness:</b> {this.props.greenIndividual.fitness}, <b>Expression:</b> {this.props.greenIndividual.expression.join(" ")}</li>
-                        <li><b>Blue: </b><br/><b>Fitness:</b> {this.props.blueIndividual.fitness}, <b>Expression:</b> {this.props.blueIndividual.expression.join(" ")}</li>
+                        <li><b>Red: </b><br/><b>Fitness:</b> {this.props.sample.redIndividual.fitness}, <b>Expression:</b> {this.props.sample.redIndividual.expression.join(" ")}</li>
+                        <li><b>Green: </b><br/><b>Fitness:</b> {this.props.sample.greenIndividual.fitness}, <b>Expression:</b> {this.props.sample.greenIndividual.expression.join(" ")}</li>
+                        <li><b>Blue: </b><br/><b>Fitness:</b> {this.props.sample.blueIndividual.fitness}, <b>Expression:</b> {this.props.sample.blueIndividual.expression.join(" ")}</li>
                     </ul>
                 </div>
                 <div className="generation-sample__actions">
                     <div className="generation-sample__fitness">{this.props.sample.fitness}</div>
                     <div className="generation-sample__controls">
                         <button onClick={this.toggleDetails.bind(this)}><i className={this.state.showDetail ? 'fa fa-eye' : 'fa fa-eye-slash'}></i></button>
-                        <button onClick={this.increaseFitness.bind(this)}><i className="fa fa-plus"></i></button>
-                        <button onClick={this.decreaseFitness.bind(this)}><i className="fa fa-minus"></i></button>
+                        <button onClick={this.onClickIncreaseFitness.bind(this)}><i className="fa fa-plus"></i></button>
+                        <button onClick={this.onClickDecreaseFitness.bind(this)}><i className="fa fa-minus"></i></button>
                     </div>
                 </div>
             </div>

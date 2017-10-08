@@ -2,11 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Sidebar(props) {
-    
+
     let navLinkClass = (n) => {
         return "sidebar__nav-link" + (props.location === n ? ' sidebar__nav-link--active' : '');
     }
     
+    let onClickNewGeneration = (e) => {
+        e.preventDefault();
+        props.onClickNewGeneration(24, 6, 12);
+    };
+
     return (
         <div className="sidebar">
             <div className="sidebar__header">
@@ -45,9 +50,9 @@ export default function Sidebar(props) {
                     </Link>
 
                     {props.generations.length === 0 && 
-                    <Link to="/generations" className={navLinkClass()} onClick={props.newGeneration} >
+                    <a href="" onClick={onClickNewGeneration} className={navLinkClass()} >
                         <i className="sidebar__nav-icon fa fa-upload" /> New Generation
-                    </Link>}
+                    </a>}
 
                     <Link to="/import" className={navLinkClass("/import")}>
                         <i className="sidebar__nav-icon fa fa-download" /> Import
@@ -66,7 +71,7 @@ export default function Sidebar(props) {
                         </div>
 
                         {props.generations.map(n => 
-                            <Link to={"/generations/" + n.id}  className={navLinkClass("/generations/" + n.id)} key={n.id}>
+                            <Link to={"/generation/" + n.id}  className={navLinkClass("/generation/" + n.id)} key={n.id}>
                                 <i className="sidebar__nav-icon fa fa-sitemap" /> Generation {n.id}
                             </Link>
                         )}

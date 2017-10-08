@@ -190,26 +190,6 @@ export const generateIndividuals = (size, minDepth, maxDepth) => {
     return individuals;
 }
 
-export const generateSamples = function(generation, config) {
-    let samples = [];
-
-    for(var i = 0; i < config.numSamples; i++) {
-        samples.push({
-            id: ++ids.samples,
-            redIndividualId: generation.individuals[getRandomInt(0, generation.individuals.length - 1)].id,
-            greenIndividualId: generation.individuals[getRandomInt(0, generation.individuals.length - 1)].id,
-            blueIndividualId:generation.individuals[getRandomInt(0, generation.individuals.length - 1)].id,
-            redThresholdMax: config.redThresholdMax, redThresholdMin: config.redThresholdMin,
-            greenThresholdMax: config.greenThresholdMax, greenThresholdMin: config.greenThresholdMin,
-            blueThresholdMax: config.blueThresholdMax, blueThresholdMin: config.blueThresholdMin,
-            width: config.sampleWidth, height: config.sampleHeight,
-            fitness: 0,
-            cache: {}
-        });
-    }
-
-    return samples;
-}
 
 function mutateIndividual(individual) {
 
@@ -347,27 +327,11 @@ export const evolveIndividuals = function(sourceIndividuals) {
     return individuals;
 }
 
-export const createSample = (generationId, individuals, width, height, redThreshold, greenThreshold, blueThreshold) => {
-    let indexes = [];
-    
-    indexes.push(rouletteWheelSelection(individuals)); 
-    indexes.push(rouletteWheelSelection(individuals, indexes)); 
-    indexes.push(rouletteWheelSelection(individuals, indexes)); 
-    
-    return {
-        generationId,
-        redIndividual: individuals[indexes[0]].id,
-        greenIndividual: individuals[indexes[1]].id,
-        blueIndividual: individuals[indexes[2]].id,
-        width, height,
-        redThreshold, greenThreshold, blueThreshold
-    }
-}
-
 
 //Adapted from http://www.obitko.com/tutorials/genetic-algorithms/selection.php AND https://en.wikipedia.org/wiki/Fitness_proportionate_selection
 export const rouletteWheelSelection = function(individuals, excludedIndexes) {
         
+    
     //[Sum] Calculate sum of all chromosome fitnesses in population - sum S.
     let s = individuals.map(n => n.fitness).reduce((a, n) => a + n);
   
@@ -375,7 +339,7 @@ export const rouletteWheelSelection = function(individuals, excludedIndexes) {
     //[Select] Generate random number from interval (0,S) - r.
     let r = getRandomArbitrary(0, s);
     
-
+    
     let c = 0;
     // [Loop] Go through the population and sum fitnesses from 0 - sum s.
     for(var i = 0; i < individuals.length; i++) {
@@ -393,5 +357,5 @@ export const rouletteWheelSelection = function(individuals, excludedIndexes) {
         }
     }
     
-    return -1;
+    return individuals.length - 1;
 }

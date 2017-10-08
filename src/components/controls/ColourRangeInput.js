@@ -32,6 +32,9 @@ export default class ColourRangeInput extends Component {
        
     }
 
+    get value() {
+        return [this.min, this.max];
+    }
     get min() {
         return this.state.handles.min.value;
     }

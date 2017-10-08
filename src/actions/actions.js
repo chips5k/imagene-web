@@ -1,35 +1,49 @@
 import * as core from '../lib/core.js';
+import { push } from 'react-router-redux';
+
 
 /**
- * Generate Population
+ * Create Initial Generation
+ */
+export const createInitialGeneration = () => {
+    return (dispatch) => {
+        dispatch({
+            type: 'CREATE_INITIAL_GENERATION',
+            generationId: 1
+        });
+
+        dispatch(push('generation/1'));
+    }
+}
+
+/**
+ * Generate Individuals
  * @param {integer} numIndividuals the number of individuals to generate 
  * @param {*} minExpressionDepth the minimum nesting level of individual expressions
  * @param {*} maxExpressionDepth the maximum nesting level of individual expressions
  */
-export const generatePopulation = (numIndividuals, minExpressionDepth, maxExpressionDepth) => {
-
-    let lastId = 0;
-
+export const generateIndividuals = (numIndividuals, minExpressionDepth, maxExpressionDepth) => {
+    let id = 1;
     return {
-        type: 'GENERATE_POPULATION',
+        type: 'GENERATE_INDIVIDUALS',
         generationId: 1,
-        individuals: core.generateIndividuals(numIndividuals, minExpressionDepth, maxExpressionDepth).map(n => { return {...n, generationId: 1, id: ++lastId }; }),
+        individuals: core.generateIndividuals(numIndividuals, minExpressionDepth, maxExpressionDepth).map(n => { return {...n, generationId: 1, id: id++ }; }),
         minExpressionDepth,
         maxExpressionDepth
     };
 }
 
 /**
- * Evolve Population
+ * Evolve Individuals
  * @param {integer} generationId the generation id of the received individuals 
  * @param {array} individuals the individuals to evolve 
  */
-export const evolvePopulation = (sourceGenerationId, individuals, lastIndividualId) => {
+export const evolveIndividuals = (sourceGenerationId, individuals, lastIndividualId) => {
 
     let generationId = ++sourceGenerationId;
 
     return {
-        type: 'EVOLVE_POPULATION',
+        type: 'EVOLVE_INDIVIDUALS',
         generationId,
         individuals: core.evolveIndividuals(individuals).map(n => { return {...n, generationId, id: ++lastIndividualId }; })
     };
@@ -49,9 +63,25 @@ export const evolvePopulation = (sourceGenerationId, individuals, lastIndividual
  */
 export const generateSamples = (generationId, individuals, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
     
-    let samples = [];
+     let samples = [];
     for(let i = 0; i < numSamples; i++) {
-        samples.push({...core.createSample(generationId, individuals, width, height, redThreshold, greenThreshold, blueThreshold), generationId, id: ++lastSampleId});
+
+        let indexes = [];
+        
+        indexes.push(core.rouletteWheelSelection(individuals)); 
+        indexes.push(core.rouletteWheelSelection(individuals, indexes)); 
+        indexes.push(core.rouletteWheelSelection(individuals, indexes)); 
+
+        samples.push({
+            generationId,
+            id: ++lastSampleId,
+            redIndividualId: individuals[indexes[0]].id,
+            greenIndividualId: individuals[indexes[1]].id,
+            blueIndividualId: individuals[indexes[2]].id,
+            width, height,
+            redThreshold, greenThreshold, blueThreshold,
+            fitness: 0      
+        });
     }
 
     return {

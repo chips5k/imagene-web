@@ -11,13 +11,22 @@ export const history = createHistory();
 const middleware = routerMiddleware(history);
 
 const initialState = {
-    generations: [],
-    individuals: [],
-    samples: [],
+    generations: {
+        byId: {},
+        allIds: []   
+    },
+    individuals: {
+        byId: {},
+        allIds: []
+    },
+    samples: {
+        byId: {},
+        allIds: []
+    },
     config: {
         numberOfIndividuals: 0,
         minExpressionDepth: 0,
-        maxExpressionDepth: 12
+        maxExpressionDepth: 0
     }
 };
 
