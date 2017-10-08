@@ -1,8 +1,9 @@
 import { solveRpnExpression } from './core.js';
 
-
 onmessage = function(e) {
-
+    
+    let dataArray = new Uint8ClampedArray(e.data.width * e.data.height * 4);
+    
     let rgbRange = {
         min: { r: false, g: false, b: false, all: false},
         max: { r: false, g: false, b: false, all: false}
@@ -10,17 +11,17 @@ onmessage = function(e) {
     
     let array = [];
 
-    for(let i = 0; i < e.data.image.data.length; i += 4) {
+    for(let i = 0; i < dataArray.length; i += 4) {
        
-        let x = i / 4 % e.data.image.width;
-        let y = Math.floor(i / 4 / e.data.image.height);
+        let x = i / 4 % e.data.width;
+        let y = Math.floor(i / 4 / e.data.height);
         let evaluateX = x + 1;
         let evaluateY = y + 1;
 
         if(e.data.coordinateType === 'polar') { 
             let r, a;
-            evaluateX -= (e.data.image.width / 2);
-            evaluateY -= (e.data.image.height / 2);
+            evaluateX -= (e.data.width / 2);
+            evaluateY -= (e.data.height / 2);
             r = Math.sqrt(Math.pow(evaluateX, 2) + Math.pow(evaluateY, 2));
 
             /* -90 to +270 */
@@ -74,10 +75,9 @@ onmessage = function(e) {
         }
 
         
-        let r = solveRpnExpression(e.data.sample.redIndividual.expression.slice(0), evaluateX, evaluateY);
-        let g = solveRpnExpression(e.data.sample.greenIndividual.expression.slice(0), evaluateX, evaluateY);
-        let b = solveRpnExpression(e.data.sample.blueIndividual.expression.slice(0), evaluateX, evaluateY);
-
+        let r = solveRpnExpression(e.data.redIndividual.expression.slice(0), evaluateX, evaluateY);
+        let g = solveRpnExpression(e.data.greenIndividual.expression.slice(0), evaluateX, evaluateY);
+        let b = solveRpnExpression(e.data.blueIndividual.expression.slice(0), evaluateX, evaluateY);
         array[i] = r;
         array[i + 1] = g;
         array[i + 2] = b;
@@ -117,25 +117,24 @@ onmessage = function(e) {
     }
     
     let thresholdRanges = {
-        r: e.data.sample.redThreshold[1] - e.data.sample.redThreshold[0],
-        g: e.data.sample.greenThreshold[1] - e.data.sample.greenThreshold[0],
-        b: e.data.sample.blueThreshold[1] - e.data.sample.blueThreshold[0]
+        r: e.data.redThreshold[1] - e.data.redThreshold[0],
+        g: e.data.greenThreshold[1] - e.data.greenThreshold[0],
+        b: e.data.blueThreshold[1] - e.data.blueThreshold[0]
     }
-
-    for(let i = 0; i < e.data.image.data.length; i+=4) {
+    
+    for(let i = 0; i < dataArray.length; i+=4) {
         
         let r = array[i];
         let g = array[i + 1];
         let b = array[i + 2];
         let a = array[i + 3];
         
-        e.data.image.data[i] = ((r - rgbRange.min.r) * thresholdRanges.r / diffs.r) + e.data.sample.redThreshold[0];
-        e.data.image.data[i + 1] = ((g - rgbRange.min.g) * thresholdRanges.g / diffs.g) + e.data.sample.greenThreshold[0];
-        e.data.image.data[i + 2] = ((b - rgbRange.min.b) * thresholdRanges.b / diffs.b) + e.data.sample.blueThreshold[0];
-        e.data.image.data[i + 3] = a;
+        dataArray[i] = ((r - rgbRange.min.r) * thresholdRanges.r / diffs.r) + e.data.redThreshold[0];
+        dataArray[i + 1] = ((g - rgbRange.min.g) * thresholdRanges.g / diffs.g) + e.data.greenThreshold[0];
+        dataArray[i + 2] = ((b - rgbRange.min.b) * thresholdRanges.b / diffs.b) + e.data.blueThreshold[0];
+        dataArray[i + 3] = a;
+    }
 
-    }   
-
-    postMessage(e.data.image);
+    postMessage(dataArray);
 
 }

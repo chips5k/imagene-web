@@ -1,99 +1,82 @@
 import React, { Component } from 'react';
-import GenerationSampleWorker from '../../lib/GenerationSample.worker.js';
 
 export default class GenerationSample extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            processing: true,
             showDetails: false
         };
     }
 
-    generate() {
-        let ctx = this.refs.canvas.getContext('2d');
-        
-        
-    
-        const worker = new GenerationSampleWorker();
-        let image = ctx.getImageData(0, 0, this.refs.canvas.width, this.refs.canvas.height);
-        
-        worker.postMessage({
-            sample: this.props.sample,
-            coordinateType: this.props.coordinateType,
-            image: image,
-        });
-
-        worker.onmessage = e => {
-
-            ctx.putImageData(e.data, 0, 0);
+    renderImage() {
+        let key = this.props.coordinateType;
+        if(this.props.sample.cache[key]) {
+            let ctx = this.refs.canvas.getContext('2d');
+            let image = ctx.getImageData(0, 0, this.refs.canvas.width, this.refs.canvas.height);
+            image.data.set(this.props.sample.cache[key]);
+            ctx.putImageData(image, 0, 0);
 
             if(this.props.symmetric) {
                 let degrees180 = 180 * (Math.PI/180); 
                 
                 //Setup temp canvas to hold rotated copy of a cropped top left canvas
                 let tempCanvas = document.createElement('canvas');
-                tempCanvas.width = e.data.width / 2;
-                tempCanvas.height = e.data.height / 2;
+                tempCanvas.width = image.width / 2;
+                tempCanvas.height = image.height / 2;
                 let tempCtx = tempCanvas.getContext('2d');
-                tempCtx.putImageData(ctx.getImageData(0, 0, e.data.width / 2, e.data.height / 2), 0, 0);
+                tempCtx.putImageData(ctx.getImageData(0, 0, image.width / 2, image.height / 2), 0, 0);
 
-                ctx.clearRect(0, 0, e.data.width, e.data.height);
+                ctx.clearRect(0, 0, image.width, image.height);
                 //Rotate the quadrant image 180 degrees
                 tempCtx.save();
-                tempCtx.translate(e.data.width / 2, e.data.height / 2);
+                tempCtx.translate(image.width / 2, image.height / 2);
                 tempCtx.rotate(degrees180);
                 tempCtx.drawImage(tempCanvas, 0, 0);
                 tempCtx.restore(); 
                 
-            
                 //Draw left hand side
                 ctx.drawImage(tempCanvas, 0, 0);
 
                 tempCtx.save();
                 // //Next mirror the quadrant onto itself by using negative scaling
                 tempCtx.scale(-1, 1);
-                tempCtx.translate(-e.data.width / 2, 0);
+                tempCtx.translate(-image.width / 2, 0);
                 tempCtx.drawImage(tempCanvas, 0, 0);
                 tempCtx.restore();
 
 
                 //Draw the right hand side
-                ctx.drawImage(tempCanvas, e.data.width / 2, 0);
+                ctx.drawImage(tempCanvas, image.width / 2, 0);
 
                 tempCtx.save();
                 tempCtx.scale(1, -1);
-                tempCtx.translate(0, -e.data.height / 2);
+                tempCtx.translate(0, -image.height / 2);
                 tempCtx.drawImage(tempCanvas, 0, 0);
                 tempCtx.restore();
 
                 //Draw the right hand side
-                ctx.drawImage(tempCanvas, e.data.width / 2, e.data.height / 2);
+                ctx.drawImage(tempCanvas, image.width / 2, image.height / 2);
 
 
                 tempCtx.save();
                 tempCtx.scale(-1, 1);
-                tempCtx.translate(-e.data.width / 2, 0);
+                tempCtx.translate(-image.width / 2, 0);
                 tempCtx.drawImage(tempCanvas, 0, 0);
                 tempCtx.restore();
 
                 //Draw the right hand side
-                ctx.drawImage(tempCanvas, 0, e.data.height / 2);    
+                ctx.drawImage(tempCanvas, 0, image.height / 2);    
             }
-            
-            this.setState({
-                processing: false
-            });
-        };
+        } else {
+            if(this.props.sample.processing === false) {
+                this.props.generateSampleData(this.props.sample, this.props.coordinateType);
+            }
+        }
     }
 
-    componentWillReceiveProps(nextProps) {
-        // if(!this.props.active && nextProps.active) {
-        //     if(this.state.processing !== false) {
-        //         this.generate();
-        //     }
-        // }
+    componentDidUpdate(prevProps, prevState) {
+        this.renderImage();
     }
 
     toggleDetails() {
@@ -104,10 +87,10 @@ export default class GenerationSample extends Component {
 
 
     componentDidMount() {
-        //if(this.props.active) {
-            this.generate();
-        //}
+        this.renderImage();
     }
+
+  
 
     onClickIncreaseFitness(e) {
         e.preventDefault();
@@ -127,7 +110,7 @@ export default class GenerationSample extends Component {
                     <button className="generation-sample__edit-button" onClick={this.props.editSample}><i className="fa fa-cog"></i></button>
                 </div>
                 <div className="generation-sample__canvas-wrap">
-                    {this.state.processing && <div className="generation-sample__canvas-loader" />}
+                    {this.props.sample.processing && <div className="generation-sample__canvas-loader" />}
                     <canvas ref="canvas" className="generation-sample__canvas" width={this.props.sample.width} height={this.props.sample.height} />
                 </div>
                 <div className={this.state.showDetails ? 'generation-sample__details generation-sample__details--open' : 'generation-sample__details'}>

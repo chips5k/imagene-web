@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as actionCreators from '../actions/actions';
 import { connect } from 'react-redux';
 import { Generation } from '../components/generation';
-import { cloneDeep } from 'lodash';
 import { push } from 'react-router-redux';
 
 class GenerationContainer extends Component {
@@ -19,17 +18,18 @@ class GenerationContainer extends Component {
         }
     }
 
-    onClickGenerateSamples(generation, config) {
+    onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold, coordinateType) {
         this.props.onClickGenerateSamples(
-            generation.id,
-            generation.individuals,
-            config.numSamples,
-            config.sampleWidth,
-            config.sampleHeight,
-            [config.redThresholdMin, config.redThresholdMax],
-            [config.greenThresholdMin, config.greenThresholdMax],
-            [config.blueThresholdMin, config.blueThresholdMax],
-            this.props.lastSampleId);
+            this.props.generation,
+            coordinateType,
+            numSamples,
+            width,
+            height,
+            redThreshold,
+            greenThreshold,
+            blueThreshold,
+            this.props.lastSampleId
+        );
     }
 
     render() {
@@ -40,6 +40,7 @@ class GenerationContainer extends Component {
                     config={this.props.config} 
                     onClickGenerateIndividuals={this.props.onClickGenerateIndividuals} 
                     onClickGenerateSamples={this.onClickGenerateSamples.bind(this)}
+                    generateSampleData={this.props.generateSampleData}
                 />
             );
         } 
@@ -50,28 +51,33 @@ class GenerationContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    let generation = cloneDeep(state.generations.byId[ownProps.match.params.id]);
+    
+    
+    let generation = state.generations.byId[ownProps.match.params.id];
 
     if(generation) {
+        generation = {...generation};
         //Hydrate the individuals
         generation.individuals = generation.individuals.map(n => {
-            return cloneDeep(state.individuals.byId[n]);
+            return state.individuals.byId[n];
         });
 
         //Hydrate the samples
         generation.samples = generation.samples.map(n => {
-            let sample = cloneDeep(state.samples.byId[n]);
-            //Hydrate the samples individual data
-            sample.redIndividual = cloneDeep(state.individuals.byId[sample.redIndividualId]);
-            sample.greenIndividual = cloneDeep(state.individuals.byId[sample.greenIndividualId]);
-            sample.blueIndividual = cloneDeep(state.individuals.byId[sample.blueIndividualId]);
-            return sample;
+            let sample = state.samples.byId[n];
+            return {
+                ...sample,
+                 //Hydrate the samples individual data
+                redIndividual: state.individuals.byId[sample.redIndividualId],
+                greenIndividual: state.individuals.byId[sample.greenIndividualId],
+                blueIndividual: state.individuals.byId[sample.blueIndividualId]
+            }
         });
     }
     
     return {
         generation: generation,
-        lastSampleId: Math.max(state.samples.allIds),
+        lastSampleId: state.samples.allIds.reduce((n, a) => Math.max(n, a), 0),
         config: state.config
     }
 };
@@ -79,6 +85,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
     onClickGenerateIndividuals: actionCreators.generateIndividuals,
     onClickGenerateSamples: actionCreators.generateSamples,
+    generateSampleData: actionCreators.generateSampleData,
     evolveIndividuals: actionCreators.evolveIndividuals,
     push: push
 };

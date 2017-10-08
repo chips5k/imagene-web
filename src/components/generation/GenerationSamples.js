@@ -13,6 +13,7 @@ const GenerationSamples = (props) => {
                         symmetric={props.symmetric}
                         onClickIncreaseFitness={props.onClickIncreaseFitness.bind(s)}
                         onClickDecreaseFitness={props.onClickDecreaseFitness.bind(s)}
+                        generateSampleData={props.generateSampleData}
                     />
                 )}
             </div>

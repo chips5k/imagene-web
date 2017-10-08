@@ -1,6 +1,41 @@
 import * as core from '../lib/core.js';
 import { push } from 'react-router-redux';
+import GenerationSampleWorker from '../lib/GenerationSampleWorker.worker.js';
 
+
+const workerQueue = [];
+const activeWorkers = [];
+const inactiveWorkers = [];
+
+const MAX_WORKERS = 6;
+const addToWorkerQueue = (payload, callback) => {
+    workerQueue.push({payload, callback});
+    processWorkerQueue();
+}
+
+const processWorkerQueue = () => {
+    if(workerQueue.length > 0) {
+        if(inactiveWorkers.length > 0) {
+            let worker = inactiveWorkers.pop();
+            activeWorkers.push(worker);
+            let item = workerQueue.shift();
+            if(item) {
+                worker.postMessage(item.payload);
+                worker.onmessage = (e) => {
+                    item.callback(e);
+                    activeWorkers.splice(activeWorkers.indexOf(worker), 1);
+                    inactiveWorkers.push(worker);
+                    processWorkerQueue();
+                }
+            }
+        } else {
+            if(activeWorkers.length < MAX_WORKERS) {
+                inactiveWorkers.push(new GenerationSampleWorker());
+                processWorkerQueue();
+            }
+        }
+    }
+}
 
 /**
  * Create Initial Generation
@@ -61,35 +96,92 @@ export const evolveIndividuals = (sourceGenerationId, individuals, lastIndividua
  * @param {[0, 255]} blueThreshold array containing min/max blue colour values
  * @param {integer} lastSampleId (last sample id in the store)
  */
-export const generateSamples = (generationId, individuals, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
+export const generateSamples = (generation, coordinateType, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
     
-     let samples = [];
-    for(let i = 0; i < numSamples; i++) {
-
-        let indexes = [];
+    
+    return (dispatch) => {
+        let usedIndexes = [];
         
-        indexes.push(core.rouletteWheelSelection(individuals)); 
-        indexes.push(core.rouletteWheelSelection(individuals, indexes)); 
-        indexes.push(core.rouletteWheelSelection(individuals, indexes)); 
+        for(let i = 0; i < numSamples; i++) {
+            if(usedIndexes.length === generation.individuals.length) {
+                usedIndexes = [];
+            }
+            
+            
+            usedIndexes.push(core.rouletteWheelSelection(generation.individuals, usedIndexes)); 
+            usedIndexes.push(core.rouletteWheelSelection(generation.individuals, usedIndexes)); 
+            usedIndexes.push(core.rouletteWheelSelection(generation.individuals, usedIndexes)); 
 
-        samples.push({
-            generationId,
-            id: ++lastSampleId,
-            redIndividualId: individuals[indexes[0]].id,
-            greenIndividualId: individuals[indexes[1]].id,
-            blueIndividualId: individuals[indexes[2]].id,
-            width, height,
-            redThreshold, greenThreshold, blueThreshold,
-            fitness: 0      
-        });
-    }
+            let sample = {
+                generationId: generation.id,
+                id: ++lastSampleId,
+                redIndividualId: generation.individuals[usedIndexes[usedIndexes.length - 3]].id,
+                greenIndividualId: generation.individuals[usedIndexes[usedIndexes.length - 2]].id,
+                blueIndividualId: generation.individuals[usedIndexes[usedIndexes.length - 1]].id,
+                width, height,
+                redThreshold, greenThreshold, blueThreshold,
+                fitness: 0,
+                cache: {
+                    polar: null,
+                    cartesian: null,
+                },
+                processing: true
+            };
 
-    return {
-        type: 'GENERATE_SAMPLES',
-        generationId,
-        samples
+            dispatch({
+                type: 'GENERATE_SAMPLE',
+                generationId: generation.id,
+                sample
+            });
+
+            addToWorkerQueue({
+                redIndividual: generation.individuals[usedIndexes[usedIndexes.length - 3]],
+                greenIndividual: generation.individuals[usedIndexes[usedIndexes.length - 2]],
+                blueIndividual: generation.individuals[usedIndexes[usedIndexes.length - 1]],
+                width, height,
+                redThreshold, greenThreshold, blueThreshold,
+                coordinateType
+            },
+            (e) => {
+                dispatch({
+                    type: 'SAMPLE_DATA_GENERATED',
+                    sampleId: sample.id,
+                    data: e.data,
+                    coordinateType
+                });
+            });
+        }
+        
     }
 };
 
+export const generateSampleData = (sample, coordinateType) => {
+    return (dispatch) => {
 
+        dispatch({
+            type: 'SAMPLE_DATA_GENERATING',
+            sampleId: sample.id, 
+            coordinateType
+        });
 
+        addToWorkerQueue({
+            redIndividual: sample.redIndividual,
+            greenIndividual: sample.greenIndividual,
+            blueIndividual: sample.blueIndividual,
+            width: sample.width, height: sample.height,
+            redThreshold: sample.redThreshold, 
+            greenThreshold: sample.greenThreshold, 
+            blueThreshold: sample.blueThreshold,
+            coordinateType
+        },
+
+        (e) => {
+            dispatch({
+                type: 'SAMPLE_DATA_GENERATED',
+                sampleId: sample.id,
+                data: e.data,
+                coordinateType
+            });
+        });
+    }
+}

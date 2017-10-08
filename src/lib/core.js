@@ -182,7 +182,7 @@ export const generateIndividuals = (size, minDepth, maxDepth) => {
         individuals.push({
             id: i + 1,
             expression: buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), minDepth, maxDepth, 0),
-            fitness: 0
+            fitness: size
         });
     }
 
@@ -332,17 +332,16 @@ export const evolveIndividuals = function(sourceIndividuals) {
 export const rouletteWheelSelection = function(individuals, excludedIndexes) {
         
     
-    //[Sum] Calculate sum of all chromosome fitnesses in population - sum S.
+    //[Sum] Calculate sum of all fitnesses in population - sum S.
     let s = individuals.map(n => n.fitness).reduce((a, n) => a + n);
   
-    
     //[Select] Generate random number from interval (0,S) - r.
     let r = getRandomArbitrary(0, s);
     
     
     let c = 0;
     // [Loop] Go through the population and sum fitnesses from 0 - sum s.
-    for(var i = 0; i < individuals.length; i++) {
+    for(let i = 0; i < individuals.length; i++) {
         c += individuals[i].fitness;
         
         //When the sum s is greater then r, stop and return the chromosome where you are.
@@ -357,5 +356,14 @@ export const rouletteWheelSelection = function(individuals, excludedIndexes) {
         }
     }
     
+    if(excludedIndexes) {
+        for(let i = individuals.length - 1; i > 0; i--) {
+            if(excludedIndexes.indexOf(i) === -1) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     return individuals.length - 1;
 }

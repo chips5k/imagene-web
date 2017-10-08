@@ -16,8 +16,8 @@ export default class GenerationSamplesPanel extends Component {
     onClickGenerateSamples() {
         this.props.onClickGenerateSamples(
             this.refs.numSamples.value,
-            this.refs.sampleWidth.value,
-            this.refs.sampleHeight.value,
+            this.refs.width.value,
+            this.refs.height.value,
             this.refs.redThreshold.value,
             this.refs.greenThreshold.value,
             this.refs.blueThreshold.value
@@ -37,11 +37,11 @@ export default class GenerationSamplesPanel extends Component {
                         </FormControl>
 
                         <FormControl label="Width">
-                            <input className="text-input" type="text" ref="sampleWidth" defaultValue={320}/>
+                            <input className="text-input" type="text" ref="width" defaultValue={320}/>
                         </FormControl>
 
                         <FormControl label="Height" last>
-                            <input  className="text-input" type="text" ref="sampleHeight" defaultValue={320} />
+                            <input  className="text-input" type="text" ref="height" defaultValue={320} />
                         </FormControl>
                     </div>
 

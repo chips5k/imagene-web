@@ -79,7 +79,7 @@ export const individuals = (state = { byId: {}, allIds: []}, action) => {
             };
             
             for(var i = 0; i < action.individuals.length; i++) {
-                let individual = cloneDeep(action.individuals[i]);
+                let individual = {...action.individuals[i] };
                 newState.byId[individual.id] = individual;
                 newState.allIds.push(individual.id);
             }
@@ -87,7 +87,6 @@ export const individuals = (state = { byId: {}, allIds: []}, action) => {
             return newState;
 
         case 'EVOLVE_INDIVIDUALS':
-
             let lastId = state.reduce((n, a) => { return Math.max(n, a.id) }, 0);
             return [...state, ...action.individuals.map(n => { return {...n, id: ++lastId }})];
 
@@ -98,20 +97,20 @@ export const individuals = (state = { byId: {}, allIds: []}, action) => {
 
 export const generations = (state = { byId: {}, allIds: []}, action) => {
     switch(action.type) {
-        case 'CREATE_INITIAL_GENERATION':
-        return {
-            byId: {
-                [action.generationId]: {
-                    id: action.generationId,
-                    individuals: [],
-                    samples: []
-                }
-            },
-            allIds: [action.generationId]
-        };
+        case 'CREATE_INITIAL_GENERATION': {
+            return {
+                byId: {
+                    [action.generationId]: {
+                        id: action.generationId,
+                        individuals: [],
+                        samples: []
+                    }
+                },
+                allIds: [action.generationId]
+            }
+        }
 
-        case 'GENERATE_INDIVIDUALS':
-            
+        case 'GENERATE_INDIVIDUALS': {
             return {
                 byId: {
                     [action.generationId]: {
@@ -122,40 +121,93 @@ export const generations = (state = { byId: {}, allIds: []}, action) => {
                 },
                 allIds: [action.generationId]
             }
+        }
 
-        case 'EVOLVE_INDIVIDUALS':
+        case 'EVOLVE_INDIVIDUALS': {
             return [...state, { id: action.generationId, individuals: action.individuals.map(n => n.id) }];
+        }
         
-        case 'GENERATE_SAMPLES':
-            let newState = cloneDeep(state);
-            newState.byId[action.generationId].samples = [...newState.byId[action.generationId].samples, ...action.samples.map(n => n.id)];
-            return newState;
+        case 'GENERATE_SAMPLE': {
+            let generation = state.byId[action.generationId];
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.generationId]: {
+                        ...generation, 
+                        samples: [...generation.samples, action.sample.id]
+                    }
+                }
+            }
             
-        default:   
+        }
+
+        default: { 
             return state;
+        }
     }
 }
 
 export const samples = (state = { byId: {}, allIds: []}, action) => {
+    
+
     switch(action.type) {
-        case 'CREATE_INITIAL_GENERATION':
-        return {
-            byId:{},
-            allIds: []
-        };
-
-        case 'GENERATE_SAMPLES':
-
-            let newState = cloneDeep(state);
-            for(var i = 0; i < action.samples.length; i++) {
-                newState.byId[action.samples[i].id] = cloneDeep(action.samples[i]);
-                newState.allIds.push(action.samples[i].id);
+        case 'CREATE_INITIAL_GENERATION': {
+            return {
+                byId:{},
+                allIds: []
             }
+        }
 
-            return newState;
+        case 'GENERATE_SAMPLE': {
+            return {
+                byId: {
+                    ...state.byId,
+                    [action.sample.id]: cloneDeep(action.sample)
+                },
+                allIds: [...state.allIds, action.sample.id]
+            }
+        }
+        
+        case 'SAMPLE_DATA_GENERATING': {
+            let sample = state.byId[action.sampleId];
+            
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [sample.id]: {
+                        ...sample,
+                        processing: true
+                    }
+                }
+            };
+        }
 
-        default:
+        case 'SAMPLE_DATA_GENERATED': {
+            
+            let sample = state.byId[action.sampleId];
+            let key = action.coordinateType;
+            
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [sample.id]: {
+                        ...sample,
+                        cache: {
+                            ...sample.cache,
+                            [key]: Uint8ClampedArray.from(action.data)
+                        },
+                        processing: false
+                    }
+                }
+            }
+        }
+
+        default: {
             return state;
+        }
     }
 }
 

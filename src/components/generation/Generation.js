@@ -35,20 +35,12 @@ export default class Generation extends Component {
         });
     }
 
-    onClickGenerateSamples(numSamples, sampleWidth, sampleHeight, redThreshold, greenThreshold, blueThreshold) {
-        this.props.onClickGenerateSamples(
-            this.props.generation,
-            {
-                numSamples, sampleWidth, sampleHeight,
-                redThreshold, greenThreshold, blueThreshold
-            }
-        );
-
+    onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
+        this.props.onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold, this.state.coordinateType);
         this.setState({
             activeView: 'samples'
         });
     }
-
 
     onClickIncreaseFitness(sample) {
         this.props.increaseSampleFitness(this.props.generation, sample);
@@ -62,15 +54,21 @@ export default class Generation extends Component {
         e.preventDefault();
         this.props.evolveNewGeneration(this.props.generation);
     }
-    
-    changeView() {
 
+    changeActiveView(view) {
+        this.setState({
+            activeView: view
+        });
+    }   
+    changeCoordinateType(coordinateType) {
+        this.setState({
+            coordinateType: coordinateType
+        });
     }
-    changeCoordinateType() {
-
-    }
-    changeSymmetry() {
-        
+    changeSymmetry(symmetry) {
+        this.setState({
+            symmetric: symmetry === 'symmetric'
+        });
     }
 
     render() {
@@ -83,12 +81,12 @@ export default class Generation extends Component {
                 <ContentBody>
                     <ContentPrimary>
                         <GenerationViewControls 
-                            activeView={this.state.activeView} 
-                            symmetric={this.state.symmetric} 
+                            view={this.state.activeView} 
+                            symmetry={this.state.symmetric ? 'symmetric' : 'asymmetric'} 
                             coordinateType={this.state.coordinateType} 
-                            onClickView={this.changeActiveView} 
-                            onClickCoordinateType={this.changeCoordinateType} 
-                            onClickSymmetry={this.changeSymmetry} 
+                            onClickView={this.changeActiveView.bind(this)} 
+                            onClickCoordinateType={this.changeCoordinateType.bind(this) }
+                            onClickSymmetry={this.changeSymmetry.bind(this)} 
                         />
 
                         {this.state.activeView === 'individuals' && 
@@ -101,6 +99,7 @@ export default class Generation extends Component {
                                  symmetric={this.state.symmetric}
                                  onClickIncreaseFitness={this.onClickIncreaseFitness}
                                  onClickDecreaseFitness={this.onClickDecreaseFitness}
+                                 generateSampleData={this.props.generateSampleData}
                             />
                         }
                     </ContentPrimary>
@@ -124,7 +123,6 @@ export default class Generation extends Component {
                     </ContentSidebar>
                 </ContentBody>
             </Content>
-            
         );
     }
 }
