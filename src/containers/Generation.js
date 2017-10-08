@@ -41,6 +41,8 @@ class GenerationContainer extends Component {
                     onClickGenerateIndividuals={this.props.onClickGenerateIndividuals} 
                     onClickGenerateSamples={this.onClickGenerateSamples.bind(this)}
                     generateSampleData={this.props.generateSampleData}
+                    onClickIncreaseSampleFitness={this.props.onClickIncreaseSampleFitness}
+                    onClickDecreaseSampleFitness={this.props.onClickDecreaseSampleFitness}
                 />
             );
         } 
@@ -51,8 +53,6 @@ class GenerationContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    
-    
     let generation = state.generations.byId[ownProps.match.params.id];
 
     if(generation) {
@@ -87,6 +87,8 @@ const mapDispatchToProps = {
     onClickGenerateSamples: actionCreators.generateSamples,
     generateSampleData: actionCreators.generateSampleData,
     evolveIndividuals: actionCreators.evolveIndividuals,
+    onClickIncreaseSampleFitness: actionCreators.increaseSampleFitness,
+    onClickDecreaseSampleFitness: actionCreators.decreaseSampleFitness,
     push: push
 };
 

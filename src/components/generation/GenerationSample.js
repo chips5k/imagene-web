@@ -94,12 +94,12 @@ export default class GenerationSample extends Component {
 
     onClickIncreaseFitness(e) {
         e.preventDefault();
-        this.props.onClickIncreaseFitness();
+        this.props.onClickIncreaseSampleFitness(this.props.sample);
     }
 
     onClickDecreaseFitness(e) {
         e.preventDefault();
-        this.props.onClickDecreaseFitness();
+        this.props.onClickDecreaseSampleFitness(this.props.sample);
     }
 
     render() {

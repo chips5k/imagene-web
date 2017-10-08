@@ -42,14 +42,6 @@ export default class Generation extends Component {
         });
     }
 
-    onClickIncreaseFitness(sample) {
-        this.props.increaseSampleFitness(this.props.generation, sample);
-    }
-
-    onClickDecreaseFitness(sample) {
-        this.props.decreaseSampleFitness(this.props.generation, sample);
-    }
-
     onClickEvolveNewGeneration(e) {
         e.preventDefault();
         this.props.evolveNewGeneration(this.props.generation);
@@ -97,8 +89,8 @@ export default class Generation extends Component {
                                  samples={this.props.generation.samples} 
                                  coordinateType={this.state.coordinateType} 
                                  symmetric={this.state.symmetric}
-                                 onClickIncreaseFitness={this.onClickIncreaseFitness}
-                                 onClickDecreaseFitness={this.onClickDecreaseFitness}
+                                 onClickIncreaseSampleFitness={this.props.onClickIncreaseSampleFitness}
+                                 onClickDecreaseSampleFitness={this.props.onClickDecreaseSampleFitness}
                                  generateSampleData={this.props.generateSampleData}
                             />
                         }

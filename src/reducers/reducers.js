@@ -86,10 +86,61 @@ export const individuals = (state = { byId: {}, allIds: []}, action) => {
 
             return newState;
 
-        case 'EVOLVE_INDIVIDUALS':
+        case 'EVOLVE_INDIVIDUALS': {
             let lastId = state.reduce((n, a) => { return Math.max(n, a.id) }, 0);
             return [...state, ...action.individuals.map(n => { return {...n, id: ++lastId }})];
+        }
 
+        case 'INCREASE_SAMPLE_FITNESS': {
+            let redIndividual = state.byId[action.redIndividualId];
+            let greenIndividual = state.byId[action.greenIndividualId];
+            let blueIndividual = state.byId[action.blueIndividualId];
+
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [redIndividual.id]: {
+                        ...redIndividual,
+                        fitness: redIndividual.fitness + 1,
+                    },
+                    [greenIndividual.id]: {
+                        ...greenIndividual,
+                        fitness: greenIndividual.fitness + 1,
+                    },
+                    [blueIndividual.id]: {
+                        ...blueIndividual,
+                        fitness: blueIndividual.fitness + 1,
+                    }
+                }
+            }
+        }
+    
+        case 'DECREASE_SAMPLE_FITNESS': {
+            let redIndividual = state.byId[action.redIndividualId];
+            let greenIndividual = state.byId[action.greenIndividualId];
+            let blueIndividual = state.byId[action.blueIndividualId];
+
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [redIndividual.id]: {
+                        ...redIndividual,
+                        fitness: redIndividual.fitness - 1 < 0 ? 0 : redIndividual.fitness - 1,
+                    },
+                    [greenIndividual.id]: {
+                        ...greenIndividual,
+                        fitness: greenIndividual.fitness - 1 < 0 ? 0 : greenIndividual.fitness - 1,
+                    },
+                    [blueIndividual.id]: {
+                        ...blueIndividual,
+                        fitness: blueIndividual.fitness - 1 < 0 ? 0 : blueIndividual.fitness - 1,
+                    }
+                }
+            }
+        }
+        
         default:
             return state;
     }
@@ -139,7 +190,6 @@ export const generations = (state = { byId: {}, allIds: []}, action) => {
                     }
                 }
             }
-            
         }
 
         default: { 
@@ -150,7 +200,6 @@ export const generations = (state = { byId: {}, allIds: []}, action) => {
 
 export const samples = (state = { byId: {}, allIds: []}, action) => {
     
-
     switch(action.type) {
         case 'CREATE_INITIAL_GENERATION': {
             return {
@@ -200,6 +249,34 @@ export const samples = (state = { byId: {}, allIds: []}, action) => {
                             [key]: Uint8ClampedArray.from(action.data)
                         },
                         processing: false
+                    }
+                }
+            }
+        }
+
+        case 'INCREASE_SAMPLE_FITNESS': {
+            let sample = state.byId[action.sampleId];
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [sample.id]: {
+                        ...sample,
+                        fitness: sample.fitness + 1,
+                    }
+                }
+            }
+        }
+
+        case 'DECREASE_SAMPLE_FITNESS': {
+            let sample = state.byId[action.sampleId];
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [sample.id]: {
+                        ...sample,
+                        fitness: sample.fitness - 1 < 0 ? 0 : sample.fitness - 1,
                     }
                 }
             }

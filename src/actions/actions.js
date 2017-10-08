@@ -185,3 +185,24 @@ export const generateSampleData = (sample, coordinateType) => {
         });
     }
 }
+
+export const increaseSampleFitness = (sample) => {
+    return {
+        type: 'INCREASE_SAMPLE_FITNESS',
+        sampleId: sample.id,
+        redIndividualId: sample.redIndividualId,
+        greenIndividualId: sample.greenIndividualId,
+        blueIndividualId: sample.blueIndividualId
+    }
+}
+
+export const decreaseSampleFitness = (sample) => {
+    return {
+        type: 'DECREASE_SAMPLE_FITNESS',
+        sampleId: sample.id,
+        redIndividualId: sample.redIndividualId,
+        greenIndividualId: sample.greenIndividualId,
+        blueIndividualId: sample.blueIndividualId
+    }
+}
+

@@ -11,8 +11,8 @@ const GenerationSamples = (props) => {
                         sample={s} 
                         coordinateType={props.coordinateType}
                         symmetric={props.symmetric}
-                        onClickIncreaseFitness={props.onClickIncreaseFitness.bind(s)}
-                        onClickDecreaseFitness={props.onClickDecreaseFitness.bind(s)}
+                        onClickIncreaseSampleFitness={props.onClickIncreaseSampleFitness}
+                        onClickDecreaseSampleFitness={props.onClickDecreaseSampleFitness}
                         generateSampleData={props.generateSampleData}
                     />
                 )}
