@@ -65,13 +65,14 @@ import { cloneDeep } from 'lodash';
 export const individuals = (state = { byId: {}, allIds: []}, action) => {
 
     switch(action.type) {
-        case 'CREATE_INITIAL_GENERATION':
+        case 'CREATE_INITIAL_GENERATION': {
             return {
                 byId: {},
                 allIds: []
             };
+        }
         
-        case 'GENERATE_INDIVIDUALS':
+        case 'GENERATE_INDIVIDUALS': {
 
             let newState = {
                 byId: {},
@@ -85,10 +86,24 @@ export const individuals = (state = { byId: {}, allIds: []}, action) => {
             }
 
             return newState;
+        }
 
         case 'EVOLVE_INDIVIDUALS': {
-            let lastId = state.reduce((n, a) => { return Math.max(n, a.id) }, 0);
-            return [...state, ...action.individuals.map(n => { return {...n, id: ++lastId }})];
+
+            let newState = {
+                byId: {
+                    ...state.byId
+                }, 
+                allIds: [...state.allIds]
+            };
+            
+            for(let i = 0; i < action.individuals.length; i++) {
+                let individual = {...action.individuals[i] };
+                newState.byId[individual.id] = individual;
+                newState.allIds.push(individual.id);
+            }
+
+            return newState;
         }
 
         case 'INCREASE_SAMPLE_FITNESS': {
@@ -175,7 +190,18 @@ export const generations = (state = { byId: {}, allIds: []}, action) => {
         }
 
         case 'EVOLVE_INDIVIDUALS': {
-            return [...state, { id: action.generationId, individuals: action.individuals.map(n => n.id) }];
+            return {
+                byId: {
+                    ...state.byId,
+                    [action.generationId]: {
+                        id: action.generationId,
+                        individuals: action.individuals.map(n => n.id),
+                        samples: []
+                    }
+                },
+                allIds: [...state.allIds]
+            }
+            
         }
         
         case 'GENERATE_SAMPLE': {

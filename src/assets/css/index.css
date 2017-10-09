@@ -528,6 +528,10 @@ animation: spinner .6s linear infinite;
     font-size:0.8rem;
 }
 
+.generation-nav {
+    clear:both;
+    margin-bottom:2rem;
+}
 
 .generation-nav__toggle {
     opacity: 0.5;

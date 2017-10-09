@@ -272,7 +272,7 @@ export const evolveIndividuals = function(sourceIndividuals) {
 
     let selectedIndividualIndex;
     let iteration = 0;
-    let limit = individuals.length;
+    let limit = previousIndividuals.length;
     while(individuals.length < limit && iteration < limit) {
 
         iteration++;
@@ -323,6 +323,7 @@ export const evolveIndividuals = function(sourceIndividuals) {
                 break;
         }
     }
+    
 
     return individuals;
 }

@@ -38,7 +38,8 @@ class GenerationContainer extends Component {
                 <Generation 
                     generation={this.props.generation} 
                     config={this.props.config} 
-                    onClickGenerateIndividuals={this.props.onClickGenerateIndividuals} 
+                    onClickGenerateIndividuals={this.props.onClickGenerateIndividuals}
+                    onClickEvolveNewGeneration={this.props.evolveIndividuals} 
                     onClickGenerateSamples={this.onClickGenerateSamples.bind(this)}
                     generateSampleData={this.props.generateSampleData}
                     onClickIncreaseSampleFitness={this.props.onClickIncreaseSampleFitness}

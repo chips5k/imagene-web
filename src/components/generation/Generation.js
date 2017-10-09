@@ -44,7 +44,7 @@ export default class Generation extends Component {
 
     onClickEvolveNewGeneration(e) {
         e.preventDefault();
-        this.props.evolveNewGeneration(this.props.generation);
+        this.props.onClickEvolveNewGeneration(this.props.generation);
     }
 
     changeActiveView(view) {
@@ -110,7 +110,7 @@ export default class Generation extends Component {
                         }
                         
                         {this.props.generation.samples.length > 0 && 
-                           <GenerationEvolutionPanel onClickEvolveGeneration={this.onClickEvolveNewGeneration.bind(this)} />
+                           <GenerationEvolutionPanel onClickEvolveNewGeneration={this.onClickEvolveNewGeneration.bind(this)} />
                         }
                     </ContentSidebar>
                 </ContentBody>

@@ -73,14 +73,15 @@ export const generateIndividuals = (numIndividuals, minExpressionDepth, maxExpre
  * @param {integer} generationId the generation id of the received individuals 
  * @param {array} individuals the individuals to evolve 
  */
-export const evolveIndividuals = (sourceGenerationId, individuals, lastIndividualId) => {
+export const evolveIndividuals = (generation) => {
 
-    let generationId = ++sourceGenerationId;
+    let generationId = generation.id + 1;
+    let lastIndividualId = generation.individuals.reduce((a, n) => Math.max(a, n.id), 0);
 
     return {
         type: 'EVOLVE_INDIVIDUALS',
         generationId,
-        individuals: core.evolveIndividuals(individuals).map(n => { return {...n, generationId, id: ++lastIndividualId }; })
+        individuals: core.evolveIndividuals(generation.individuals).map(n => { return {...n, generationId, id: ++lastIndividualId }; })
     };
 };
 
