@@ -1,67 +1,5 @@
 import { cloneDeep } from 'lodash';
 
-//             case 'GENERATE_SAMPLES':
-                
-                
-//                 if(index !== -1) {
-
-//                     let generation = {
-//                         ...action.generation,
-//                         samples: [...generateSamples(action.generation, action.config), ...action.generation.samples]
-//                     };
-                    
-//                     return [...state.slice(0, index), generation, ...state.slice(index + 1)];
-//                 }
-
-//                 return state;
-            
-//             case 'INCREASE_SAMPLE_FITNESS':
-//             case 'DECREASE_SAMPLE_FITNESS':
-//                 if(index !== -1) {
-
-//                     let sampleIndex = action.generation.samples.findIndex(n => action.sample.id === n.id);
-//                     if(sampleIndex !== -1) {
-//                         let sample = cloneDeep(action.sample);
-//                         if(action.type === 'INCREASE_SAMPLE_FITNESS') {
-//                             sample.fitness++;
-//                         } else {
-//                             sample.fitness--;
-//                         }
-
-//                         let samples = [...action.generation.samples.slice(0, sampleIndex), sample, ...action.generation.samples.slice(sampleIndex + 1)];
-                        
-
-//                         //Find the individuals used by this sample and cascade the fitness values
-//                         let individuals = [...action.generation.individuals];
-//                         let fitness = sample.fitness / 3;
-//                         let individualIds = [sample.redIndividualId, sample.blueIndividualId, sample.greenIndividualId];
-
-//                         individuals = individuals.map(n => {
-//                             if(individualIds.indexOf(n.id) !== -1) {
-//                                 n.fitness += (fitness - n.fitness);
-//                             };
-//                             return n;
-//                         });
-                        
-
-//                         let generation = {
-//                             ...action.generation,
-//                             individuals,
-//                             samples: samples
-//                         };
-                        
-//                         return [...state.slice(0, index), generation, ...state.slice(index + 1)];
-//                     }
-//                 }
-
-//                 return state;
-
-//             default:
-//                 return state;
-//         }
-//     }
-// };
-
 export const individuals = (state = { byId: {}, allIds: []}, action) => {
 
     switch(action.type) {
@@ -79,7 +17,7 @@ export const individuals = (state = { byId: {}, allIds: []}, action) => {
                 allIds: []
             };
             
-            for(var i = 0; i < action.individuals.length; i++) {
+            for(let i = 0; i < action.individuals.length; i++) {
                 let individual = {...action.individuals[i] };
                 newState.byId[individual.id] = individual;
                 newState.allIds.push(individual.id);
@@ -91,18 +29,31 @@ export const individuals = (state = { byId: {}, allIds: []}, action) => {
         case 'EVOLVE_INDIVIDUALS': {
 
             let newState = {
-                byId: {
-                    ...state.byId
-                }, 
-                allIds: [...state.allIds]
+                byId: {},
+                allIds: []
             };
+
+            let minId = action.individuals.reduce((n, a) => Math.min(typeof n === 'object' ? n.id : n, a.id));
+            
+            for(let i = 0; i < state.allIds.length; i++) {
+                if(state.allIds[i] < minId) {
+                    newState.byId[state.allIds[i]] = {...state.byId[state.allIds[i]]};
+                    newState.allIds.push(state.allIds[i]);
+                }
+            }
             
             for(let i = 0; i < action.individuals.length; i++) {
-                let individual = {...action.individuals[i] };
-                newState.byId[individual.id] = individual;
-                newState.allIds.push(individual.id);
+                if(state.byId[action.individuals[i].id]) {
+                    if(state.byId[action.individuals[i].id].generationId !== action.individuals[i].generationId) {
+                        return state;
+                    }
+                }
+                newState.byId[action.individuals[i].id] = {
+                    ...action.individuals[i]
+                };
+                newState.allIds.push(action.individuals[i].id);
             }
-
+            
             return newState;
         }
 
@@ -190,17 +141,28 @@ export const generations = (state = { byId: {}, allIds: []}, action) => {
         }
 
         case 'EVOLVE_INDIVIDUALS': {
-            return {
-                byId: {
-                    ...state.byId,
-                    [action.generationId]: {
-                        id: action.generationId,
-                        individuals: action.individuals.map(n => n.id),
-                        samples: []
-                    }
-                },
-                allIds: [...state.allIds]
+
+            let newState = {
+                byId: {},
+                allIds: []
+            };
+
+            for(let i = 0; i < state.allIds.length; i++) {
+                if(state.allIds[i] < action.generationId) {
+                    newState.byId[state.allIds[i]] = {...state.byId[state.allIds[i]]};
+                    newState.allIds.push(state.allIds[i]);
+                }
             }
+            
+            newState.byId[action.generationId] = {
+                id: action.generationId,
+                individuals: action.individuals.map(n => n.id),
+                samples: []
+            };
+
+            newState.allIds.push(action.generationId);
+            
+            return newState;
             
         }
         
