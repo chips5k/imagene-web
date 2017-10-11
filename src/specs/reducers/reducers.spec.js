@@ -477,32 +477,90 @@ describe('reducers', () => {
 
     describe('samples', () => {
 
+        it('should intialize to a default state', () => {
+            expect(reducers.samples(undefined, {})).toEqual({
+                byId: {},
+                allIds: []  
+            });
+        });
+
         describe('CREATE_INITIAL_GENERATION', () => {
-            
+            it('should clear existing data', () => {
+                const initialState = {
+                    byId: {
+                        1: {},
+                        2: {},
+                        3: {}
+                    },
+                    allIds: [1, 2, 3]
+                };
+
+                expect(reducers.samples(initialState, {
+                    type: 'CREATE_INITIAL_GENERATION'
+                })).toEqual({
+                    byId: {},
+                    allIds: []
+                });
+            });
         });
 
         describe('GENERATE_INDIVIDUALS', () => {
-            
+            it('should clear existing data', () => {
+                const initialState = {
+                    byId: {
+                        1: {},
+                        2: {},
+                        3: {}
+                    },
+                    allIds: [1, 2, 3]
+                };
+
+                expect(reducers.samples(initialState, {
+                    type: 'GENERATE_INDIVIDUALS'
+                })).toEqual({
+                    byId: {},
+                    allIds: []
+                });
+            });
         });
         
         describe('GENERATE_SAMPLE', () => {
-            
+            it('should store the supplied data if no existing ids found', () => {
+
+            });
+
+            it('should override the existing data if matching ids found', () => {
+
+            });
+
         });
 
         describe('SAMPLE_DATA_GENERATING', () => {
-            
+            it('should update the specified sample with a pending/progress state', () => {
+
+            });
         });
 
         describe('SAMPLE_DATA_GENERATED', () => {
-            
+            it('should update the specified sample by clearing the pending/progress state, and storing the supplied data', () => {
+
+            });
+
+            it('should contain a UInt8Clamped array', () => {
+
+            });
         });
 
         describe('INCREASE_SAMPLE_FITNESS', () => {
-            
+            it('should increase the fitness value by 1 of the supplied sample', () => {
+
+            });
         });
 
         describe('DECREASE_SAMPLE_FITNESS', () => {
-            
+            it('should decrease the fitness value by 1 of the supplied sample', () => {
+                
+            });
         });
 
     });
