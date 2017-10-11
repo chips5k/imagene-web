@@ -220,6 +220,31 @@ describe('reducers', () => {
                     allIds: [1, 2]
                 });
             });
+
+            it('should not alter state, if conflicting individual ids found', () => {
+
+                let initialState = {
+                    byId: {
+                        1: {
+                            id: 1,
+                            individuals: [1, 2, 3],
+                            samples: []
+                        },
+                        2: {
+                            id: 2,
+                            individuals: [4, 5, 6]
+                        }
+                    },
+                    allIds: [1, 2]
+                }
+
+                expect(reducers.generations(initialState, {
+                    type: 'EVOLVE_INDIVIDUALS', 
+                    generationId: 3,
+                    individuals: [2, 4, 6]
+                })).toEqual(initialState);
+
+            });
         });
     });
 
@@ -398,6 +423,13 @@ describe('reducers', () => {
                 });
 
             });
+        });
+
+        describe('INCREASE_SAMPLE_FITNESS', () => {
+
+        });
+
+        describe('DECREASE_SAMPLE_FITNESS', () => {
 
         });
 
@@ -444,6 +476,34 @@ describe('reducers', () => {
     });
 
     describe('samples', () => {
+
+        describe('CREATE_INITIAL_GENERATION', () => {
+            
+        });
+
+        describe('GENERATE_INDIVIDUALS', () => {
+            
+        });
+        
+        describe('GENERATE_SAMPLE', () => {
+            
+        });
+
+        describe('SAMPLE_DATA_GENERATING', () => {
+            
+        });
+
+        describe('SAMPLE_DATA_GENERATED', () => {
+            
+        });
+
+        describe('INCREASE_SAMPLE_FITNESS', () => {
+            
+        });
+
+        describe('DECREASE_SAMPLE_FITNESS', () => {
+            
+        });
 
     });
 

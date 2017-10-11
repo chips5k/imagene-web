@@ -142,10 +142,22 @@ export const generations = (state = { byId: {}, allIds: []}, action) => {
 
         case 'EVOLVE_INDIVIDUALS': {
 
+            //First check if any of the supplied individual ids already exist in previous generations
+            for(let i = 0; i < state.allIds.length; i++) {
+                let gen = state.byId[state.allIds[i]];
+                
+                let conflicts = action.individuals.filter(n => gen.individuals.indexOf(n) !== -1);
+                if(conflicts.length > 0) {
+                    return state;
+                }
+            }
+
+
             let newState = {
                 byId: {},
                 allIds: []
             };
+            
 
             for(let i = 0; i < state.allIds.length; i++) {
                 if(state.allIds[i] < action.generationId) {
@@ -189,12 +201,14 @@ export const generations = (state = { byId: {}, allIds: []}, action) => {
 export const samples = (state = { byId: {}, allIds: []}, action) => {
     
     switch(action.type) {
-        case 'CREATE_INITIAL_GENERATION': {
+        case 'CREATE_INITIAL_GENERATION':
+        case 'GENERATE_INDIVIDUALS': {
             return {
                 byId:{},
                 allIds: []
             }
         }
+        
 
         case 'GENERATE_SAMPLE': {
             return {
