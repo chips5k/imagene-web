@@ -211,13 +211,17 @@ export const samples = (state = { byId: {}, allIds: []}, action) => {
         
 
         case 'GENERATE_SAMPLE': {
-            return {
+            let newState = {
                 byId: {
                     ...state.byId,
                     [action.sample.id]: cloneDeep(action.sample)
                 },
-                allIds: [...state.allIds, action.sample.id]
-            }
+                allIds: []
+            };
+
+            newState.allIds = Object.keys(newState.byId).map(n => parseInt(n));
+
+            return newState;
         }
         
         case 'SAMPLE_DATA_GENERATING': {
