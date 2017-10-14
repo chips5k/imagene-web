@@ -6,7 +6,7 @@ import Home from '../containers/Home';
 import Sidebar from '../containers/Sidebar';
 import Generation from '../containers/Generation';
 import { Provider } from 'react-redux';
-import store, { history } from '../store/store';
+import store, { history } from '../store';
 
 export default function App(props) {
     return (

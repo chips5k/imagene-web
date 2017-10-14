@@ -36,7 +36,7 @@ export default class Generation extends Component {
     }
 
     onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
-        this.props.onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold, this.state.coordinateType);
+        this.props.onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold);
         this.setState({
             activeView: 'samples'
         });

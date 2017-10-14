@@ -18,10 +18,9 @@ class GenerationContainer extends Component {
         }
     }
 
-    onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold, coordinateType) {
+    onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
         this.props.onClickGenerateSamples(
             this.props.generation,
-            coordinateType,
             numSamples,
             width,
             height,

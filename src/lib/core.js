@@ -179,11 +179,7 @@ export const generateIndividuals = (size, minDepth, maxDepth) => {
         throw new Error('Size of population is too large');
     }
     for(let i = 0; i < size; i ++) {
-        individuals.push({
-            id: i + 1,
-            expression: buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), minDepth, maxDepth, 0),
-            fitness: size
-        });
+        individuals.push(buildRpnExpression(Object.keys(operands), Object.keys(operators.single), Object.keys(operators.double), minDepth, maxDepth, 0));
     }
 
 
