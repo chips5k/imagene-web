@@ -28,23 +28,24 @@ export default class Generation extends Component {
         };
     }
 
-    onClickGenerateIndividuals(numberOfIndividuals, minExpressionDepth, maxExpressionDepth) {
-        this.props.onClickGenerateIndividuals(numberOfIndividuals, minExpressionDepth, maxExpressionDepth);
+    generateIndividuals(numberOfIndividuals, minExpressionDepth, maxExpressionDepth) {
+        this.props.generateIndividuals(numberOfIndividuals, minExpressionDepth, maxExpressionDepth);
         this.setState({
             activeView: 'individuals'
         });
     }
-
-    onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
-        this.props.onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold);
+    
+    generateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
+        this.props.generateSamples(this.props.generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, this.props.lastSampleId);
         this.setState({
             activeView: 'samples'
         });
     }
 
-    onClickEvolveNewGeneration(e) {
+    evolveGeneration(e) {
         e.preventDefault();
-        this.props.onClickEvolveNewGeneration(this.props.generation);
+        console.log("WHOO");
+        this.props.evolveGeneration(this.props.generation);
     }
 
     changeActiveView(view) {
@@ -89,8 +90,8 @@ export default class Generation extends Component {
                                  samples={this.props.generation.samples} 
                                  coordinateType={this.state.coordinateType} 
                                  symmetric={this.state.symmetric}
-                                 onClickIncreaseSampleFitness={this.props.onClickIncreaseSampleFitness}
-                                 onClickDecreaseSampleFitness={this.props.onClickDecreaseSampleFitness}
+                                 increaseSampleFitness={this.props.increaseSampleFitness}
+                                 decreaseSampleFitness={this.props.decreaseSampleFitness}
                                  generateSampleData={this.props.generateSampleData}
                             />
                         }
@@ -99,18 +100,18 @@ export default class Generation extends Component {
                         {this.props.generation.id === 1 && 
                             <GenerationIndividualsPanel 
                                 config={this.props.config} 
-                                onClickGenerateIndividuals={this.onClickGenerateIndividuals.bind(this)}
+                                onClickGenerateIndividuals={this.generateIndividuals.bind(this)}
                             />
                         }
 
                         {this.props.generation.individuals.length > 0 && 
                             <GenerationSamplesPanel 
-                                onClickGenerateSamples={this.onClickGenerateSamples.bind(this)}
+                                onClickGenerateSamples={this.generateSamples.bind(this)}
                             />
                         }
                         
                         {this.props.generation.samples.length > 0 && 
-                           <GenerationEvolutionPanel onClickEvolveNewGeneration={this.onClickEvolveNewGeneration.bind(this)} />
+                           <GenerationEvolutionPanel onClickEvolveGeneration={this.evolveGeneration.bind(this)} />
                         }
                     </ContentSidebar>
                 </ContentBody>

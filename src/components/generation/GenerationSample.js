@@ -90,7 +90,6 @@ export default class GenerationSample extends Component {
         this.renderImage();
     }
 
-  
 
     onClickIncreaseFitness(e) {
         e.preventDefault();

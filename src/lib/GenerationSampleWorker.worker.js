@@ -1,4 +1,18 @@
-import { solveRpnExpression } from './core.js';
+import Random from 'random-js';
+import createExpressionLibrary from './expressions';
+//Initialite our random engine
+const random = new Random(Random.engines.mt19937().autoSeed());
+
+//Setup the random functions we plan to use 
+const getRandomReal = (min, max) => {
+    return random.real(min, max, true);
+}
+const getRandomInteger = (min, max) => {
+    return random.integer(min, max);
+}
+
+const expressions = createExpressionLibrary(getRandomInteger, getRandomReal);
+const solveExpression = expressions.solveExpression.bind(null, expressions.tokenEvaluators);
 
 onmessage = function(e) {
     
@@ -74,9 +88,9 @@ onmessage = function(e) {
     
         }
 
-        let r = solveRpnExpression(e.data.sample.redIndividual.expression.slice(0), evaluateX, evaluateY);
-        let g = solveRpnExpression(e.data.sample.greenIndividual.expression.slice(0), evaluateX, evaluateY);
-        let b = solveRpnExpression(e.data.sample.blueIndividual.expression.slice(0), evaluateX, evaluateY);
+        let r = solveExpression(e.data.sample.redIndividual.expression.slice(0), {x: evaluateX, y: evaluateY});
+        let g = solveExpression(e.data.sample.greenIndividual.expression.slice(0), {x: evaluateX, y: evaluateY});
+        let b = solveExpression(e.data.sample.blueIndividual.expression.slice(0), {x: evaluateX, y: evaluateY});
         array[i] = r;
         array[i + 1] = g;
         array[i + 2] = b;

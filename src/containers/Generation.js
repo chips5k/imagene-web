@@ -1,34 +1,19 @@
 import React, { Component } from 'react';
-import * as actionCreators from '../actions/actions';
 import { connect } from 'react-redux';
 import { Generation } from '../components/generation';
-import { push } from 'react-router-redux';
 
 class GenerationContainer extends Component {
 
     componentDidMount() {
         if(!this.props.generation) {
-            this.props.push('/');
+            this.props.actions.redirect('/');
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if(!nextProps.generation) {
-            this.props.push('/');
+            this.props.actions.redirect('/');
         }
-    }
-
-    onClickGenerateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
-        this.props.onClickGenerateSamples(
-            this.props.generation,
-            numSamples,
-            width,
-            height,
-            redThreshold,
-            greenThreshold,
-            blueThreshold,
-            this.props.lastSampleId
-        );
     }
 
     render() {
@@ -37,15 +22,16 @@ class GenerationContainer extends Component {
                 <Generation 
                     generation={this.props.generation} 
                     config={this.props.config} 
-                    onClickGenerateIndividuals={this.props.onClickGenerateIndividuals}
-                    onClickEvolveNewGeneration={this.props.evolveIndividuals} 
-                    onClickGenerateSamples={this.onClickGenerateSamples.bind(this)}
-                    generateSampleData={this.props.generateSampleData}
-                    onClickIncreaseSampleFitness={this.props.onClickIncreaseSampleFitness}
-                    onClickDecreaseSampleFitness={this.props.onClickDecreaseSampleFitness}
+                    increaseSampleFitness={this.props.actions.increaseSampleFitness}
+                    decreaseSampleFitness={this.props.actions.decreaseSampleFitness}
+                    generateIndividuals={this.props.actions.generateIndividuals}
+                    generateSamples={this.props.actions.generateSamples}
+                    generateSampleData={this.props.actions.generateSampleData}
+                    evolveGeneration={this.props.actions.evolveIndividuals}
+                    lastSampleId={this.props.lastSampleId}
                 />
             );
-        } 
+        }
 
         return <div />;           
          
@@ -82,14 +68,5 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const mapDispatchToProps = {
-    onClickGenerateIndividuals: actionCreators.generateIndividuals,
-    onClickGenerateSamples: actionCreators.generateSamples,
-    generateSampleData: actionCreators.generateSampleData,
-    evolveIndividuals: actionCreators.evolveIndividuals,
-    onClickIncreaseSampleFitness: actionCreators.increaseSampleFitness,
-    onClickDecreaseSampleFitness: actionCreators.decreaseSampleFitness,
-    push: push
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(GenerationContainer);
+export default connect(mapStateToProps)(GenerationContainer);

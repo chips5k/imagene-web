@@ -17,7 +17,7 @@ const GenerationEvolutionPanel = (props) => {
                 <p>When you are happy with the fitness values of this population/sample set, click the button below to evolve a new generation.</p>
             </ContentSidebarPanelBody>
             <ContentSidebarPanelFooter>
-                <button className="main-sidebar-panel__action-button" onClick={props.onClickEvolveNewGeneration}>
+                <button className="main-sidebar-panel__action-button" onClick={props.onClickEvolveGeneration}>
                     <i className="fa fa-refresh"></i> Evolve New Generation
                 </button>
             </ContentSidebarPanelFooter>

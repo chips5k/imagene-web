@@ -7,6 +7,5 @@ function HomeContainer() {
 }
 
 const mapStateToProps = (state, ownProps) => { return {}; }
-const mapDispatchToProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);
+export default connect(mapStateToProps)(HomeContainer);

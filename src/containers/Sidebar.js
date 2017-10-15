@@ -1,10 +1,9 @@
 import React from 'react';
-import * as actionCreators from '../actions/actions';
 import { connect } from 'react-redux';
 import Sidebar from '../components/Sidebar';
 
 function SidebarContainer(props) {
-    return <Sidebar location={props.location} generations={props.generations} onClickNewGeneration={props.createInitialGeneration} />;
+    return <Sidebar location={props.location} generations={props.generations} onClickNewGeneration={props.actions.createInitialGeneration} />;
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -14,8 +13,5 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const mapDispatchToProps = {
-    createInitialGeneration: actionCreators.createInitialGeneration
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarContainer);
+export default connect(mapStateToProps)(SidebarContainer);
