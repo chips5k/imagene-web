@@ -20,7 +20,7 @@ import Random from 'random-js';
 //Our functions
 import addToWorkerQueue from './lib/generationSampleWorkerQueue';
 import reducers from './reducers';
-import createActionCreators from './actionCreators';
+import * as actionCreators from './actionCreators';
 
 //Our components
 import Layout from './components/Layout';
@@ -59,15 +59,21 @@ const getRandomInteger = (min, max) => {
     return random.integer(min, max);
 }
 
-//Call the action creator functor with the supplied dependencies
-//This is done so we can manage non-pure functions in a clean way, and limit the
-//use of third party features throughout our code
-const actions = createActionCreators(getRandomInteger, getRandomReal, addToWorkerQueue, push);
+
+// Partially apply a handful of action creators to inject required external dependences
+let partiallyAppliedActionCreators = {
+    ...actionCreators,
+    redirect: push,
+    createInitialGeneration: actionCreators.createInitialGeneration.bind(null, push),
+    generateIndividuals: actionCreators.generateIndividuals.bind(null, getRandomReal, getRandomInteger),
+    generateSamples: actionCreators.generateSamples.bind(null, getRandomReal),
+    generateSampleData: actionCreators.generateSampleData.bind(null, addToWorkerQueue),
+}
 
 
 const mapStateToProps = () => ({  });
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    actions: bindActionCreators(actions, dispatch)  
+    actions: bindActionCreators(partiallyAppliedActionCreators, dispatch)  
 });
 
 const AppContainer = connect(mapStateToProps, mapDispatchToProps)((props) => {
@@ -83,7 +89,7 @@ const AppContainer = connect(mapStateToProps, mapDispatchToProps)((props) => {
     );
 });
 
-//Setup root element - this is easier to test with jest,
+// //Setup root element - this is easier to test with jest,
 const root = document.createElement('div');
 root.id = 'root';
 document.body.appendChild(root);

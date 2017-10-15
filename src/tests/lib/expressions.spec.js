@@ -1,34 +1,28 @@
-import createExpressionLibrary,  { OPERAND, OPERATOR_DOUBLE, OPERATOR_SINGLE } from '../../lib/expressions';
+import { tokenCreators, tokenEvaluators, buildExpression, solveExpression, getToken, OPERAND, OPERATOR_DOUBLE, OPERATOR_SINGLE } from '../../lib/expressions';
 describe('expressions', () => {
-    it('should be a functor', () => {
-        expect(typeof createExpressionLibrary).toBe('function');
-    });
-
+    
     
     describe('tokenCreators', () => {
-        let expressions = createExpressionLibrary(() => { return 1.00; }, () => { return 1 }, () => {}, () => {});
-        
-        it('should exist', () => {
-            expect(expressions.hasOwnProperty('tokenCreators')).toBe(true);
-        });
 
         it('should contain operands', () => {
-            expect(expressions.tokenCreators.hasOwnProperty('operands')).toBe(true);
+            expect(tokenCreators.hasOwnProperty('operands')).toBe(true);
         });
 
         it('should contain singleOperators', () => {
-            expect(expressions.tokenCreators.hasOwnProperty('singleOperators')).toBe(true);
+            expect(tokenCreators.hasOwnProperty('singleOperators')).toBe(true);
         });
 
         it('should contain doubleOperators', () => {
-            expect(expressions.tokenCreators.hasOwnProperty('doubleOperators')).toBe(true);
+            expect(tokenCreators.hasOwnProperty('doubleOperators')).toBe(true);
         });
         
         it('should only contain functions that return simple arrays containing one or more string or number tokens', () => {
-            for(let i in expressions.tokenCreators) {
-                for(let j in expressions.tokenCreators[i]) {
-                    expect(Array.isArray(expressions.tokenCreators[i][j]())).toBe(true);
-                    expressions.tokenCreators[i][j]().forEach(n => {
+            const getRandomReal = () => { return 10};
+
+            for(let i in tokenCreators) {
+                for(let j in tokenCreators[i]) {
+                    expect(Array.isArray(tokenCreators[i][j](getRandomReal))).toBe(true);
+                    tokenCreators[i][j](getRandomReal).forEach(n => {
                         expect(['string', 'number'].indexOf(typeof n)).not.toBe(-1);
                     });
                 }
@@ -36,16 +30,15 @@ describe('expressions', () => {
         });
 
         it('should only generate evaluable tokens', () => {
-            for(let i in expressions.tokenCreators) {
-                for(let j in expressions.tokenCreators[i]) {
+            const getRandomReal = () => { return 10};
 
-                    let tokens = expressions.tokenCreators[i][j]();
+            for(let i in tokenCreators) {
+                for(let j in tokenCreators[i]) {
+
+                    let tokens = tokenCreators[i][j](getRandomReal);
                     tokens.forEach(n => {
                         if(typeof n !== 'number') {
-                            let evaluator = expressions.tokenEvaluators.singleOperators[n] || expressions.tokenEvaluators.doubleOperators[n] || expressions.tokenEvaluators.operands[n];
-                            if(!evaluator) {
-                                console.log(n);
-                            }
+                            let evaluator = tokenEvaluators.singleOperators[n] || tokenEvaluators.doubleOperators[n] || tokenEvaluators.operands[n];
                             expect(typeof evaluator).toBe('function');
                         }
                     });
@@ -55,53 +48,49 @@ describe('expressions', () => {
     });
 
     describe('tokenEvaluators', () => {
-        let expressions = createExpressionLibrary(() => { return 1.00; }, () => { return 1 }, () => {}, () => {});
-        
-        it('should exist', () => {
-            expect(expressions.hasOwnProperty('tokenEvaluators')).toBe(true);
-        });
-
         it('should contain operands', () => {
-            expect(expressions.tokenEvaluators.hasOwnProperty('operands')).toBe(true);
+            expect(tokenEvaluators.hasOwnProperty('operands')).toBe(true);
         });
 
         it('should contain singleOperators', () => {
-            expect(expressions.tokenEvaluators.hasOwnProperty('singleOperators')).toBe(true);
+            expect(tokenEvaluators.hasOwnProperty('singleOperators')).toBe(true);
         });
 
         it('should contain doubleOperators', () => {
-            expect(expressions.tokenEvaluators.hasOwnProperty('doubleOperators')).toBe(true);
+            expect(tokenEvaluators.hasOwnProperty('doubleOperators')).toBe(true);
         });
         
         it('should only contain functions that return numeric results', () => {
-            for(let i in expressions.tokenEvaluators) {
-                for(let j in expressions.tokenEvaluators[i]) {
-                    expect(typeof expressions.tokenEvaluators[i][j]).toBe('function');
-                    expect(typeof expressions.tokenEvaluators[i][j]({a: 100, b: 100, x: 1, y: 1})).toBe('number');
+            for(let i in tokenEvaluators) {
+                for(let j in tokenEvaluators[i]) {
+                    expect(typeof tokenEvaluators[i][j]).toBe('function');
+                    expect(typeof tokenEvaluators[i][j](100, 100)).toBe('number');
                 }
             }
         });
     });
 
     describe('getToken', () => {
-        let expressions = createExpressionLibrary(() => { return 1.00; }, () => { return 1 }, () => {}, () => {});
-
+        
         it('should select a token from the supplied set, using the supplied algorithm and type', () => {
-            let operandKeys = Object.keys(expressions.tokenCreators.operands);
-            let expectedToken = expressions.tokenCreators.operands['pX']();
-            let token = expressions.getToken(expressions.tokenCreators, () => 'pX', OPERAND);
+            const getRandomReal = () => { return 10};
+
+            let operandKeys = Object.keys(tokenCreators.operands);
+            let expectedToken = tokenCreators.operands['pX'](getRandomReal);
+
+            let token = getToken(tokenCreators, getRandomReal, () => 0, OPERAND);
             expect(token).toEqual(expectedToken);
 
 
-            let doubleOperatorKeys = Object.keys(expressions.tokenCreators.doubleOperators);
-            expectedToken = expressions.tokenCreators.doubleOperators['+']();
-            token = expressions.getToken(expressions.tokenCreators, () => '+', OPERATOR_DOUBLE);
+            let doubleOperatorKeys = Object.keys(tokenCreators.doubleOperators);
+            expectedToken = tokenCreators.doubleOperators['+']();
+            token = getToken(tokenCreators, getRandomReal, () => 0, OPERATOR_DOUBLE);
             expect(token).toEqual(expectedToken);
 
 
-            let singleOperatorKeys = Object.keys(expressions.tokenCreators.singleOperators);
-            expectedToken = expressions.tokenCreators.singleOperators['sin']();
-            token = expressions.getToken(expressions.tokenCreators, () => 'sin', OPERATOR_SINGLE);
+            let singleOperatorKeys = Object.keys(tokenCreators.singleOperators);
+            expectedToken = tokenCreators.singleOperators['sin']();
+            token = getToken(tokenCreators, getRandomReal, () => 3, OPERATOR_SINGLE);
             expect(token).toEqual(expectedToken);
         });
     });
@@ -109,31 +98,23 @@ describe('expressions', () => {
     describe('buildExpression', () => {
 
         it('should build valid rpn expressions from the supplied data', () => {
-            const expressions = createExpressionLibrary(() => { return 1.00; }, () => { return 1}, () => {}, () => {});
-
-            let getRandomIntegerCalls = 0;
-            const getRandomInteger = (min, max) => {
-                return min
-            };
-
-            let getTokenCalls = 0;
-
-            const getToken = (tokenCreators, select, type) => {
-                getTokenCalls++;
-                switch(type) {
-                    case OPERAND:
-                        return tokenCreators.operands['pX']();
-                    case OPERATOR_DOUBLE:
-                        return tokenCreators.doubleOperators['+']();
-                    case OPERATOR_SINGLE:
-                        return tokenCreators.singleOperators['sin']();
-                }
-            };
-
-            const expression = expressions.buildExpression(getToken.bind(null, expressions.tokenCreators, () => {}), getRandomInteger, 0, 1, 0);
+            const getRandomReal = () => { return 10};
+            
+            const partiallyAppliedGetToken = getToken.bind(null, tokenCreators, getRandomReal, () => 0);
+            const expression = buildExpression(partiallyAppliedGetToken, () => 1, 0, 1, 0);
             const expectedExpression = ['pX', 'pX', '+', 'pX', 'pX', '+', '+'];
 
             expect(expression).toEqual(expectedExpression);
         });
+    });
+
+    describe('solveExpression', () => {
+
+        it('should solve expressions', () => {
+
+            expect(solveExpression(tokenEvaluators, ['10', '12', '+'], 0, 0)).toEqual(22);
+
+        });
+
     });
 });

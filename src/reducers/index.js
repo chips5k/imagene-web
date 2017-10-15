@@ -3,11 +3,9 @@ import generations from './generations';
 import samples from './samples';
 import config from './config';
 
-const reducers = {
+export default {
     individuals, 
     generations,
     samples,
     config
 };
-
-export default reducers;

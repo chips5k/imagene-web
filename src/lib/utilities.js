@@ -36,7 +36,3 @@ export const selectRoulette = (getRandomReal, items, excludedIndexes) => {
 
     return items.length - 1;
 }
-
-export const selectRandom = (generateRandomInteger, items, excludedIndexes) => {
-    return items[generateRandomInteger(0, items.length - 1)];
-}

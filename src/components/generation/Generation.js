@@ -44,7 +44,6 @@ export default class Generation extends Component {
 
     evolveGeneration(e) {
         e.preventDefault();
-        console.log("WHOO");
         this.props.evolveGeneration(this.props.generation);
     }
 
