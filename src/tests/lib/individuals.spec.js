@@ -7,7 +7,7 @@ describe('individuals',
 
         it('should call the fitness selector with the supplied weighted data', () => {
 
-            const selector = jest.fn((methods) => methods[2]); 
+            const selector = jest.fn((methods) => 1); 
 
             let method = selectEvolutionMethod(selector, 0, 1, 2);
 
@@ -28,7 +28,7 @@ describe('individuals',
         });
 
         it('should return the method name', () => {
-           expect(selectEvolutionMethod((methods) => methods[2]), 0, 1, 2, ).toEqual('mutation');
+           expect(selectEvolutionMethod((methods) => 2), 0, 1, 2, ).toEqual('mutation');
         });
 
     });

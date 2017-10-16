@@ -1,13 +1,13 @@
 //Adapted from http://www.obitko.com/tutorials/genetic-algorithms/selection.php AND https://en.wikipedia.org/wiki/Fitness_proportionate_selection
 export const selectRoulette = (getRandomReal, items, excludedIndexes) => {
         
+   
     //[Sum] Calculate sum of all fitnesses in population - sum S.
     let s = items.map(n => n.fitness).reduce((a, n) => a + n);
-
+    
     //[Select] Generate random number from interval (0,S) - r.
     let r = getRandomReal(0, s);
-
-
+    
     let c = 0;
     // [Loop] Go through the population and sum fitnesses from 0 - sum s.
     for(let i = 0; i < items.length; i++) {

@@ -117,4 +117,18 @@ describe('expressions', () => {
         });
 
     });
+
+    describe('crossOverExpressions', () => {
+
+        it('should combine two expressions', () => {
+
+            const getRandomInteger = () => {
+                return 1;
+            }
+            
+            const result = (getRandomInteger, ['pX', 'pY', '+', 'tan'], ['pX', 'PI', 'sin', '+']);
+            
+        });
+
+    });
 });

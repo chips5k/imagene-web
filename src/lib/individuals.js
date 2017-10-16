@@ -1,7 +1,8 @@
 import {cloneDeep} from 'lodash';
 
 export const selectEvolutionMethod = (selectByFitness, elitismChance, crossOverChance, mutationChance) => {
-    return selectByFitness([
+    
+    let options = [
         {
             name: 'elitism',
             fitness: elitismChance
@@ -14,7 +15,10 @@ export const selectEvolutionMethod = (selectByFitness, elitismChance, crossOverC
             name: 'mutation',
             fitness: mutationChance
         }
-    ]).name;
+    ];
+    
+    let index = selectByFitness(options);
+    return options[index].name;
 }
 
 export const evolveIndividuals = (tokenSelector, methodSelector, individualSelector, individualMutator, individualBreeder, sourceIndividuals) => {
@@ -78,7 +82,8 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
 
 export const crossOverIndividuals = (expressionBreeder, individualA, individualB)  => {
     return {
-        expression: expressionBreeder(individualA.expression, individualB.expression)
+        expression: expressionBreeder(individualA.expression, individualB.expression),
+        fitness: individualA.fitness + individualB.fitness / 2
     }
 }
 

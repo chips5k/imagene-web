@@ -207,7 +207,7 @@ export const crossOverExpressions = (getRandomInteger, expressionA, expressionB)
     
 
     let fromIndex = getRandomInteger(0, parentFrom.length - 1);
-    //Find all operator nodes
+    
     let expression = parentFrom.slice(0, fromIndex);
 
     let toIndex = getRandomInteger(0, parentTo.length - 1);
