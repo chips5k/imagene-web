@@ -1,6 +1,6 @@
 import {cloneDeep} from 'lodash';
 
-export const selectEvolutionMethod = (elitismChance, crossOverChance, mutationChance, selectByFitness) => {
+export const selectEvolutionMethod = (selectByFitness, elitismChance, crossOverChance, mutationChance) => {
     return selectByFitness([
         {
             name: 'elitism',

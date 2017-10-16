@@ -9,7 +9,7 @@ describe('individuals',
 
             const selector = jest.fn((methods) => methods[2]); 
 
-            let method = selectEvolutionMethod(0, 1, 2, selector);
+            let method = selectEvolutionMethod(selector, 0, 1, 2);
 
             expect(selector).toHaveBeenCalledWith([
                 {
@@ -28,7 +28,7 @@ describe('individuals',
         });
 
         it('should return the method name', () => {
-           expect(selectEvolutionMethod(0, 1, 2, (methods) => methods[2])).toEqual('mutation');
+           expect(selectEvolutionMethod((methods) => methods[2]), 0, 1, 2, ).toEqual('mutation');
         });
 
     });
