@@ -21,10 +21,7 @@ export const createInitialGeneration = (redirect) => {
  * @param {*} minExpressionDepth the minimum nesting level of individual expressions
  * @param {*} maxExpressionDepth the maximum nesting level of individual expressions
  */
-export const generateIndividuals = (getRandomReal, getRandomInteger, numIndividuals, minExpressionDepth, maxExpressionDepth) => {
-
-    const tokenSelector = getToken.bind(null, tokenCreators, getRandomReal, getRandomInteger);
-    
+export const generateIndividuals = (expressionBuilder, numIndividuals, minExpressionDepth, maxExpressionDepth) => {
     let id = 1;
     return {
         type: 'GENERATE_INDIVIDUALS',
@@ -33,7 +30,7 @@ export const generateIndividuals = (getRandomReal, getRandomInteger, numIndividu
             return {
                 generationId: 1,
                 id: id++,
-                expression: buildExpression(tokenSelector, getRandomInteger, minExpressionDepth, maxExpressionDepth),
+                expression: expressionBuilder(minExpressionDepth, maxExpressionDepth),
                 fitness: numIndividuals
             }
         }),
@@ -47,7 +44,7 @@ export const generateIndividuals = (getRandomReal, getRandomInteger, numIndividu
  * @param {integer} generationId the generation id of the received individuals 
  * @param {array} individuals the individuals to evolve 
  */
-export const evolveIndividuals = (generation) => {
+export const evolveIndividuals = (individualsEvolver, generation) => {
 
     let generationId = generation.id + 1;
     let lastIndividualId = generation.individuals.reduce((a, n) => Math.max(a, n.id), 0);
@@ -55,7 +52,7 @@ export const evolveIndividuals = (generation) => {
     return {
         type: 'EVOLVE_INDIVIDUALS',
         generationId,
-        individuals: core.evolveIndividuals(generation.individuals).map(n => { return {...n, generationId, id: ++lastIndividualId }; })
+        individuals: individualsEvolver(generation.individuals).map(n => { return {...n, generationId, id: ++lastIndividualId }; })
     };
 };
 

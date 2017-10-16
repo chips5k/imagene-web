@@ -20,6 +20,9 @@ import Random from 'random-js';
 //Our functions
 import addToWorkerQueue from './lib/generationSampleWorkerQueue';
 import reducers from './reducers';
+import { getToken, tokenCreators, buildExpression, mutateExpression, crossOverExpressions } from './lib/expressions';
+import {selectRoulette} from './lib/utilities';
+import {selectEvolutionMethod, evolveIndividuals, mutateIndividual, crossOverIndividuals} from './lib/individuals';
 import * as actionCreators from './actionCreators';
 
 //Our components
@@ -59,18 +62,31 @@ const getRandomInteger = (min, max) => {
     return random.integer(min, max);
 }
 
+//Bind functions
+const tokenSelector = getToken.bind(null, tokenCreators, getRandomReal, getRandomInteger);
+const expressionBuilder = buildExpression.bind(null, tokenSelector, getRandomInteger);
+const rouletteSelector = selectRoulette.bind(null, getRandomReal); 
+const evolutionMethodSelector = selectEvolutionMethod.bind(null, rouletteSelector);
+const individualSelector = rouletteSelector;
+const expressionMutator = mutateExpression.bind(null);
+const expressionBreeder = crossOverExpressions.bind(null)
+const individualMutator = mutateIndividual.bind(null, expressionMutator);
+const individualBreeder = crossOverIndividuals.bind(null, expressionBreeder)
+const individualsEvolver = evolveIndividuals.bind(null, tokenSelector, evolutionMethodSelector, individualSelector, individualMutator, individualBreeder);
 
-// Partially apply a handful of action creators to inject required external dependences
+// bind action creators to required functions
 let partiallyAppliedActionCreators = {
     ...actionCreators,
     redirect: push,
     createInitialGeneration: actionCreators.createInitialGeneration.bind(null, push),
-    generateIndividuals: actionCreators.generateIndividuals.bind(null, getRandomReal, getRandomInteger),
+    generateIndividuals: actionCreators.generateIndividuals.bind(null, expressionBuilder),
     generateSamples: actionCreators.generateSamples.bind(null, getRandomReal),
     generateSampleData: actionCreators.generateSampleData.bind(null, addToWorkerQueue),
+    evolveIndividuals: actionCreators.evolveIndividuals.bind(null, individualsEvolver)
 }
 
 
+//Bind action creators to dispatch
 const mapStateToProps = () => ({  });
 const mapDispatchToProps = (dispatch, ownProps) => ({
     actions: bindActionCreators(partiallyAppliedActionCreators, dispatch)  

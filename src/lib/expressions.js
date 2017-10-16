@@ -73,7 +73,7 @@ export const getToken = (tokenCreators, getRandomReal, getRandomInteger, type) =
     
 };
 
-export const buildExpression = (getToken, getRandomInteger, minSubexpressions, maxSubexpressions, currentDepth = 0) => {
+export const buildExpression = (tokenSelector, getRandomInteger, minSubexpressions, maxSubexpressions, currentDepth = 0) => {
     let expression = [];
 
 
@@ -84,23 +84,23 @@ export const buildExpression = (getToken, getRandomInteger, minSubexpressions, m
         
         if(currentDepth < maxSubexpressions) {
             let currentMaxSubExpressions = getRandomInteger(minSubexpressions, maxSubexpressions);
-            expression = expression.concat(buildExpression(getToken, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
-            expression = expression.concat(buildExpression(getToken, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
-            expression = expression.concat(getToken(OPERATOR_DOUBLE));
+            expression = expression.concat(buildExpression(tokenSelector, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
+            expression = expression.concat(buildExpression(tokenSelector, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
+            expression = expression.concat(tokenSelector(OPERATOR_DOUBLE));
         } else {
-            expression = expression.concat(getToken(OPERAND));
-            expression = expression.concat(getToken(OPERAND));
-            expression = expression.concat(getToken(OPERATOR_DOUBLE));
+            expression = expression.concat(tokenSelector(OPERAND));
+            expression = expression.concat(tokenSelector(OPERAND));
+            expression = expression.concat(tokenSelector(OPERATOR_DOUBLE));
         }
     } else {
         if(currentDepth < maxSubexpressions) {
             let currentMaxSubExpressions = getRandomInteger(minSubexpressions, maxSubexpressions);
-            expression = expression.concat(buildExpression(getToken, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
+            expression = expression.concat(buildExpression(tokenSelector, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
             
         } else {
-            expression = expression.concat(getToken(OPERAND));
+            expression = expression.concat(tokenSelector(OPERAND));
         }
-        expression = expression.concat(getToken(OPERATOR_SINGLE));
+        expression = expression.concat(tokenSelector(OPERATOR_SINGLE));
     }
     
     return expression;
