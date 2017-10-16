@@ -165,11 +165,55 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
     throw new Error('Unable to solve expression: operands: ' + operandStack + ' operators: ' + operatorStack);
 };
 
-export const mutateExpression = (tokenSelector, expression) => {
+export const mutateExpression = (getRandomInteger, tokenCreators, tokenSelector, expressionBuilder, expression) => {
+    let mutatedExpression = [...expression];
+    
+    let index = getRandomInteger(0, mutatedExpression.length - 1);
 
+    let token = mutatedExpression[index];
+
+    if(tokenCreators.singleOperators.hasOwnProperty(token)) {
+
+        //Swap token for another operand
+        mutatedExpression.splice(index, 1, tokenSelector(OPERATOR_SINGLE));
+    }
+
+    if(tokenCreators.doubleOperators.hasOwnProperty(token)) {
+        //Swap token for another operand
+        mutatedExpression.splice(index, 1, tokenSelector(OPERATOR_DOUBLE));
+    }
+
+    if(tokenCreators.hasOwnProperty(token)) {
+        let chance = getRandomInteger(0, 1);
+        switch(chance) {
+            case 0:
+                //Swap token for another operand
+                mutatedExpression.splice(index, 1, tokenSelector(OPERAND));
+                break;
+            case 1:
+            default:
+                //Swap token for a subexpression
+                mutatedExpression.splice(index, 1, ...expressionBuilder(0, 6, 0))
+                break;
+        }
+    }
+    return mutatedExpression;
 };
 
-export const crossOverExpressions = (expressionA, expressionB)  => {
+export const crossOverExpressions = (getRandomInteger, expressionA, expressionB)  => {
+    let selection = getRandomInteger(0, 1);
+    let parentFrom = selection === 1 ? expressionB : expressionA;
+    let parentTo = selection === 1 ? expressionA : expressionB;
+    
 
-}
+    let fromIndex = getRandomInteger(0, parentFrom.length - 1);
+    //Find all operator nodes
+    let expression = parentFrom.slice(0, fromIndex);
+
+    let toIndex = getRandomInteger(0, parentTo.length - 1);
+    expression.splice(0, toIndex, ...expression);
+
+    return expression;
+}   
+
 
