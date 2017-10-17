@@ -20,7 +20,7 @@ import Random from 'random-js';
 //Our functions
 import addToWorkerQueue from './lib/generationSampleWorkerQueue';
 import reducers from './reducers';
-import { getToken, tokenCreators, buildExpression, mutateExpression, crossOverExpressions } from './lib/expressions';
+import { getToken, tokenCreators, tokenEvaluators, buildExpression, mutateExpression, crossOverExpressions } from './lib/expressions';
 import {selectRoulette} from './lib/utilities';
 import {selectEvolutionMethod, evolveIndividuals, mutateIndividual, crossOverIndividuals} from './lib/individuals';
 import * as actionCreators from './actionCreators';
@@ -68,8 +68,8 @@ const expressionBuilder = buildExpression.bind(null, tokenSelector, getRandomInt
 const rouletteSelector = selectRoulette.bind(null, getRandomReal); 
 const evolutionMethodSelector = selectEvolutionMethod.bind(null, rouletteSelector, 0.5, 0.5, 0.5);
 const individualSelector = rouletteSelector;
-const expressionMutator = mutateExpression.bind(null, getRandomInteger, tokenCreators, tokenSelector, expressionBuilder);
-const expressionBreeder = crossOverExpressions.bind(null, getRandomInteger);
+const expressionMutator = mutateExpression.bind(null, tokenEvaluators, getRandomInteger, tokenSelector, expressionBuilder);
+const expressionBreeder = crossOverExpressions.bind(null, tokenEvaluators, getRandomInteger);
 const individualMutator = mutateIndividual.bind(null, expressionMutator);
 const individualBreeder = crossOverIndividuals.bind(null, expressionBreeder)
 const individualsEvolver = evolveIndividuals.bind(null, tokenSelector, evolutionMethodSelector, individualSelector, individualMutator, individualBreeder);

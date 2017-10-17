@@ -1,4 +1,21 @@
-import { tokenCreators, tokenEvaluators, buildExpression, solveExpression, getToken, OPERAND, OPERATOR_DOUBLE, OPERATOR_SINGLE } from '../../lib/expressions';
+import { 
+    tokenCreators,
+    tokenEvaluators,
+    buildExpression,
+    solveExpression,
+    getToken,
+    OPERAND,
+    OPERATOR_DOUBLE,
+    OPERATOR_SINGLE,
+    crossOverExpressions,
+    mutateExpression,
+    expressionToTree,
+    treeToString
+} from '../../lib/expressions';
+
+//Other dependencies
+import Random from 'random-js';
+
 describe('expressions', () => {
     
     
@@ -120,14 +137,46 @@ describe('expressions', () => {
 
     describe('crossOverExpressions', () => {
 
-        it('should combine two expressions', () => {
+        it('should combine two expressions and produce  an evaluatable result', () => {
 
-            const getRandomInteger = () => {
-                return 1;
-            }
+            //Initialite our random engine
+            // const random = new Random(Random.engines.mt19937().autoSeed());
+
+            // const getRandomInteger = (min, max) => {
+            //     return random.integer(min, max);
+            // }
             
-            const result = (getRandomInteger, ['pX', 'pY', '+', 'tan'], ['pX', 'PI', 'sin', '+']);
+            // const result = crossOverExpressions(tokenEvaluators, getRandomInteger, ['a', 'b', '+', 'tan'], ['d', 'sin']);
+            // console.log(result);  
+        });
+    });
+
+    describe('expressionToTree', () => {
+
+        it('should convert expressions to binary trees', () => {
+
+            const util = require('util')
             
+            
+           
+
+            let tree = expressionToTree(tokenEvaluators, ['pX', 'pY', '+', '23', 'sqrt', '*', 'tan', 'PI', 'pY', '*', '/']);
+            // alternative shortcut
+            //console.log(util.inspect(tree, false, null))
+
+             expect(tree).toEqual({ 
+                root: '/',
+                a: { 
+                    root: 'tan',
+                    a:{ 
+                        root: '*',
+                        a: { root: '+', a: 'pX', b: 'pY' },
+                        b: { root: 'sqrt', a: '23' }
+                    } 
+                },
+                b: { root: '*', a: 'PI', b: 'pY' }
+            });
+
         });
 
     });

@@ -216,4 +216,67 @@ export const crossOverExpressions = (getRandomInteger, expressionA, expressionB)
     return expression;
 }   
 
+export const expressionToTree = (tokenEvaluators, expression) => {
+    
+    let stack = [];
+    let currentNode = null;
+    let clonedExpression = expression.slice(0);
+    while(clonedExpression.length) {
 
+        let currentToken = clonedExpression.shift();
+
+        if(!tokenEvaluators.doubleOperators.hasOwnProperty(currentToken) && !tokenEvaluators.singleOperators.hasOwnProperty(currentToken)) {
+            stack.push(currentToken);
+        } else {
+            
+            if(stack.length > 0) {
+                let b = stack.pop();
+                if(tokenEvaluators.singleOperators.hasOwnProperty(currentToken)) {
+                    currentNode = {
+                        root: currentToken, a: b
+                    }
+                    stack.push(currentNode);
+                } else {
+                    if(stack.length > 0) {
+                        let a = stack.pop();
+                        currentNode = { root: currentToken, a, b };
+                        stack.push(currentNode);
+                    }
+                }
+            }
+        }
+    }    
+
+    if(stack.length > 1) {
+        throw('Stack not empty - unhandled condition');
+    }
+
+    return currentNode;
+
+}
+
+export const treeToString = function(node) {
+    
+    
+    var string = '';
+
+    if(node.a) {
+        string += '(';
+        string += treeToString(node.a)
+    }
+
+    if(typeof node !== 'object') {
+        string += node;
+    } else {
+        string += node.root;
+    }
+    
+    if(node.b) {
+        string += treeToString(node.b);
+        string += ')';
+    }
+
+    return string;
+    
+    
+}
