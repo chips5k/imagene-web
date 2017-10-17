@@ -277,6 +277,10 @@ export const treeToString = function(node) {
     }
 
     return string;
+}
+
+export const treeToExpression = function(node) {
+
     
-    
+
 }

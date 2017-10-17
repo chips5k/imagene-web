@@ -155,16 +155,9 @@ describe('expressions', () => {
 
         it('should convert expressions to binary trees', () => {
 
-            
-            
-            
-           
-
             let tree = expressionToTree(tokenEvaluators, ['pX', 'pY', '+', '23', 'sqrt', '*', 'tan', 'PI', 'pY', '*', '/']);
-            //const util = require('util')
-            //console.log(util.inspect(tree, false, null))
-
-             expect(tree).toEqual({ 
+            
+            expect(tree).toEqual({ 
                 root: '/',
                 a: { 
                     root: 'tan',
@@ -176,6 +169,29 @@ describe('expressions', () => {
                 },
                 b: { root: '*', a: 'PI', b: 'pY' }
             });
+
+        });
+
+    });
+
+    describe('treeToExpression', () => {
+        
+        it('should convert trees to rpn expressions', () => {
+
+            let expression = treeToExpression(tokenEvaluators, { 
+                root: '/',
+                a: { 
+                    root: 'tan',
+                    a:{ 
+                        root: '*',
+                        a: { root: '+', a: 'pX', b: 'pY' },
+                        b: { root: 'sqrt', a: '23' }
+                    } 
+                },
+                b: { root: '*', a: 'PI', b: 'pY' }
+            });
+
+            expect(expression).toEqual(['pX', 'pY', '+', '23', 'sqrt', '*', 'tan', 'PI', 'pY', '*', '/']);
 
         });
 
