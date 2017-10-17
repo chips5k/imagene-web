@@ -155,13 +155,13 @@ describe('expressions', () => {
 
         it('should convert expressions to binary trees', () => {
 
-            const util = require('util')
+            
             
             
            
 
             let tree = expressionToTree(tokenEvaluators, ['pX', 'pY', '+', '23', 'sqrt', '*', 'tan', 'PI', 'pY', '*', '/']);
-            // alternative shortcut
+            //const util = require('util')
             //console.log(util.inspect(tree, false, null))
 
              expect(tree).toEqual({ 
