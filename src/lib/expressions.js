@@ -273,6 +273,10 @@ export const treeToString = function(node) {
     
     if(node.b) {
         string += treeToString(node.b);
+        
+    }
+
+    if(node.a) {
         string += ')';
     }
 
@@ -285,24 +289,18 @@ export const treeToExpression = function(node) {
     if(typeof node === 'object') {
         
         if(node.hasOwnProperty('a')) {
-            if(typeof node.a === 'object') {
-                expression = expression.concat(treeToExpression(node.a));
-            } else {
-                expression.push(node.a);
-            }
+            expression = expression.concat(treeToExpression(node.a));
         }
 
         if(node.hasOwnProperty('b')) {
-            if(typeof node.a === 'object') {
-                expression = expression.concat(treeToExpression(node.b));
-            } else {
-                expression.push(node.b);
-            }
+            expression = expression.concat(treeToExpression(node.b));
         }
 
         if(node.hasOwnProperty('value')) {
             expression.push(node.value);
         }
+    } else {
+        expression.push(node);
     }
 
     return expression;

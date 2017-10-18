@@ -193,7 +193,6 @@ describe('expressions', () => {
             });
 
             expect(expression).toEqual(['pX', 'pY', '+', '23', 'sqrt', '*', 'tan', 'PI', 'pY', '*', '/']);
-
         });
 
     });
