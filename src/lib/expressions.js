@@ -165,7 +165,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
     throw new Error('Unable to solve expression: operands: ' + operandStack + ' operators: ' + operatorStack);
 };
 
-export const mutateExpression = (getRandomInteger, tokenCreators, tokenSelector, expressionBuilder, expression) => {
+export const mutateExpression = (tokenCreators, getRandomInteger, tokenSelector, expressionBuilder, expression) => {
     let mutatedExpression = [...expression];
     
     let index = getRandomInteger(0, mutatedExpression.length - 1);
@@ -200,20 +200,76 @@ export const mutateExpression = (getRandomInteger, tokenCreators, tokenSelector,
     return mutatedExpression;
 };
 
-export const crossOverExpressions = (getRandomInteger, expressionA, expressionB)  => {
+
+export const findBinaryTreeNodeByIndex = (node, currentIndex, index) => {
+    if(currentIndex === index) {
+        return node;
+    }
+    
+    
+
+    let result = null;
+    if(node.a) {
+        currentIndex++;
+        result = findBinaryTreeNodeByIndex(node.a, currentIndex, index);
+    }
+
+    if(node.b && !result) {
+        currentIndex++;
+        result = findBinaryTreeNodeByIndex(node.b, currentIndex, index);
+    }
+
+    return result;
+}
+ 
+export const insertNodeIntoBinaryTreeAtIndex = (parentNode, key, node, currentIndex, index, nodeToInsert) => {
+    
+    if(currentIndex === index) {
+        parentNode[key] = nodeToInsert;
+        return true;
+    }
+
+    
+
+    let result = null;
+    if(node.a) {
+        currentIndex++;
+        result = insertNodeIntoBinaryTreeAtIndex(node, 'a', node.a, currentIndex, index, nodeToInsert);
+    }
+
+    if(node.b && !result) {
+        currentIndex++;
+        result = insertNodeIntoBinaryTreeAtIndex(node, 'b', node.b, currentIndex, index, nodeToInsert);
+    }
+
+    return result;
+}
+
+export const crossOverExpressions = (tokenEvaluators, getRandomInteger, expressionA, expressionB)  => {
     let selection = getRandomInteger(0, 1);
     let parentFrom = selection === 1 ? expressionB : expressionA;
     let parentTo = selection === 1 ? expressionA : expressionB;
     
-
     let fromIndex = getRandomInteger(0, parentFrom.length - 1);
-    
-    let expression = parentFrom.slice(0, fromIndex);
-
     let toIndex = getRandomInteger(0, parentTo.length - 1);
-    expression.splice(0, toIndex, ...expression);
 
-    return expression;
+    parentFrom = expressionToTree(tokenEvaluators, parentFrom);
+    parentTo = expressionToTree(tokenEvaluators, parentTo);
+
+    
+    let node = findBinaryTreeNodeByIndex(parentFrom, 0, fromIndex);
+    let root = {
+        a: parentTo
+    }
+    
+    if(node) {
+        
+        if(insertNodeIntoBinaryTreeAtIndex(root, 'a', parentTo, 0, toIndex, node)) {
+            return treeToExpression(root.a);  
+        }
+    }
+
+    throw new Error('Failed to cross over expressions');
 }   
 
 export const expressionToTree = (tokenEvaluators, expression) => {

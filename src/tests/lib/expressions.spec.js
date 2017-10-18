@@ -11,6 +11,7 @@ import {
     mutateExpression,
     expressionToTree,
     treeToExpression,
+    findBinaryTreeNodeByIndex,
     treeToString
 } from '../../lib/expressions';
 
@@ -140,15 +141,30 @@ describe('expressions', () => {
 
         it('should combine two expressions and produce  an evaluatable result', () => {
 
+            let calls = -1;
             //Initialite our random engine
-            // const random = new Random(Random.engines.mt19937().autoSeed());
+            const random = new Random(Random.engines.mt19937().autoSeed());
 
-            // const getRandomInteger = (min, max) => {
-            //     return random.integer(min, max);
-            // }
+            const getRandomInteger = (min, max) => {
+                calls++;
+                if(calls === 0) {
+                    return 1;
+                } 
+
+                if(calls === 1) {
+                    return 1
+                }
+
+                if(calls === 2) {
+                    return 3;
+                }
+            }
             
-            // const result = crossOverExpressions(tokenEvaluators, getRandomInteger, ['a', 'b', '+', 'tan'], ['d', 'sin']);
-            // console.log(result);  
+            const result = crossOverExpressions(tokenEvaluators, getRandomInteger, ['a', 'b', '+', 'tan'], [12, 'a', '-']);
+            
+            expect(result).toEqual(['a', 12, '+', 'tan']);
+
+
         });
     });
 
@@ -173,6 +189,29 @@ describe('expressions', () => {
 
         });
 
+    });
+
+    describe('findBinaryTreeNodeByIndex', () => {
+        it('should find the node at the specified index', () => {
+
+            const node = findBinaryTreeNodeByIndex(
+                { 
+                    value: '/',
+                    a: { 
+                        value: 'tan',
+                        a:{ 
+                            value: '*',
+                            a: { value: '+', a: 'pX', b: 'pY' },
+                            b: { value: 'sqrt', a: '23' }
+                        } 
+                    },
+                    b: { value: '*', a: 'PI', b: 'pY' }
+                }, 
+                0, 3);
+
+            expect(node).toEqual({value: '+', a: 'pX', b: 'pY' });
+
+        });
     });
 
     describe('treeToExpression', () => {
