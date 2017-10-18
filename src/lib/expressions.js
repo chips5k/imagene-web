@@ -233,13 +233,13 @@ export const expressionToTree = (tokenEvaluators, expression) => {
                 let b = stack.pop();
                 if(tokenEvaluators.singleOperators.hasOwnProperty(currentToken)) {
                     currentNode = {
-                        root: currentToken, a: b
+                        value: currentToken, a: b
                     }
                     stack.push(currentNode);
                 } else {
                     if(stack.length > 0) {
                         let a = stack.pop();
-                        currentNode = { root: currentToken, a, b };
+                        currentNode = { value: currentToken, a, b };
                         stack.push(currentNode);
                     }
                 }
@@ -268,7 +268,7 @@ export const treeToString = function(node) {
     if(typeof node !== 'object') {
         string += node;
     } else {
-        string += node.root;
+        string += node.value;
     }
     
     if(node.b) {
@@ -281,6 +281,29 @@ export const treeToString = function(node) {
 
 export const treeToExpression = function(node) {
 
-    
+    let expression = [];
+    if(typeof node === 'object') {
+        
+        if(node.hasOwnProperty('a')) {
+            if(typeof node.a === 'object') {
+                expression = expression.concat(treeToExpression(node.a));
+            } else {
+                expression.push(node.a);
+            }
+        }
 
+        if(node.hasOwnProperty('b')) {
+            if(typeof node.a === 'object') {
+                expression = expression.concat(treeToExpression(node.b));
+            } else {
+                expression.push(node.b);
+            }
+        }
+
+        if(node.hasOwnProperty('value')) {
+            expression.push(node.value);
+        }
+    }
+
+    return expression;
 }

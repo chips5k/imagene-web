@@ -10,6 +10,7 @@ import {
     crossOverExpressions,
     mutateExpression,
     expressionToTree,
+    treeToExpression,
     treeToString
 } from '../../lib/expressions';
 
@@ -158,16 +159,16 @@ describe('expressions', () => {
             let tree = expressionToTree(tokenEvaluators, ['pX', 'pY', '+', '23', 'sqrt', '*', 'tan', 'PI', 'pY', '*', '/']);
             
             expect(tree).toEqual({ 
-                root: '/',
+                value: '/',
                 a: { 
-                    root: 'tan',
+                    value: 'tan',
                     a:{ 
-                        root: '*',
-                        a: { root: '+', a: 'pX', b: 'pY' },
-                        b: { root: 'sqrt', a: '23' }
+                        value: '*',
+                        a: { value: '+', a: 'pX', b: 'pY' },
+                        b: { value: 'sqrt', a: '23' }
                     } 
                 },
-                b: { root: '*', a: 'PI', b: 'pY' }
+                b: { value: '*', a: 'PI', b: 'pY' }
             });
 
         });
@@ -178,17 +179,17 @@ describe('expressions', () => {
         
         it('should convert trees to rpn expressions', () => {
 
-            let expression = treeToExpression(tokenEvaluators, { 
-                root: '/',
+            let expression = treeToExpression({ 
+                value: '/',
                 a: { 
-                    root: 'tan',
+                    value: 'tan',
                     a:{ 
-                        root: '*',
-                        a: { root: '+', a: 'pX', b: 'pY' },
-                        b: { root: 'sqrt', a: '23' }
+                        value: '*',
+                        a: { value: '+', a: 'pX', b: 'pY' },
+                        b: { value: 'sqrt', a: '23' }
                     } 
                 },
-                b: { root: '*', a: 'PI', b: 'pY' }
+                b: { value: '*', a: 'PI', b: 'pY' }
             });
 
             expect(expression).toEqual(['pX', 'pY', '+', '23', 'sqrt', '*', 'tan', 'PI', 'pY', '*', '/']);
