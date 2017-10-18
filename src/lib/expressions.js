@@ -202,7 +202,9 @@ export const mutateExpression = (tokenCreators, getRandomInteger, tokenSelector,
 
 
 export const findBinaryTreeNodeByIndex = (node, currentIndex, index) => {
-    if(currentIndex === index) {
+    
+    
+    if(currentIndex.value === index) {
         return node;
     }
     
@@ -210,12 +212,12 @@ export const findBinaryTreeNodeByIndex = (node, currentIndex, index) => {
 
     let result = null;
     if(node.a) {
-        currentIndex++;
+        currentIndex.value++;
         result = findBinaryTreeNodeByIndex(node.a, currentIndex, index);
     }
 
     if(node.b && !result) {
-        currentIndex++;
+        currentIndex.value++;
         result = findBinaryTreeNodeByIndex(node.b, currentIndex, index);
     }
 
@@ -224,7 +226,7 @@ export const findBinaryTreeNodeByIndex = (node, currentIndex, index) => {
  
 export const insertNodeIntoBinaryTreeAtIndex = (parentNode, key, node, currentIndex, index, nodeToInsert) => {
     
-    if(currentIndex === index) {
+    if(currentIndex.value === index) {
         parentNode[key] = nodeToInsert;
         return true;
     }
@@ -233,12 +235,12 @@ export const insertNodeIntoBinaryTreeAtIndex = (parentNode, key, node, currentIn
 
     let result = null;
     if(node.a) {
-        currentIndex++;
+        currentIndex.value++;
         result = insertNodeIntoBinaryTreeAtIndex(node, 'a', node.a, currentIndex, index, nodeToInsert);
     }
 
     if(node.b && !result) {
-        currentIndex++;
+        currentIndex.value++;
         result = insertNodeIntoBinaryTreeAtIndex(node, 'b', node.b, currentIndex, index, nodeToInsert);
     }
 
@@ -249,22 +251,27 @@ export const crossOverExpressions = (tokenEvaluators, getRandomInteger, expressi
     let selection = getRandomInteger(0, 1);
     let parentFrom = selection === 1 ? expressionB : expressionA;
     let parentTo = selection === 1 ? expressionA : expressionB;
+
     
     let fromIndex = getRandomInteger(0, parentFrom.length - 1);
     let toIndex = getRandomInteger(0, parentTo.length - 1);
-
+    
     parentFrom = expressionToTree(tokenEvaluators, parentFrom);
     parentTo = expressionToTree(tokenEvaluators, parentTo);
 
     
-    let node = findBinaryTreeNodeByIndex(parentFrom, 0, fromIndex);
+    let node = findBinaryTreeNodeByIndex(parentFrom, {value: 0}, fromIndex);
+
+    
     let root = {
         a: parentTo
     }
-    
+
+   
+
     if(node) {
         
-        if(insertNodeIntoBinaryTreeAtIndex(root, 'a', parentTo, 0, toIndex, node)) {
+        if(insertNodeIntoBinaryTreeAtIndex(root, 'a', parentTo, { value: 0 }, toIndex, node)) {
             return treeToExpression(root.a);  
         }
     }

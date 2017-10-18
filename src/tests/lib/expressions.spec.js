@@ -141,29 +141,96 @@ describe('expressions', () => {
 
         it('should combine two expressions and produce  an evaluatable result', () => {
 
+            // let calls = -1;
+            // //Initialite our random engine
+            // const random = new Random(Random.engines.mt19937().autoSeed());
+
+            // const getRandomInteger = (min, max) => {
+            //     calls++;
+            //     if(calls === 0) {
+            //         return 1;
+            //     } 
+
+            //     if(calls === 1) {
+            //         return 1
+            //     }
+
+            //     if(calls === 2) {
+            //         return 3;
+            //     }
+            // }
+            
+            // const result = crossOverExpressions(tokenEvaluators, getRandomInteger, ['a', 'b', '+', 'tan'], [12, 'a', '-']);
+            
+            // expect(result).toEqual(['a', 12, '+', 'tan']);
+
+
+            
+        });
+
+        it('should combine two expressions and produce  an evaluatable result', () => {
+            
+            // let calls = -1;
+            // //Initialite our random engine
+            // const random = new Random(Random.engines.mt19937().autoSeed());
+
+            // const getRandomInteger = (min, max) => {
+            //     //return random.integer(min, max);
+            //     calls++;
+            //     if(calls === 0) {
+            //         return 1;
+            //     } 
+
+            //     if(calls === 1) {
+            //         return 5;
+            //     }
+
+            //     if(calls === 2) {
+            //         return 3;
+            //     }
+            // }
+
+            
+    
+            // const a = ['pY', 'cos', 'pY', '^', 'PI', 'pY', '*', 93.35899578879564, '*', '^', 'sqrt'];
+            // const b = ['PI', 'pY', '*', 'pY', 'sin', '+', 'log'];
+            
+            
+            // const result = crossOverExpressions(tokenEvaluators, getRandomInteger, a, b);
+            // expect(result).toEqual([ 'pY','sin','pY','^','PI','pY','*', 93.35899578879564,'*','^','sqrt' ]);
+
+        });
+
+        it('should combine two expressions and produce  an evaluatable result', () => {
+            
             let calls = -1;
             //Initialite our random engine
             const random = new Random(Random.engines.mt19937().autoSeed());
 
             const getRandomInteger = (min, max) => {
+                //return random.integer(min, max);
                 calls++;
                 if(calls === 0) {
                     return 1;
                 } 
 
                 if(calls === 1) {
-                    return 1
+                    return 2;
                 }
 
                 if(calls === 2) {
-                    return 3;
+                    return 18;
                 }
             }
-            
-            const result = crossOverExpressions(tokenEvaluators, getRandomInteger, ['a', 'b', '+', 'tan'], [12, 'a', '-']);
-            
-            expect(result).toEqual(['a', 12, '+', 'tan']);
 
+            
+    
+            const a = [11.92542702045144, "pX", "pY", "CIR", "+", "log"];
+            const b = ["PI", "pY", "*", "pX", "+", "pX", "sin", "PI", "pY", "*", "%", "^", "pX", "cos", "log", "PI", "pY", "*", "pX", "CIR", "+", "%"];
+            
+            
+            const result = crossOverExpressions(tokenEvaluators, getRandomInteger, a, b);
+            expect(result).toEqual([ 'pY','sin','pY','^','PI','pY','*', 93.35899578879564,'*','^','sqrt' ]);
 
         });
     });
@@ -207,7 +274,7 @@ describe('expressions', () => {
                     },
                     b: { value: '*', a: 'PI', b: 'pY' }
                 }, 
-                0, 3);
+                { value: 0 }, 3);
 
             expect(node).toEqual({value: '+', a: 'pX', b: 'pY' });
 
