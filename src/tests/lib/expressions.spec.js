@@ -201,6 +201,39 @@ describe('expressions', () => {
 
         });
 
+        // it('should combine two expressions and produce  an evaluatable result', () => {
+            
+        //     let calls = -1;
+        //     //Initialite our random engine
+        //     const random = new Random(Random.engines.mt19937().autoSeed());
+
+        //     const getRandomInteger = (min, max) => {
+        //         //return random.integer(min, max);
+        //         calls++;
+        //         if(calls === 0) {
+        //             return 1;
+        //         } 
+
+        //         if(calls === 1) {
+        //             return 2;
+        //         }
+
+        //         if(calls === 2) {
+        //             return 18;
+        //         }
+        //     }
+
+            
+    
+        //     const a = [11.92542702045144, "pX", "pY", "CIR", "+", "log"];
+        //     const b = ["PI", "pY", "*", "pX", "+", "pX", "sin", "PI", "pY", "*", "%", "^", "pX", "cos", "log", "PI", "pY", "*", "pX", "CIR", "+", "%"];
+            
+            
+        //     const result = crossOverExpressions(tokenEvaluators, getRandomInteger, a, b);
+        //     expect(result).toEqual([ 'pY','sin','pY','^','PI','pY','*', 93.35899578879564,'*','^','sqrt' ]);
+
+        // });
+
         it('should combine two expressions and produce  an evaluatable result', () => {
             
             let calls = -1;
@@ -211,11 +244,11 @@ describe('expressions', () => {
                 //return random.integer(min, max);
                 calls++;
                 if(calls === 0) {
-                    return 1;
+                    return 0;
                 } 
 
                 if(calls === 1) {
-                    return 2;
+                    return 0;
                 }
 
                 if(calls === 2) {
@@ -223,17 +256,19 @@ describe('expressions', () => {
                 }
             }
 
-            
-    
-            const a = [11.92542702045144, "pX", "pY", "CIR", "+", "log"];
-            const b = ["PI", "pY", "*", "pX", "+", "pX", "sin", "PI", "pY", "*", "%", "^", "pX", "cos", "log", "PI", "pY", "*", "pX", "CIR", "+", "%"];
+            const a = ["pY"]; 
+            const b = ["pY", "cos", "pX", "cos", "*", "pX", "cos", "pY", "sin", "+", "%", 73.57922953989988, "pY", "*", "pY", "sin", "/", "log", "pY", "cos", "sin", "CIR", "CIR", "double", "pX", "sin", "tan", "-"];
+             
             
             
             const result = crossOverExpressions(tokenEvaluators, getRandomInteger, a, b);
-            expect(result).toEqual([ 'pY','sin','pY','^','PI','pY','*', 93.35899578879564,'*','^','sqrt' ]);
+            expect(result).toEqual([ 'pY','cos','pX','cos','*','pX','cos','pY','sin','+','%','pY','pY','*','pY','sin','/','log','pY','cos','sin','CIR','CIR','double','pX','sin','tan','-']);
 
         });
     });
+
+
+    
 
     describe('expressionToTree', () => {
 

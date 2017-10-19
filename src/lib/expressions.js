@@ -203,13 +203,10 @@ export const mutateExpression = (tokenCreators, getRandomInteger, tokenSelector,
 
 export const findBinaryTreeNodeByIndex = (node, currentIndex, index) => {
     
-    
     if(currentIndex.value === index) {
         return node;
     }
     
-    
-
     let result = null;
     if(node.a) {
         currentIndex.value++;
@@ -259,7 +256,6 @@ export const crossOverExpressions = (tokenEvaluators, getRandomInteger, expressi
     parentFrom = expressionToTree(tokenEvaluators, parentFrom);
     parentTo = expressionToTree(tokenEvaluators, parentTo);
 
-    
     let node = findBinaryTreeNodeByIndex(parentFrom, {value: 0}, fromIndex);
 
     
@@ -267,8 +263,7 @@ export const crossOverExpressions = (tokenEvaluators, getRandomInteger, expressi
         a: parentTo
     }
 
-   
-
+    
     if(node) {
         
         if(insertNodeIntoBinaryTreeAtIndex(root, 'a', parentTo, { value: 0 }, toIndex, node)) {
@@ -310,8 +305,12 @@ export const expressionToTree = (tokenEvaluators, expression) => {
         }
     }    
 
-    if(stack.length > 1) {
-        throw('Stack not empty - unhandled condition');
+    if(stack.length === 1 && !currentNode) {
+        currentNode = {
+            value: stack.pop()
+        }
+    } else if (stack.length > 1) {
+        throw new Error('Stack not empty - unhandled condition');
     }
 
     return currentNode;
