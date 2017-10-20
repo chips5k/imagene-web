@@ -1,6 +1,6 @@
 import {cloneDeep} from 'lodash';
 
-export const selectEvolutionMethod = (selectByFitness, elitismChance, crossOverChance, mutationChance) => {
+export const selectEvolutionMethod = (selectByFitness, elitismChance, crossOverChance, mutationChance, reductionChance) => {
     
     let options = [
         {
@@ -14,6 +14,10 @@ export const selectEvolutionMethod = (selectByFitness, elitismChance, crossOverC
         {
             name: 'mutation',
             fitness: mutationChance
+        },
+        {
+            name: 'reduction',
+            fitness: reductionChance
         }
     ];
     
@@ -21,7 +25,7 @@ export const selectEvolutionMethod = (selectByFitness, elitismChance, crossOverC
     return options[index].name;
 }
 
-export const evolveIndividuals = (tokenSelector, methodSelector, individualSelector, individualMutator, individualBreeder, sourceIndividuals) => {
+export const evolveIndividuals = (tokenSelector, methodSelector, individualSelector, individualMutator, individualBreeder, getRandomInteger, sourceIndividuals) => {
 
     let individuals = [];
     let previousIndividuals = cloneDeep(sourceIndividuals);
@@ -55,8 +59,11 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
                 let parentBIndex = individualSelector(previousIndividuals, [parentAIndex]);
 
                 if(parentAIndex !== -1 && parentBIndex !== -1) {
-                    let children = individualBreeder(previousIndividuals[parentAIndex], previousIndividuals[parentBIndex]);
-                    individuals = individuals.concat(children);
+                    let numChildren = getRandomInteger(0, 5);
+                    for(var i = 0; i < numChildren; i++) {
+                        let children = individualBreeder(previousIndividuals[parentAIndex], previousIndividuals[parentBIndex]);
+                        individuals = individuals.concat(children);
+                    }
                 }
 
                 break;
@@ -70,6 +77,9 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
                     limit--;
                 }
 
+                break;
+            case 'reduction':
+                    limit--;
                 break;
             default:
                 break;

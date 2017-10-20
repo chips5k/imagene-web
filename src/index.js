@@ -66,13 +66,13 @@ const getRandomInteger = (min, max) => {
 const tokenSelector = getToken.bind(null, tokenCreators, getRandomReal, getRandomInteger);
 const expressionBuilder = buildExpression.bind(null, tokenSelector, getRandomInteger);
 const rouletteSelector = selectRoulette.bind(null, getRandomReal); 
-const evolutionMethodSelector = selectEvolutionMethod.bind(null, rouletteSelector, 0.5, 0.5, 0.5);
+const evolutionMethodSelector = selectEvolutionMethod.bind(null, rouletteSelector, 0.5, 0.5, 0.5, 0.25);
 const individualSelector = rouletteSelector;
 const expressionMutator = mutateExpression.bind(null, tokenEvaluators, getRandomInteger, tokenSelector, expressionBuilder);
 const expressionBreeder = crossOverExpressions.bind(null, tokenEvaluators, getRandomInteger);
 const individualMutator = mutateIndividual.bind(null, expressionMutator);
 const individualBreeder = crossOverIndividuals.bind(null, expressionBreeder)
-const individualsEvolver = evolveIndividuals.bind(null, tokenSelector, evolutionMethodSelector, individualSelector, individualMutator, individualBreeder);
+const individualsEvolver = evolveIndividuals.bind(null, tokenSelector, evolutionMethodSelector, individualSelector, individualMutator, individualBreeder, getRandomInteger);
 
 // bind action creators to required functions
 let partiallyAppliedActionCreators = {

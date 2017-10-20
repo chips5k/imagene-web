@@ -68,8 +68,6 @@ export const evolveIndividuals = (individualsEvolver, generation) => {
  */
 export const generateSamples = (getRandomReal, generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
     
-    
-
     let usedIndexes = [];
     let samples = [];
 
