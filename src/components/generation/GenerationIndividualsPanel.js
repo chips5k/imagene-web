@@ -20,6 +20,14 @@ export default class GenerationIndividualsPanel extends Component {
         );
     }
 
+    getFormData() {
+        return {
+            size: this.refs.size.value,
+            minDepth: this.refs.minDepth.value,
+            maxDepth: this.refs.maxDepth.value  
+        };
+    }
+
     render() {
         return (
             <ContentSidebarPanel>

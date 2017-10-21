@@ -37,6 +37,20 @@ export default class Generation extends Component {
             activeView: 'individuals'
         });
     }
+
+    onClickGenerateIndividuals(e) {
+        e.preventDefault();
+        const data = this.refs["population-panel"].getFormData();
+        this.props.generateIndividuals(data.size, data.minDepth, data.maxDepth);   
+    }
+    
+    
+
+    onClickGenerateSamples(e) {
+        e.preventDefault();
+        const data = this.refs['samples-panel'].getFormData();
+        this.props.generateSamples(this.props.generation, data.numSamples, data.width, data.height, data.redThreshold, data.greenThreshold, data.blueThreshold, this.props.lastSampleId);
+    }
     
     generateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
         this.props.generateSamples(this.props.generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, this.props.lastSampleId);
@@ -77,7 +91,6 @@ export default class Generation extends Component {
             contentSidebarVisible: !this.state.contentSidebarVisible
         });
     }
-
     
     determineClass = (className, property, value) => {
         return className + (this.state[property] === value ? ' main__content-top-nav-item--active' : '');
@@ -102,18 +115,39 @@ export default class Generation extends Component {
                                 <i className="fa fa-image"></i> Samples
                             </a>
 
-                            <div className="visible-tall hidden-narrow" style={{marginLeft: 'auto', display: 'flex'}}>             
-                                <a href="" className="main__content-bottom-nav-item " onClick={this.toggleCoordinateType.bind(this)}>
-                                    <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
-                                    {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
-                                </a>
+                            
 
-                                <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
-                                
-                                    <i className={`fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
-                                    <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
-                                    {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
-                                </a>
+                            
+                            <div className="visible-tall hidden-narrow" style={{marginLeft: 'auto', display: 'flex'}}>             
+                                {this.state.activeView === 'individuals' && this.props.generation.id === 1 && 
+                                    <a className="main__content-bottom-nav-item " href="" onClick={this.onClickGenerateIndividuals.bind(this)}>
+                                        <i className="fa fa-refresh"></i> {this.props.generation.individuals.length ? 'Regenerate' : 'Generate'}
+                                    </a>
+                                }
+
+                                {this.state.activeView === 'samples' &&
+                                    <div style={{display: 'flex'}}>
+                                        <a className="main__content-bottom-nav-item "href="" onClick={this.onClickGenerateSamples.bind(this)}>
+                                            <i className="fa fa-image"></i> Generate
+                                        </a>
+
+                                        <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
+                                            <i className="fa fa-chevron-right"></i> Evolve
+                                        </a>
+                                    
+                                        <a href="" className="main__content-bottom-nav-item " onClick={this.toggleCoordinateType.bind(this)}>
+                                            <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
+                                            {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
+                                        </a>
+
+                                        <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
+                                        
+                                            <i className={`fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
+                                            <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
+                                            {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
+                                        </a>
+                                    </div>
+                                }
                             </div>
 
                         </ContentPrimaryTopNav>
@@ -133,25 +167,44 @@ export default class Generation extends Component {
                             }
                         </ContentPrimaryBody>
                         <ContentPrimaryBottomNav>
+
                             <div className="visible-short visible-narrow">
-                                <a href="" className="main__content-bottom-nav-item" onClick={this.toggleCoordinateType.bind(this)}>
-                                    <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
-                                    {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
-                                </a>
-                
-                                <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
-                                
-                                    <i className={`fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
-                                    <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
-                                    {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
-                                </a>
+                                {this.state.activeView === 'individuals' && this.props.generation.id === 1 && 
+                                    <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateIndividuals.bind(this)}>
+                                        <i className="fa fa-refresh"></i> {this.props.generation.individuals.length ? 'Regenerate' : 'Generate'}
+                                    </a>
+                                }
+
+                                {this.state.activeView === 'samples' &&
+                                    <div style={{display: 'flex'}}>
+                                        <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
+                                            <i className="fa fa-image"></i> Generate
+                                        </a>
+
+                                        <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
+                                            <i className="fa fa-chevron-right"></i> Evolve
+                                        </a>
+                                    
+                                        <a className="main__content-bottom-nav-item" href="" className="main__content-bottom-nav-item" onClick={this.toggleCoordinateType.bind(this)}>
+                                            <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
+                                            {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
+                                        </a>
+                        
+                                        <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
+                                            <i className={`fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
+                                            <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
+                                            {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
+                                        </a>
+                                    </div>
+                                }
                             </div>
                             
                         </ContentPrimaryBottomNav>
                     </ContentPrimary>
-                    <ContentSidebar>
+                    <ContentSidebar toggleContentSidebar={this.toggleContentSidebar.bind(this)}>
                         {this.props.generation.id === 1 && 
                             <GenerationIndividualsPanel 
+                                ref="population-panel"
                                 config={this.props.config} 
                                 onClickGenerateIndividuals={this.generateIndividuals.bind(this)}
                             />
@@ -159,6 +212,7 @@ export default class Generation extends Component {
 
                         {this.props.generation.individuals.length > 0 && 
                             <GenerationSamplesPanel 
+                                ref="samples-panel"
                                 onClickGenerateSamples={this.generateSamples.bind(this)}
                             />
                         }

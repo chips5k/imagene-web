@@ -24,6 +24,17 @@ export default class GenerationSamplesPanel extends Component {
         );
     }
 
+    getFormData() {
+        return {
+            numSamples: this.refs.numSamples.value,
+            width: this.refs.width.value,
+            height: this.refs.height.value,
+            redThreshold: this.refs.redThreshold.value,
+            greenThreshold: this.refs.greenThreshold.value,
+            blueThreshold: this.refs.blueThreshold.value
+        }
+    }
+
     render() {
         return (
             <ContentSidebarPanel>

@@ -597,6 +597,7 @@ animation: spinner .6s linear infinite;
 
     .main__sidebar-main {
         z-index: 600;
+        overflow-y: auto;
     }
 
     .main__sidebar-blocker {
