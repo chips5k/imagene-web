@@ -114,46 +114,6 @@ export default class Generation extends Component {
                             <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'samples' ? 'main__content-top-nav-item--active' : ''}`}  onClick={this.changeActiveView.bind(this, 'samples')}>
                                 <i className="fa fa-image"></i> Samples
                             </a>
-
-                            
-
-                            
-                            <div className="visible-tall hidden-narrow" style={{marginLeft: 'auto', display: 'flex'}}>             
-                                {this.state.activeView === 'individuals' && this.props.generation.id === 1 && 
-                                    <a className="main__content-bottom-nav-item " href="" onClick={this.onClickGenerateIndividuals.bind(this)}>
-                                        <i className="fa fa-refresh"></i> {this.props.generation.individuals.length ? 'Regenerate' : 'Generate'}
-                                    </a>
-                                }
-
-                                {this.state.activeView === 'samples' &&
-                                    <div style={{display: 'flex'}}>
-                                        <a className="main__content-bottom-nav-item "href="" onClick={this.onClickGenerateSamples.bind(this)}>
-                                            <i className="fa fa-image"></i> Generate
-                                        </a>
-
-                                        
-                                    
-                                        <a href="" className="main__content-bottom-nav-item " onClick={this.toggleCoordinateType.bind(this)}>
-                                            <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
-                                            {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
-                                        </a>
-
-                                        <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
-                                        
-                                            <i className={`fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
-                                            <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
-                                            {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
-                                        </a>
-
-                                        {this.props.generation.samples.length > 0 && 
-                                            <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
-                                                <i className="fa fa-chevron-right"></i> Evolve
-                                            </a>
-                                        }
-                                    </div>
-                                }
-                            </div>
-
                         </ContentPrimaryTopNav>
                         <ContentPrimaryBody topNav bottomNav>
                             {this.state.activeView === 'individuals' && 
@@ -170,7 +130,7 @@ export default class Generation extends Component {
                                 />
                             }
                         </ContentPrimaryBody>
-                        <ContentPrimaryBottomNav classes="visible-short visible-narrow">
+                        <ContentPrimaryBottomNav>
 
                                 {this.state.activeView === 'individuals' && this.props.generation.id === 1 && 
                                     <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateIndividuals.bind(this)}>
@@ -179,7 +139,7 @@ export default class Generation extends Component {
                                 }
 
                                 {this.state.activeView === 'samples' &&
-                                <a className="main__content-bottom-nav-item" style={{marginRight: 'auto'}} href="" onClick={this.onClickGenerateSamples.bind(this)}>
+                                <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
                                     <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate
                                 </a>
                                 }
@@ -200,7 +160,7 @@ export default class Generation extends Component {
                                 }
 
                                 {this.props.generation.samples.length > 0 && 
-                                    <a className="main__content-bottom-nav-item" style={{marginLeft: 'auto'}} href="" onClick={this.evolveGeneration.bind(this)}>
+                                    <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
                                         <i className="main__content-bottom-nav-item-icon fa fa-sitemap"></i> Evolve
                                     </a>
                                 }
