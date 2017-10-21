@@ -29,6 +29,7 @@ class GenerationContainer extends Component {
                     generateSampleData={this.props.actions.generateSampleData}
                     evolveGeneration={this.props.actions.evolveIndividuals}
                     lastSampleId={this.props.lastSampleId}
+                    toggleSidebar={this.props.toggleSidebar}
                 />
             );
         }
