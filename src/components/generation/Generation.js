@@ -131,9 +131,7 @@ export default class Generation extends Component {
                                             <i className="fa fa-image"></i> Generate
                                         </a>
 
-                                        <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
-                                            <i className="fa fa-chevron-right"></i> Evolve
-                                        </a>
+                                        
                                     
                                         <a href="" className="main__content-bottom-nav-item " onClick={this.toggleCoordinateType.bind(this)}>
                                             <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
@@ -146,6 +144,12 @@ export default class Generation extends Component {
                                             <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
                                             {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
                                         </a>
+
+                                        {this.props.generation.samples.length > 0 && 
+                                            <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
+                                                <i className="fa fa-chevron-right"></i> Evolve
+                                            </a>
+                                        }
                                     </div>
                                 }
                             </div>
@@ -181,9 +185,7 @@ export default class Generation extends Component {
                                             <i className="fa fa-image"></i> Generate
                                         </a>
 
-                                        <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
-                                            <i className="fa fa-chevron-right"></i> Evolve
-                                        </a>
+                                        
                                     
                                         <a className="main__content-bottom-nav-item" href="" className="main__content-bottom-nav-item" onClick={this.toggleCoordinateType.bind(this)}>
                                             <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
@@ -195,6 +197,13 @@ export default class Generation extends Component {
                                             <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
                                             {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
                                         </a>
+
+                                        {this.props.generation.samples.length > 0 && 
+                                            <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
+                                                <i className="fa fa-chevron-right"></i> Evolve
+                                            </a>
+                                        }
+
                                     </div>
                                 }
                             </div>
