@@ -167,9 +167,8 @@ hr {
     font-size:0.8rem;
     padding-top:30px;
     overflow-y: auto;
-    padding-bottom:100px;
     position:absolute;
-    right: 400px;
+    right: 350px;
     top: 0px;
 }
 
@@ -180,22 +179,15 @@ hr {
 
 .main__sidebar {
     background: rgb(241, 243, 242);
-    width:400px;
-    overflow-y: auto;
+    width:350px;
     bottom:0px;
-    top:100px;
-    padding-bottom:100px;
+    top:0px;
     position:absolute;
     right: 0px;
-    top:0px;
+    overflow:hidden;
 }
 
 
-.main-sidebar-panel {
-    overflow-y: auto;
-    
-    
-}
 
 .main-sidebar-panel__header {
     color: white;
@@ -586,6 +578,7 @@ animation: spinner .6s linear infinite;
 .main__content {
     transition: right 500ms;
     left: 0px;
+    bottom: 70px;
 }
 
 .main__sidebar {
@@ -593,25 +586,32 @@ animation: spinner .6s linear infinite;
 }
 
 .main__body--content-sidebar-offscreen  .main__sidebar {
-  right: -370px;
+  right: -320px;
+  z-index: 300;
 }
 
 
 .main__body--content-sidebar-offscreen  .main__content {
-    right: 30px;
+    right: 0px;
     left: 0px;
 }
     
 
 @media (max-width: 1224px) {
 
-
+    .main__body--content-sidebar-offscreen  .main__content {
+        right: 20px;
+        left: 0px;
+    }
+    
+    
     .main {
         left: 0px;
     }
 
     .main__content {
         left: 0px;
+        right:0px;
     }
 }
 
@@ -639,8 +639,9 @@ animation: spinner .6s linear infinite;
 .main__content-sidebar-content-wrapper {
     position:absolute;
     top:0px;
-    bottom:0px;
+    bottom:70px;
     left:30px;
     right:0px;
     border-left: 1px solid #ddd;
+    overflow-y: auto;
 }
