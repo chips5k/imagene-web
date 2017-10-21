@@ -162,11 +162,6 @@ hr {
 }
 
 .main__content {
-    padding-left:45px;
-    padding-right:30px;
-    font-size:0.8rem;
-    padding-top:30px;
-    overflow-y: auto;
     position:absolute;
     right: 350px;
     top: 0px;
@@ -524,32 +519,6 @@ animation: spinner .6s linear infinite;
     font-size:0.8rem;
 }
 
-.generation-nav {
-    clear:both;
-    margin-bottom:2rem;
-}
-
-.generation-nav__toggle {
-    opacity: 0.5;
-    background: #BE5757;
-    color: white;
-    text-decoration: none;
-    padding:0.5rem;
-    border-radius: 0.4rem;
-    font-weight:bold;
-    font-size:0.6rem;
-    text-transform: uppercase;
-    margin:0.1rem;
-}
-
-.generation-nav__toggle--active {
-    opacity: 1;
-}
-
-.generation-nav__toggle--alternate {
-    background: #507DB1;
-}
-
 
 .sidebar-offscreen .main {
     left: 0px;
@@ -603,15 +572,9 @@ animation: spinner .6s linear infinite;
         right: 20px;
         left: 0px;
     }
-    
-    
-    .main {
-        left: 0px;
-    }
 
-    .main__content {
-        left: 0px;
-        right:0px;
+    .main__body-no-sidebar .main__content {
+        right: 0px !important;
     }
 }
 
@@ -645,3 +608,75 @@ animation: spinner .6s linear infinite;
     border-left: 1px solid #ddd;
     overflow-y: auto;
 }
+
+
+.main__content-top-nav {
+    position:absolute;
+    top:0px;
+    height:40px;
+    background: #eee;
+    left:0px;
+    right:0px;
+    position:absolute;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #ccc;
+}
+
+.main__content-top-nav-item {
+    padding: 0.7rem;
+    color: #222;
+    display:block;
+    text-decoration: none;
+    border-right: 1px solid #ccc;
+}
+
+
+.main__content-top-nav-item--active {
+    background: #ccc;
+}
+    
+
+.main__content-bottom-nav {
+    bottom:0px;
+    left:0px;
+    right:0px;
+    height:40px;
+    background: #eee;
+    position:absolute;
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid #ccc;
+}
+
+.main__content-bottom-nav-item {
+    padding: 0.7rem;
+    color: #222;
+    display:block;
+    text-decoration: none;
+    border-right: 1px solid #ccc;
+}
+
+
+.main__content-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    position:absolute;
+    top:40px;
+    bottom:40px;
+    padding-left:45px;
+    padding-right:30px;
+    font-size:0.8rem;
+    padding-top:30px;
+}
+
+.main__content-body--no-top-nav {
+    top: 0px;
+    
+}
+
+.main__content-body--no-bottom-nav {
+    bottom: 0px;
+}
+
+

@@ -5,11 +5,13 @@ import {
     ContentHeader,
     ContentBody,
     ContentPrimary,
+    ContentPrimaryTopNav,
+    ContentPrimaryBottomNav,
+    ContentPrimaryBody,
     ContentSidebar
 } from '../content';
 
 import { 
-    GenerationViewControls,
     GenerationSamples,
     GenerationIndividuals,
     GenerationEvolutionPanel,
@@ -48,19 +50,24 @@ export default class Generation extends Component {
         this.props.evolveGeneration(this.props.generation);
     }
 
-    changeActiveView(view) {
+    changeActiveView(view, e) {
+        console.log(view);
+        e.preventDefault();
         this.setState({
             activeView: view
         });
     }   
-    changeCoordinateType(coordinateType) {
+
+    toggleCoordinateType(e) {
+        e.preventDefault();
         this.setState({
-            coordinateType: coordinateType
+            coordinateType: this.state.coordinateType === 'polar' ? 'cartesian' : 'polar'
         });
     }
-    changeSymmetry(symmetry) {
+    toggleSymmetry(e) {
+        e.preventDefault();
         this.setState({
-            symmetric: symmetry === 'symmetric'
+            symmetric: !this.state.symmetric
         });
     }
 
@@ -71,6 +78,11 @@ export default class Generation extends Component {
         });
     }
 
+    
+    determineClass = (className, property, value) => {
+        return className + (this.state[property] === value ? ' main__content-top-nav-item--active' : '');
+    }
+
     render() {
 
         return (
@@ -78,30 +90,47 @@ export default class Generation extends Component {
                 <ContentHeader toggleSidebar={this.props.toggleSidebar}>
                     Generation {this.props.generation.id}
                 </ContentHeader>
-                <ContentBody contentSidebarVisible={this.state.contentSidebarVisible}>
+                <ContentBody contentSidebarVisible={this.state.contentSidebarVisible} sidebar={true}>
                     <ContentPrimary>
-                        <GenerationViewControls 
-                            view={this.state.activeView} 
-                            symmetry={this.state.symmetric ? 'symmetric' : 'asymmetric'} 
-                            coordinateType={this.state.coordinateType} 
-                            onClickView={this.changeActiveView.bind(this)} 
-                            onClickCoordinateType={this.changeCoordinateType.bind(this) }
-                            onClickSymmetry={this.changeSymmetry.bind(this)} 
-                        />
+                        <ContentPrimaryTopNav>
 
-                        {this.state.activeView === 'individuals' && 
-                            <GenerationIndividuals individuals={this.props.generation.individuals}/>
-                        }
-                        {this.state.activeView === 'samples' &&
-                            <GenerationSamples
-                                 samples={this.props.generation.samples} 
-                                 coordinateType={this.state.coordinateType} 
-                                 symmetric={this.state.symmetric}
-                                 increaseSampleFitness={this.props.increaseSampleFitness}
-                                 decreaseSampleFitness={this.props.decreaseSampleFitness}
-                                 generateSampleData={this.props.generateSampleData}
-                            />
-                        }
+                            <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'individuals' ? 'main__content-top-nav-item--active' : ''}`} onClick={this.changeActiveView.bind(this, 'individuals')}>
+                                <i className="fa fa-users"></i> Individuals
+                            </a>
+                            <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'samples' ? 'main__content-top-nav-item--active' : ''}`}  onClick={this.changeActiveView.bind(this, 'samples')}>
+                                <i className="fa fa-image"></i> Samples
+                            </a>
+
+                        </ContentPrimaryTopNav>
+                        <ContentPrimaryBody topNav bottomNav>
+                            {this.state.activeView === 'individuals' && 
+                                <GenerationIndividuals individuals={this.props.generation.individuals}/>
+                            }
+                            {this.state.activeView === 'samples' &&
+                                <GenerationSamples
+                                    samples={this.props.generation.samples} 
+                                    coordinateType={this.state.coordinateType} 
+                                    symmetric={this.state.symmetric}
+                                    increaseSampleFitness={this.props.increaseSampleFitness}
+                                    decreaseSampleFitness={this.props.decreaseSampleFitness}
+                                    generateSampleData={this.props.generateSampleData}
+                                />
+                            }
+                        </ContentPrimaryBody>
+                        <ContentPrimaryBottomNav>
+                            <a href="" className="main__content-bottom-nav-item" onClick={this.toggleCoordinateType.bind(this)}>
+                                <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
+                                {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
+                            </a>
+            
+                            <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
+                               
+                                <i className={`fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
+                                <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
+                                {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
+                            </a>
+                            
+                        </ContentPrimaryBottomNav>
                     </ContentPrimary>
                     <ContentSidebar contentSidebarVisible={this.state.contentSidebarVisible} toggleContentSidebar={this.toggleContentSidebar.bind(this)}>
                         {this.props.generation.id === 1 && 
