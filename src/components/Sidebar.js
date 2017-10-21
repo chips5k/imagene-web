@@ -31,9 +31,9 @@ export default function Sidebar(props) {
                 <div className="sidebar__subheader-title">
                     Navigation
                 </div>
-                <div className="sidebar__subheader-icon">
+                <a href="" className="sidebar__subheader-icon" onClick={props.toggleSidebar}>
                     <i className="fa fa-bars" />   
-                </div>
+                </a>
             </div>
 
             <div className="sidebar__content">
@@ -43,23 +43,20 @@ export default function Sidebar(props) {
                         <i className="sidebar__nav-group-toggle fa fa-angle-down"></i>
                     </div>
                     <Link to="/" className={determineClass("/")}>
-                        <i className="sidebar__nav-icon fa fa-home" /> Home
+                        <i className="sidebar__nav-icon fa fa-home" /> <span className="sidebar__nav-label">Home</span>
                     </Link>  
-                    <Link to="/help" className={determineClass("/help")}>
-                        <i className="sidebar__nav-icon fa fa-question " /> Help
-                    </Link>
 
                     {props.generations.length === 0 && 
                     <a href="" onClick={onClickNewGeneration} className={determineClass()} >
-                        <i className="sidebar__nav-icon fa fa-upload" /> New Generation
+                        <i className="sidebar__nav-icon fa fa-sitemap" /> <span className="sidebar__nav-label">New Generation</span>
                     </a>}
 
                     <Link to="/import" className={determineClass("/import")}>
-                        <i className="sidebar__nav-icon fa fa-download" /> Import
+                        <i className="sidebar__nav-icon fa fa-download" /> <span className="sidebar__nav-label">Import</span>
                     </Link>
                     
                     <Link to="/export" className={determineClass("/export")}>
-                        <i className="sidebar__nav-icon fa fa-upload" /> Export
+                        <i className="sidebar__nav-icon fa fa-upload" /> <span className="sidebar__nav-label">Export</span>
                     </Link>
                 </div>
 
@@ -72,7 +69,10 @@ export default function Sidebar(props) {
 
                         {props.generations.map(n => 
                             <Link to={"/generation/" + n.id}  className={determineClass("/generation/" + n.id)} key={n.id}>
-                                <i className="sidebar__nav-icon fa fa-sitemap" /> Generation {n.id}
+                                <i className="sidebar__nav-icon">
+                                    #{n.id}    
+                                </i>
+                                <span className="sidebar__nav-label">Generation {n.id}</span>
                             </Link>
                         )}
                     </div>

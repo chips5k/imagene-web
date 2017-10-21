@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import Sample1 from '../assets/img/samples/1.png';
+import {
+    Content,
+    ContentHeader,
+    ContentBody,
+    ContentPrimary,
+    ContentSidebar
+} from './content';
+
 
 export default class Home extends Component {
 
     render() {
         return (
-            <div className="main">
-                <div className="main__header">
-                    <div className="main__title">Home</div>
-                </div>
-                <div className="main__body"> 
-                    <div className="main__content">
+            <Content>
+                <ContentHeader toggleSidebar={this.props.toggleSidebar}>
+                    Home
+                </ContentHeader>
+                <ContentBody>
+                    <ContentPrimary>
                         <div className="home hbox">
                             <div style={{marginRight: 20, minWidth: 300}}>
                                 <h2>Get Started</h2>
@@ -46,11 +54,9 @@ export default class Home extends Component {
                                 <div className="media__caption" >Sample output of Imagene</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            
+                    </ContentPrimary>
+                </ContentBody>
+            </Content>        
         );
     }
 }

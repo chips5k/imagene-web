@@ -28,11 +28,6 @@ import * as actionCreators from './actionCreators';
 //Our components
 import Layout from './components/Layout';
 
-//Our containers
-import Generation from './containers/Generation';
-import Home from './containers/Home';
-import Sidebar from './containers/Sidebar';
-
 
 // Create a history of your choosing (we're using a browser history in this case)
 export const history = createHistory();
@@ -82,7 +77,7 @@ let partiallyAppliedActionCreators = {
     generateIndividuals: actionCreators.generateIndividuals.bind(null, expressionBuilder),
     generateSamples: actionCreators.generateSamples.bind(null, getRandomReal),
     generateSampleData: actionCreators.generateSampleData.bind(null, addToWorkerQueue),
-    evolveIndividuals: actionCreators.evolveIndividuals.bind(null, individualsEvolver)
+    evolveIndividuals: actionCreators.evolveIndividuals.bind(null, individualsEvolver, push)
 }
 
 
@@ -95,12 +90,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const AppContainer = connect(mapStateToProps, mapDispatchToProps)((props) => {
     return (
         <ConnectedRouter history={history}>
-            <Layout>
-                <Sidebar {...props} />
-                {/* explicitly calling render on these routes in order to pass the match object to the routed component */}
-                <Route exact path="/" render={({ match }) => <Home match={match} {...props} />} />
-                <Route exact path="/generation/:id" render={({ match }) => <Generation match={match} {...props}/>} />
-            </Layout> 
+            <Layout {...props} />
         </ConnectedRouter>
     );
 });

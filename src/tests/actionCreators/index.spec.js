@@ -106,7 +106,17 @@ describe('actions', () => {
                 return individuals.map((n) => ({...n, expression: ['b']}));
             }
 
-            expect(evolveIndividuals(evolver, generation)).toEqual({
+            const redirect = (location) => {
+                return {
+                    location
+                }
+            };
+
+            const dispatch = jest.fn();
+
+            evolveIndividuals(evolver, redirect, generation)(dispatch);
+
+            expect(dispatch).toHaveBeenCalledWith({
                 type: 'EVOLVE_INDIVIDUALS',
                 generationId: 2,
                 individuals: [
@@ -129,6 +139,10 @@ describe('actions', () => {
                         fitness: 11
                     }
                 ]
+            });
+
+            expect(dispatch).toHaveBeenLastCalledWith({
+                location: '/generation/2'
             });
         });
     });

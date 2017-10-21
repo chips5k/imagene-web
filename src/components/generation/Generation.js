@@ -67,7 +67,7 @@ export default class Generation extends Component {
 
         return (
             <Content>
-                <ContentHeader>
+                <ContentHeader onClickSidebarToggle={this.props.toggleSidebar}>
                     Generation {this.props.generation.id}
                 </ContentHeader>
                 <ContentBody>

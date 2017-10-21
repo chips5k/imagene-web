@@ -553,3 +553,36 @@ animation: spinner .6s linear infinite;
 .generation-nav__toggle--alternate {
     background: #507DB1;
 }
+
+
+.sidebar-offscreen .main {
+    left: 0px;
+}
+
+.sidebar-offscreen .sidebar {
+    left: -350px;
+}
+
+.main__sidebar-toggle {
+    display:block;
+    color: white;
+}
+
+.sidebar {
+    transition: left 500ms;
+    z-index: 500;
+}
+
+.main {
+    transition: left 500ms;
+    z-index: 0;    
+}
+
+@media (max-width: 1224px) {
+
+
+    .main {
+        left: 0px;
+    }
+
+}

@@ -32,7 +32,6 @@ class GenerationContainer extends Component {
                 />
             );
         }
-
         return <div />;           
          
     }
@@ -59,6 +58,8 @@ const mapStateToProps = (state, ownProps) => {
                 blueIndividual: state.individuals.byId[sample.blueIndividualId]
             }
         });
+
+        generation.samples.reverse();
     }
     
     return {

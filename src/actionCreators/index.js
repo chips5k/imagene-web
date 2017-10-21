@@ -42,16 +42,23 @@ export const generateIndividuals = (expressionBuilder, numIndividuals, minExpres
  * @param {integer} generationId the generation id of the received individuals 
  * @param {array} individuals the individuals to evolve 
  */
-export const evolveIndividuals = (individualsEvolver, generation) => {
+export const evolveIndividuals = (individualsEvolver, redirect, generation) => {
 
     let generationId = generation.id + 1;
     let lastIndividualId = generation.individuals.reduce((a, n) => Math.max(a, n.id), 0);
 
-    return {
-        type: 'EVOLVE_INDIVIDUALS',
-        generationId,
-        individuals: individualsEvolver(generation.individuals).map(n => { return {...n, generationId, id: ++lastIndividualId }; })
-    };
+    return (dispatch) => {
+        
+        dispatch({
+            type: 'EVOLVE_INDIVIDUALS',
+            generationId,
+            individuals: individualsEvolver(generation.individuals).map(n => { return {...n, generationId, id: ++lastIndividualId }; })
+        });
+
+        dispatch(redirect(`/generation/${generationId}`));
+
+    }
+    
 };
 
 /**
