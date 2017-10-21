@@ -2,7 +2,7 @@ import React from 'react';
 
 const ContentBodyPrimaryBottomNav = (props) => {
     return (
-        <div className="main__content-bottom-nav">
+        <div className={`${props.classes} main__content-bottom-nav`}>
             {props.children}
         </div>
     );
