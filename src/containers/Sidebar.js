@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 
 function SidebarContainer(props) {
     return <Sidebar location={props.location} generations={props.generations} onClickNewGeneration={props.actions.createInitialGeneration}
-    toggleSidebar={props.toggleSidebar} />;
+    toggleSidebar={props.toggleSidebar} redirect={props.actions.redirect} />;
 }
 
 const mapStateToProps = (state, ownProps) => {

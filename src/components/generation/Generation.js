@@ -87,8 +87,9 @@ export default class Generation extends Component {
 
         return (
             <Content>
-                <ContentHeader toggleSidebar={this.props.toggleSidebar}>
+                <ContentHeader toggleSidebar={this.props.toggleSidebar} toggleContentSidebar={this.toggleContentSidebar.bind(this)} contentSidebar>
                     Generation {this.props.generation.id}
+                    
                 </ContentHeader>
                 <ContentBody contentSidebarVisible={this.state.contentSidebarVisible} sidebar={true}>
                     <ContentPrimary>
@@ -100,6 +101,20 @@ export default class Generation extends Component {
                             <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'samples' ? 'main__content-top-nav-item--active' : ''}`}  onClick={this.changeActiveView.bind(this, 'samples')}>
                                 <i className="fa fa-image"></i> Samples
                             </a>
+
+                            <div className="visible-tall hidden-narrow" style={{marginLeft: 'auto', display: 'flex'}}>             
+                                <a href="" className="main__content-bottom-nav-item " onClick={this.toggleCoordinateType.bind(this)}>
+                                    <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
+                                    {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
+                                </a>
+
+                                <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
+                                
+                                    <i className={`fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
+                                    <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
+                                    {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
+                                </a>
+                            </div>
 
                         </ContentPrimaryTopNav>
                         <ContentPrimaryBody topNav bottomNav>
@@ -118,21 +133,23 @@ export default class Generation extends Component {
                             }
                         </ContentPrimaryBody>
                         <ContentPrimaryBottomNav>
-                            <a href="" className="main__content-bottom-nav-item" onClick={this.toggleCoordinateType.bind(this)}>
-                                <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
-                                {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
-                            </a>
-            
-                            <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
-                               
-                                <i className={`fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
-                                <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
-                                {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
-                            </a>
+                            <div className="visible-short visible-narrow">
+                                <a href="" className="main__content-bottom-nav-item" onClick={this.toggleCoordinateType.bind(this)}>
+                                    <i className={`fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
+                                    {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
+                                </a>
+                
+                                <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
+                                
+                                    <i className={`fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
+                                    <i className={`fa ${this.state.symmetric ? 'fa-angle-right' : 'fa-angle-left'}`}></i> 
+                                    {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
+                                </a>
+                            </div>
                             
                         </ContentPrimaryBottomNav>
                     </ContentPrimary>
-                    <ContentSidebar contentSidebarVisible={this.state.contentSidebarVisible} toggleContentSidebar={this.toggleContentSidebar.bind(this)}>
+                    <ContentSidebar>
                         {this.props.generation.id === 1 && 
                             <GenerationIndividualsPanel 
                                 config={this.props.config} 
