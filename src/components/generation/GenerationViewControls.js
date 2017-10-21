@@ -57,10 +57,6 @@ export default class GenerationViewControls extends Component {
                         {' '}
                         Asymmetric
                     </a>
-                    
-                    <a href="" onClick={this.props.toggleContentSidebar}>
-                        <i className="fa fa-cog"></i>
-                    </a>
                 </div>
                 <div style={{clear: 'both'}}></div>
             </div>

@@ -87,7 +87,6 @@ export default class Generation extends Component {
                             onClickView={this.changeActiveView.bind(this)} 
                             onClickCoordinateType={this.changeCoordinateType.bind(this) }
                             onClickSymmetry={this.changeSymmetry.bind(this)} 
-                            toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                         />
 
                         {this.state.activeView === 'individuals' && 
@@ -104,7 +103,7 @@ export default class Generation extends Component {
                             />
                         }
                     </ContentPrimary>
-                    <ContentSidebar toggleContentSidebar={this.toggleContentSidebar.bind(this)}>
+                    <ContentSidebar contentSidebarVisible={this.state.contentSidebarVisible} toggleContentSidebar={this.toggleContentSidebar.bind(this)}>
                         {this.props.generation.id === 1 && 
                             <GenerationIndividualsPanel 
                                 config={this.props.config} 
