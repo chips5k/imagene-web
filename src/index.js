@@ -8,7 +8,6 @@ import { connect, Provider } from 'react-redux';
 
 //Router dependencies
 import createHistory from 'history/createBrowserHistory';
-import { Route } from 'react-router';
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 
 //Thunk for multi dispatch

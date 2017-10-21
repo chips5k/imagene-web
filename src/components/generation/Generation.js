@@ -24,7 +24,8 @@ export default class Generation extends Component {
         this.state = {
             activeView: 'individuals',
             coordinateType: 'cartesian',
-            symmetric: false
+            symmetric: false,
+            contentSidebarVisible: true
         };
     }
 
@@ -63,14 +64,21 @@ export default class Generation extends Component {
         });
     }
 
+    toggleContentSidebar(e) {
+        e.preventDefault();
+        this.setState({
+            contentSidebarVisible: !this.state.contentSidebarVisible
+        });
+    }
+
     render() {
 
         return (
             <Content>
-                <ContentHeader onClickSidebarToggle={this.props.toggleSidebar}>
+                <ContentHeader toggleSidebar={this.props.toggleSidebar}>
                     Generation {this.props.generation.id}
                 </ContentHeader>
-                <ContentBody>
+                <ContentBody contentSidebarVisible={this.state.contentSidebarVisible}>
                     <ContentPrimary>
                         <GenerationViewControls 
                             view={this.state.activeView} 
@@ -79,6 +87,7 @@ export default class Generation extends Component {
                             onClickView={this.changeActiveView.bind(this)} 
                             onClickCoordinateType={this.changeCoordinateType.bind(this) }
                             onClickSymmetry={this.changeSymmetry.bind(this)} 
+                            toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                         />
 
                         {this.state.activeView === 'individuals' && 
@@ -95,7 +104,7 @@ export default class Generation extends Component {
                             />
                         }
                     </ContentPrimary>
-                    <ContentSidebar>
+                    <ContentSidebar toggleContentSidebar={this.toggleContentSidebar.bind(this)}>
                         {this.props.generation.id === 1 && 
                             <GenerationIndividualsPanel 
                                 config={this.props.config} 

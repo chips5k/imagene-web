@@ -5,7 +5,6 @@ import {
     ContentHeader,
     ContentBody,
     ContentPrimary,
-    ContentSidebar
 } from './content';
 
 

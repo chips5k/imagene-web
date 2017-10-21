@@ -26,20 +26,35 @@ class Layout extends Component {
 
     handleResize() {
         if(window.innerWidth > 1224) {
-            this.setState({
-                sidebar: true
-            });
+            if(this.state.manualToggle === false) {
+                this.setState({
+                    sidebar: true
+                });
+            }
         } else {
-            this.setState({
-                sidebar: false
-            });
+            if(this.state.manualToggle === false) {
+                this.setState({
+                    sidebar: false
+                });
+            }
         }
     };
 
     toggleSidebar(e) {
         e.preventDefault();
+
+        //Determine if user has reverted to default state, and clear the manual toggle state
+        let manualToggle = true;
+        if(window.innerWidth >= 1224 && this.state.sidebar === false) {
+            manualToggle = false;
+        };
+
+        if(window.innerWidth < 1224 && this.state.sidebar === true) {
+            manualToggle = false;
+        }
+
         this.setState({
-            manualToggle: true,
+            manualToggle: manualToggle,
             sidebar: !this.state.sidebar
         });
     }
