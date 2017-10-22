@@ -13,9 +13,9 @@ export const tokenEvaluators =  {
             '*': (a, b) => a * b, 
             '^': (a, b) => {
                 if(a < 0 && (Math.abs(a) - parseInt(Math.abs(a), 10) >= 0)) {
-                    return Math.pow(Math.abs(a === 0 ? a + 0.0001 : a).toFixed(5), b.toFixed(5));
+                    return Math.pow(Math.abs(a === 0 ? a + 0.0001 : a), b);
                 } else {
-                    return Math.pow(a.toFixed(5), b.toFixed(5));
+                    return Math.pow(a, b);
                 }
             },
             '%': (a, b) => {
@@ -47,7 +47,7 @@ export const tokenCreators = {
         '*': () => ['*'], 
         '%': () => ['%'],
         '^': () => ['^'],
-        //'CIR': () => ['CIR']
+        'CIR': () => ['CIR']
     },
     singleOperators: {
         'sqrt': () => ['sqrt'],
@@ -64,9 +64,15 @@ export const tokenCreators = {
         'PI': () => ['PI'],
         'PIx': () => ['PI', 'pX', '*'],
         'PIy': () => ['PI', 'pY','*'],
-        'rand': (r) => [r(0, 255).toFixed(5)],
-        'randX': (r) => ['pX', r(0, 255).toFixed(5), '*'],
-        'randY': (r) => ['pY', r(0, 255).toFixed(5), '*'],
+        'cosX': () => ['pX', 'cos'],
+        'cosY': () => ['pY', 'cos'],
+        'sinX': () => ['pX', 'sin'],
+        'sinY': () => ['pY', 'sin'],
+        'tanX': () => ['pX', 'tan'],
+        'tanY': () => ['pY', 'tan'],
+        'rand': (r) => [r(0, 255)],
+        'randX': (r) => ['pX', r(0, 255), '*'],
+        'randY': (r) => ['pY', r(0, 255), '*'],
         'CIR': () => ['pX', 'pY', 'CIR']
     }
 };
@@ -129,7 +135,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
             } else if(tokenEvaluators.operands.hasOwnProperty(n)) {
                 let r = tokenEvaluators.operands[n](x, y);
                 if(isNaN(r)) {
-                    console.log('Operand failure - NaN', tokenEvaluators.operands[n], x, y);
+                    //console.log('Operand failure - NaN', tokenEvaluators.operands[n], x, y);
                     r = Math.min(x, y);
                 } else if(!isFinite(r)) {
                     //console.log('Operand failure - infinite', tokenEvaluators.operands[n], x, y);
@@ -148,7 +154,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                 r = f(a);
 
                 if(isNaN(r)) {
-                    console.log('Single Operator failure - NaN', a, f);
+                    //console.log('Single Operator failure - NaN', a, f);
                     r = a;
                 } else if(!isFinite(r)) {
                     //console.log('Single Operator failure - infinite', a, f);
@@ -162,7 +168,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                 r = f(a, b);
 
                 if(isNaN(r)) {
-                    console.log('Double Operator failure - NaN', a, b, f, );
+                    //console.log('Double Operator failure - NaN', a, b, f, );
                     r = Math.min(a, b);
                 } else if(!isFinite(r)) {
                     //console.log('Double Operator failure - infinite', a, b, f, );
