@@ -13,7 +13,7 @@ export const tokenEvaluators =  {
             '*': (a, b) => a * b, 
             '^': (a, b) => {
                 if(a < 0 && (Math.abs(a) - parseInt(Math.abs(a), 10) >= 0)) {
-                    return Math.pow(Math.abs(a === 0 ? a + 0.0001 : a), b);
+                    return Math.pow(Math.abs(a === 0 ? a + 0.000000001 : a), b);
                 } else {
                     return Math.pow(a, b);
                 }
@@ -137,7 +137,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                 let r = tokenEvaluators.operands[n](x, y);
                 if(isNaN(r)) {
                     //console.log('Operand failure - NaN', tokenEvaluators.operands[n], x, y);
-                    r = Math.min(x, y);
+                    r = Math.max(x, y);
                 } else if(!isFinite(r)) {
                     //console.log('Operand failure - infinite', tokenEvaluators.operands[n], x, y);
                     //r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
@@ -172,7 +172,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
 
                 if(isNaN(r)) {
                     //console.log('Double Operator failure - NaN', a, b, f, );
-                    r = Math.min(a, b);
+                    r = Math.max(a, b);
                 } else if(!isFinite(r)) {
                     //console.log('Double Operator failure - infinite', a, b, f, );
                     //r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
