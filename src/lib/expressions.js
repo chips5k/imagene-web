@@ -140,7 +140,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                 r = f(a);
 
                 if(isNaN(r) || !isFinite(r)) {
-                    console.log('Single Operator failure', a, f);
+                    //console.log('Single Operator failure', a, f);
                     r = a;
                 }
                 operandStack.push(r);
@@ -152,7 +152,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
 
                 if(isNaN(r) || !isFinite(r)) {
                    //console.log('Double Operator failure', f, a, b);
-                   r = Math.max(a, b);
+                   r = Math.min(a, b);
                 }
                 operandStack.push(r);
 
