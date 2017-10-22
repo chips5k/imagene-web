@@ -50,6 +50,10 @@ export default class Generation extends Component {
         e.preventDefault();
         const data = this.refs['samples-panel'].getFormData();
         this.props.generateSamples(this.props.generation, data.numSamples, data.width, data.height, data.redThreshold, data.greenThreshold, data.blueThreshold, this.props.lastSampleId);
+        this.setState({
+            activeView: 'samples'
+        });
+
     }
     
     generateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
@@ -61,7 +65,11 @@ export default class Generation extends Component {
 
     evolveGeneration(e) {
         e.preventDefault();
+        this.setState({
+            activeView: 'individuals'
+        });
         this.props.evolveGeneration(this.props.generation);
+        
     }
 
     changeActiveView(view, e) {
@@ -139,6 +147,12 @@ export default class Generation extends Component {
                                     </a>
                                 }
 
+                                {this.state.activeView === 'individuals' &&  this.props.generation.individuals.length > 0 && 
+                                    <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
+                                        <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Samples
+                                    </a>
+                                }
+
                                 {this.state.activeView === 'samples' &&
                                 <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
                                     <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate
@@ -175,6 +189,7 @@ export default class Generation extends Component {
                                 config={this.props.config} 
                                 generation={this.props.generation}
                                 onClickGenerateIndividuals={this.generateIndividuals.bind(this)}
+                                toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                             />
                         }
 
@@ -182,11 +197,14 @@ export default class Generation extends Component {
                             <GenerationSamplesPanel 
                                 ref="samples-panel"
                                 onClickGenerateSamples={this.generateSamples.bind(this)}
+                                toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                             />
                         }
                         
                         {this.props.generation.samples.length > 0 && 
-                           <GenerationEvolutionPanel onClickEvolveGeneration={this.evolveGeneration.bind(this)} />
+                           <GenerationEvolutionPanel 
+                            onClickEvolveGeneration={this.evolveGeneration.bind(this)}
+                            toggleContentSidebar={this.toggleContentSidebar.bind(this)} />
                         }
                     </ContentSidebar>
                 </ContentBody>

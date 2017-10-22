@@ -12,7 +12,7 @@ import ColourRangeInput from '../controls/ColourRangeInput';
 
 export default class GenerationSamplesPanel extends Component {
     
-    onClickGenerateSamples() {
+    onClickGenerateSamples(e) {
         this.props.onClickGenerateSamples(
             this.refs.numSamples.value,
             this.refs.width.value,
@@ -21,6 +21,7 @@ export default class GenerationSamplesPanel extends Component {
             this.refs.greenThreshold.value,
             this.refs.blueThreshold.value
         );
+        this.props.toggleContentSidebar(e);
     }
 
     getFormData() {
@@ -41,11 +42,11 @@ export default class GenerationSamplesPanel extends Component {
                     <i className="fa fa-image"></i> Generate Samples
                 </ContentSidebarPanelHeader>
                 <ContentSidebarPanelBody>
-                    <div className="hbox">
-                        <FormControl label="No. Samples">
-                            <StepperInput ref="numSamples" value={3} />  
-                        </FormControl>
+                    <FormControl label="No. Samples">
+                        <StepperInput ref="numSamples" value={3} />  
+                    </FormControl>
 
+                    <div className="hbox">
                         <FormControl label="Width">
                             <input className="text-input" type="text" ref="width" defaultValue={320}/>
                         </FormControl>
@@ -69,7 +70,7 @@ export default class GenerationSamplesPanel extends Component {
                             <ColourRangeInput ref="blueThreshold"  colour="blue"  minValue={0} maxValue={255} />  
                         </FormControl>
                     </div>
-                    <button className="main-sidebar-panel__action-button" onClick={this.onClickGenerateSamples.bind(this)}>
+                    <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
                         <i className="fa fa-plus"></i> Generate
                     </button> 
                 </ContentSidebarPanelBody>

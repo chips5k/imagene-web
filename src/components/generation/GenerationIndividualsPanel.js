@@ -11,12 +11,13 @@ import StepperInput from '../controls/StepperInput';
 
 export default class GenerationIndividualsPanel extends Component {
 
-    onClickGenerateIndividuals() {
+    onClickGenerateIndividuals(e) {
         this.props.onClickGenerateIndividuals(
             this.refs.size.value,
             this.refs.minDepth.value,
             this.refs.maxDepth.value
         );
+        this.props.toggleContentSidebar(e);
     }
 
     getFormData() {
@@ -34,11 +35,12 @@ export default class GenerationIndividualsPanel extends Component {
                     <i className="fa fa-sitemap"></i> Population
                 </ContentSidebarPanelHeader>
                 <ContentSidebarPanelBody>
+                
+                    <FormControl label="Population Size">
+                        <StepperInput ref="size" value={this.props.config.numberOfIndividuals} minValue={0} maxValue={24}/>  
+                    </FormControl>
+                    
                     <div className="hbox">
-                        <FormControl label="Population Size">
-                            <StepperInput ref="size" value={this.props.config.numberOfIndividuals} minValue={0} maxValue={24}/>  
-                        </FormControl>
-            
                         <FormControl label="Min Depth">
                             <StepperInput ref="minDepth" value={this.props.config.minExpressionDepth} minValue={0}  maxValue={24} />
                         </FormControl>
@@ -46,9 +48,8 @@ export default class GenerationIndividualsPanel extends Component {
                         <FormControl label="Max Depth" last>
                             <StepperInput  ref="maxDepth" value={this.props.config.maxExpressionDepth} minValue={0}  maxValue={24} />
                         </FormControl>
-                        
                     </div>
-                    <button className="main-sidebar-panel__action-button" onClick={this.onClickGenerateIndividuals.bind(this)}>
+                    <button className="button button--primary" onClick={this.onClickGenerateIndividuals.bind(this)}>
                         <i className="fa fa-refresh"></i> {this.props.generation.individuals.length > 0 ? 'Regenerate' : 'Generate'}
                     </button>
                 </ContentSidebarPanelBody>

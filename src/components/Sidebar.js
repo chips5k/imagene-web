@@ -51,10 +51,7 @@ class Sidebar extends Component {
 
                     <div className="sidebar__content">
                         <div className="sidebar__nav-group">
-                            <div className="sidebar__nav-group-header">
-                                <div className="sidebar__nav-group-title">Getting Started</div>
-                                <i className="sidebar__nav-group-toggle fa fa-angle-down"></i>
-                            </div>
+                            
                             <a href="" onClick={this.onClickLink.bind(this, "/")} className={this.determineClass("/")}>
                                 <i className="sidebar__nav-icon fa fa-home" /> <span className="sidebar__nav-label">Home</span>
                             </a>  
