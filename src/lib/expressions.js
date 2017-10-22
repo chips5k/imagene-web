@@ -7,10 +7,20 @@ export const tokenEvaluators =  {
         doubleOperators: {
             '+': (a, b) => a + b,
             '-': (a, b) => a - b,
-            '/': (a, b) => a / b,
+            '/': (a, b) => {
+                return a / (b === 0 ? b + 0.000000001 : b);
+            },
             '*': (a, b) => a * b, 
-            '^': (a, b) => Math.pow(a, b),
-            '%': (a, b) => a % b,
+            '^': (a, b) => {
+                if(a < 0 && (Math.abs(a) - parseInt(Math.abs(a), 10) >= 0)) {
+                    return Math.pow(Math.abs(a === 0 ? a + 0.0001 : a).toFixed(5), b.toFixed(5));
+                } else {
+                    return Math.pow(a.toFixed(5), b.toFixed(5));
+                }
+            },
+            '%': (a, b) => {
+                return a % (b === 0 ? b + 0.000000001 : b);
+            },
             'CIR': (a, b) => Math.sin(Math.sqrt(a * a + b * b) * Math.PI / 180.00)
         },
         singleOperators: {
@@ -36,33 +46,27 @@ export const tokenCreators = {
         '/': () => ['/'],
         '*': () => ['*'], 
         '%': () => ['%'],
+        '^': () => ['^'],
+        //'CIR': () => ['CIR']
     },
     singleOperators: {
+        'sqrt': () => ['sqrt'],
         'sin': ()=> ['sin'],
         'cos': ()=> ['cos'],
         'tan': ()=> ['tan'],
+        'log': () => ['log'],
+        'double': () => ['double'],
+        'triple': () => ['triple']
     },
     operands: {
         'pX': () => ['pX'],
         'pY': () => ['pY'],
         'PI': () => ['PI'],
-        'xLog': ()=> ['pY', '1', '+', 'log'],
-        'yLog': ()=> ['pX', '1', '+', 'log'],
-        'xSqrt': ()=> ['pY', 'sqrt'],
-        'yDouble': ()=> ['pY', 'double'],
-        'yTriple': ()=> ['pY', 'triple'],
-        'ySqrt': ()=> ['pX', 'sqrt'],
-        'xDouble': ()=> ['pX', 'double'],
-        'xTriple': ()=> ['pX', 'triple'],
         'PIx': () => ['PI', 'pX', '*'],
         'PIy': () => ['PI', 'pY','*'],
-        'cosY': () => ['pY', 'cos'],
-        'cosX': () => ['pX', 'cos'],
-        'sinY': () => ['pY', 'sin'],
-        'sinX': () => ['pX', 'sin'],
-        'rand': (r) => [r(0, 255)],
-        'randX': (r) => [r(0, 255), 'pX', '*'],
-        'randy': (r) => [r(0, 255), 'pY', '*'],
+        'rand': (r) => [r(0, 255).toFixed(5)],
+        'randX': (r) => ['pX', r(0, 255).toFixed(5), '*'],
+        'randY': (r) => ['pY', r(0, 255).toFixed(5), '*'],
         'CIR': () => ['pX', 'pY', 'CIR']
     }
 };
@@ -124,9 +128,13 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                 operatorStack.push(tokenEvaluators.singleOperators[n]);
             } else if(tokenEvaluators.operands.hasOwnProperty(n)) {
                 let r = tokenEvaluators.operands[n](x, y);
-                if(isNaN(r) || !isFinite(r)) {
-                    console.log('Operand failure');
-                    r = Math.max(x, y);
+                if(isNaN(r)) {
+                    console.log('Operand failure - NaN', tokenEvaluators.operands[n], x, y);
+                    r = Math.min(x, y);
+                } else if(!isFinite(r)) {
+                    //console.log('Operand failure - infinite', tokenEvaluators.operands[n], x, y);
+                    r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
+                  
                 }
                 operandStack.push(r);
             }
@@ -139,20 +147,26 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                 a = operandStack.pop();
                 r = f(a);
 
-                if(isNaN(r) || !isFinite(r)) {
-                    //console.log('Single Operator failure', a, f);
+                if(isNaN(r)) {
+                    console.log('Single Operator failure - NaN', a, f);
                     r = a;
+                } else if(!isFinite(r)) {
+                    //console.log('Single Operator failure - infinite', a, f);
+                    r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
                 }
                 operandStack.push(r);
 
             } else if(operandStack.length > 1) {
-                a = operandStack.pop();
                 b = operandStack.pop();
-                r = f(b, a);
+                a = operandStack.pop();
+                r = f(a, b);
 
-                if(isNaN(r) || !isFinite(r)) {
-                   //console.log('Double Operator failure', f, a, b);
-                   r = Math.min(a, b);
+                if(isNaN(r)) {
+                    console.log('Double Operator failure - NaN', a, b, f, );
+                    r = Math.min(a, b);
+                } else if(!isFinite(r)) {
+                    //console.log('Double Operator failure - infinite', a, b, f, );
+                    r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
                 }
                 operandStack.push(r);
 
@@ -188,7 +202,7 @@ export const mutateExpression = (tokenCreators, getRandomInteger, tokenSelector,
         mutatedExpression.splice(index, 1, tokenSelector(OPERATOR_DOUBLE));
     }
 
-    if(tokenCreators.hasOwnProperty(token)) {
+    if(tokenCreators.operands.hasOwnProperty(token)) {
         let chance = getRandomInteger(0, 1);
         switch(chance) {
             case 0:

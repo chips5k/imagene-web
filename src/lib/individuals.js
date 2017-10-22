@@ -57,7 +57,7 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
                 let parentBIndex = individualSelector(previousIndividuals, [parentAIndex]);
 
                 if(parentAIndex !== -1 && parentBIndex !== -1) {
-                    let numChildren = getRandomInteger(0, 5);
+                    let numChildren = getRandomInteger(1, 5);
                     for(var i = 0; i < numChildren; i++) {
                         let children = individualBreeder(previousIndividuals[parentAIndex], previousIndividuals[parentBIndex]);
                         individuals = individuals.concat(children);
@@ -89,7 +89,7 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
 export const crossOverIndividuals = (expressionBreeder, individualA, individualB)  => {
     return {
         expression: expressionBreeder(individualA.expression, individualB.expression),
-        fitness: individualA.fitness + individualB.fitness / 2
+        fitness: (individualA.fitness + individualB.fitness) / 2
     }
 }
 

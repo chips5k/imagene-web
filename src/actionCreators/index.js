@@ -1,3 +1,5 @@
+import { selectRoulette } from '../lib/utilities';
+
 /**
  * Create Initial Generation
  */
@@ -71,30 +73,27 @@ export const evolveIndividuals = (individualsEvolver, redirect, generation) => {
  * @param {[0, 255]} blueThreshold array containing min/max blue colour values
  * @param {integer} lastSampleId (last sample id in the store)
  */
-export const generateSamples = (getRandomInteger, generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
+export const generateSamples = (getRandomReal, generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
     
-
+    let usedIndexes = [];
     let samples = [];
-    let clonedIndividuals = [];    
+
     for(let i = 0; i < numSamples; i++) {
         
-        let selectedIndividuals = [];
-
-        if(clonedIndividuals.length === 0) {
-            clonedIndividuals = generation.individuals.slice();
+        if(usedIndexes.length === generation.individuals.length) {
+            usedIndexes = [];
         }
+        
+        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals, usedIndexes.slice())); 
+        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals, usedIndexes.slice())); 
+        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals, usedIndexes.slice())); 
 
-        selectedIndividuals.push(...clonedIndividuals.splice(getRandomInteger(0, clonedIndividuals.length - 1), 1));
-        selectedIndividuals.push(...clonedIndividuals.splice(getRandomInteger(0, clonedIndividuals.length - 1), 1));
-        selectedIndividuals.push(...clonedIndividuals.splice(getRandomInteger(0, clonedIndividuals.length - 1), 1));
-        
-        
         samples.push({
             generationId: generation.id,
             id: ++lastSampleId,
-            redIndividualId: selectedIndividuals[0].id,
-            greenIndividualId: selectedIndividuals[1].id,
-            blueIndividualId: selectedIndividuals[2].id,
+            redIndividualId: generation.individuals[usedIndexes[usedIndexes.length - 3]].id,
+            greenIndividualId: generation.individuals[usedIndexes[usedIndexes.length - 2]].id,
+            blueIndividualId: generation.individuals[usedIndexes[usedIndexes.length - 1]].id,
             width, height,
             redThreshold, greenThreshold, blueThreshold,
             fitness: 0,

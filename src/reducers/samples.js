@@ -83,7 +83,7 @@ export default (state = { byId: {}, allIds: []}, action) => {
                     ...state.byId,
                     [sample.id]: {
                         ...sample,
-                        fitness: sample.fitness - 1 < 0 ? 0 : sample.fitness - 1,
+                        fitness: sample.fitness - 1,
                     }
                 }
             }

@@ -22,6 +22,7 @@ onmessage = function(e) {
             let r, a;
             evaluateX -= (e.data.sample.width / 2);
             evaluateY -= (e.data.sample.height / 2);
+            
             r = Math.sqrt(Math.pow(evaluateX, 2) + Math.pow(evaluateY, 2));
 
             /* -90 to +270 */
@@ -71,7 +72,7 @@ onmessage = function(e) {
 
             evaluateX = r;
             evaluateY = a;
-    
+            
         }   
         
 

@@ -65,15 +65,15 @@ export default (state = { byId: {}, allIds: []}, action) => {
                     ...state.byId,
                     [redIndividual.id]: {
                         ...redIndividual,
-                        fitness: redIndividual.fitness + 1,
+                        fitness: redIndividual.fitness + (1/3),
                     },
                     [greenIndividual.id]: {
                         ...greenIndividual,
-                        fitness: greenIndividual.fitness + 1,
+                        fitness: greenIndividual.fitness + (1/3),
                     },
                     [blueIndividual.id]: {
                         ...blueIndividual,
-                        fitness: blueIndividual.fitness + 1,
+                        fitness: blueIndividual.fitness + (1/3),
                     }
                 }
             }
@@ -90,15 +90,15 @@ export default (state = { byId: {}, allIds: []}, action) => {
                     ...state.byId,
                     [redIndividual.id]: {
                         ...redIndividual,
-                        fitness: redIndividual.fitness - 1 < 0 ? 0 : redIndividual.fitness - 1,
+                        fitness: redIndividual.fitness - 1 < 0 ? 0 : redIndividual.fitness - (1/3),
                     },
                     [greenIndividual.id]: {
                         ...greenIndividual,
-                        fitness: greenIndividual.fitness - 1 < 0 ? 0 : greenIndividual.fitness - 1,
+                        fitness: greenIndividual.fitness - 1 < 0 ? 0 : greenIndividual.fitness - (1/3),
                     },
                     [blueIndividual.id]: {
                         ...blueIndividual,
-                        fitness: blueIndividual.fitness - 1 < 0 ? 0 : blueIndividual.fitness - 1,
+                        fitness: blueIndividual.fitness - 1 < 0 ? 0 : blueIndividual.fitness - (1/3),
                     }
                 }
             }
