@@ -11,7 +11,9 @@ export default class GenerationEvolutionPanel extends Component {
     onClickEvolveGeneration(e) {
         e.preventDefault();
         this.props.onClickEvolveGeneration(e);
-        this.props.toggleContentSidebar(e);
+        if(window.innerWidth < 1224) {
+            this.props.toggleContentSidebar(e);
+        }
     }
 
     render() {

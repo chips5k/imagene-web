@@ -103,7 +103,7 @@ export default class GenerationSample extends Component {
 
     render() {
         return (
-            <div className="generation-sample" style={{maxWidth: this.props.sample.width + 'px'}}>
+            <div className="generation-sample">
                 <div className="generation-sample__header">
                     <h3 className="generation-sample__title">Sample {this.props.sample.id} ({this.props.symmetric ? 'Symmetric' : 'Asymmetric'})</h3>
                     <button className="generation-sample__edit-button" onClick={this.props.editSample}><i className="fa fa-cog"></i></button>
@@ -120,11 +120,13 @@ export default class GenerationSample extends Component {
                     </ul>
                 </div>
                 <div className="generation-sample__actions">
-                    <div className="generation-sample__fitness">{this.props.sample.fitness}</div>
+                    <div className="generation-sample__fitness">Fitness: <b>{this.props.sample.fitness}</b></div>
                     <div className="generation-sample__controls">
-                        <button onClick={this.toggleDetails.bind(this)}><i className={this.state.showDetail ? 'fa fa-eye' : 'fa fa-eye-slash'}></i></button>
-                        <button onClick={this.onClickIncreaseFitness.bind(this)}><i className="fa fa-plus"></i></button>
-                        <button onClick={this.onClickDecreaseFitness.bind(this)}><i className="fa fa-minus"></i></button>
+                        <button className="generation-sample__control" onClick={this.onClickIncreaseFitness.bind(this)}><i className="fa fa-plus"></i></button>
+                        <button className="generation-sample__control" onClick={this.onClickDecreaseFitness.bind(this)}><i className="fa fa-minus"></i></button>
+                        <button className="generation-sample__control"><i className="fa fa-search"></i></button>
+                        <button className="generation-sample__control" onClick={this.toggleDetails.bind(this)}><i className={this.state.showDetail ? 'fa fa-eye' : 'fa fa-eye-slash'}></i></button>
+                        
                     </div>
                 </div>
             </div>

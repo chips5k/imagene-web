@@ -1,6 +1,7 @@
 //React Dependencies
 import React from 'react';
 import ReactDOM from 'react-dom';
+import initReactFastclick from 'react-fastclick';
 
 //Redux dependencies
 import { createStore, combineReducers, applyMiddleware, bindActionCreators } from 'redux';
@@ -27,7 +28,7 @@ import * as actionCreators from './actionCreators';
 //Our components
 import Layout from './components/Layout';
 
-
+initReactFastclick();
 // Create a history of your choosing (we're using a browser history in this case)
 export const history = createHistory();
 

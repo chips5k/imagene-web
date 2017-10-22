@@ -3,12 +3,32 @@ import React from 'react';
 const GenerationIndividuals = (props) => {
     return (
         <div className="generation-individuals">
-            <ul>
-                {props.individuals.map((n, i) => 
-                    <li key={i}><b>Fitness:</b> {n.fitness}, <b>Expression:</b> {n.expression.join(" ")}</li>
-                )}
-            </ul>
-            {props.individuals.length === 0  && <p>You have not generated any individuals, please use the sidebar to proceed.</p>}
+            
+            {props.individuals.length > 0 &&
+                <div>
+                    <h2>Individuals/Population</h2>
+                    <p>If you are happy with the individuals below, tap "generate samples" to proceed. Alternatively, tap settings to customize the generation of samples.</p>
+
+                    <p>Note, you may choose to rollback/re-evolve from a generation by tapping the "evolve" button. If you would like to regenerate a population, use the main menu and navigate back to the initial generation.</p>
+
+                    <ul>
+                        {props.individuals.map((n, i) => 
+                            <li key={i}><b>Fitness:</b> {n.fitness}, <b>Expression:</b> {n.expression.join(" ")}</li>
+                        )}
+                    </ul>
+                </div>
+            }
+            {props.individuals.length === 0  &&
+                 <div style={{textAlign: 'center'}}>
+                    <h2>Generate Individuals/Population</h2>
+                    <p>You have not generated any individuals, please use the sidebar/click settings to customize individual generation, or click the button below.</p>
+
+                    <button onClick={props.generateIndividuals} className="button button--primary button--extra-large">
+                        <i className="fa fa-refresh"></i> Generate Individuals
+                    </button>
+
+                 </div>
+            }
         </div>
     );
 }

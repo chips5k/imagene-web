@@ -17,7 +17,9 @@ export default class GenerationIndividualsPanel extends Component {
             this.refs.minDepth.value,
             this.refs.maxDepth.value
         );
-        this.props.toggleContentSidebar(e);
+        if(window.innerWidth < 1224) {
+            this.props.toggleContentSidebar(e);
+        }
     }
 
     getFormData() {

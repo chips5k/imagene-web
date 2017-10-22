@@ -27,7 +27,7 @@ export default class Generation extends Component {
             activeView: 'individuals',
             coordinateType: 'cartesian',
             symmetric: false,
-            contentSidebarVisible: true
+            contentSidebarVisible: window.innerWidth >= 1224
         };
     }
 
@@ -110,7 +110,6 @@ export default class Generation extends Component {
             <Content>
                 <ContentHeader toggleSidebar={this.props.toggleSidebar} toggleContentSidebar={this.toggleContentSidebar.bind(this)} contentSidebar>
                     Generation {this.props.generation.id}
-                    
                 </ContentHeader>
                 <ContentBody contentSidebarVisible={this.state.contentSidebarVisible} sidebar={true}>
                     <ContentPrimary>
@@ -119,14 +118,17 @@ export default class Generation extends Component {
                             <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'individuals' ? 'main__content-top-nav-item--active' : ''}`} onClick={this.changeActiveView.bind(this, 'individuals')}>
                                 <i className="main__content-top-nav-item-icon fa fa-users"></i> Individuals
                             </a>
-                            <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'samples' ? 'main__content-top-nav-item--active' : ''}`}  onClick={this.changeActiveView.bind(this, 'samples')}>
-                                <i className="main__content-top-nav-item-icon fa fa-image"></i> Samples
-                            </a>
+                            
+                            {this.props.generation.individuals.length > 0 &&
+                                <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'samples' ? 'main__content-top-nav-item--active' : ''}`}  onClick={this.changeActiveView.bind(this, 'samples')}>
+                                    <i className="main__content-top-nav-item-icon fa fa-image"></i> Samples
+                                </a>
+                            }
 
                         </ContentPrimaryTopNav>
                         <ContentPrimaryBody topNav bottomNav>
                             {this.state.activeView === 'individuals' && 
-                                <GenerationIndividuals individuals={this.props.generation.individuals}/>
+                                <GenerationIndividuals individuals={this.props.generation.individuals} generateIndividuals={this.onClickGenerateIndividuals.bind(this)}/>
                             }
                             {this.state.activeView === 'samples' &&
                                 <GenerationSamples
@@ -136,6 +138,7 @@ export default class Generation extends Component {
                                     increaseSampleFitness={this.props.increaseSampleFitness}
                                     decreaseSampleFitness={this.props.decreaseSampleFitness}
                                     generateSampleData={this.props.generateSampleData}
+                                    generateSamples={this.onClickGenerateSamples.bind(this)}
                                 />
                             }
                         </ContentPrimaryBody>
@@ -143,13 +146,13 @@ export default class Generation extends Component {
 
                                 {this.state.activeView === 'individuals' && this.props.generation.id === 1 && 
                                     <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateIndividuals.bind(this)}>
-                                        <i className="fa fa-refresh"></i> {this.props.generation.individuals.length ? 'Regenerate' : 'Generate'}
+                                        <i className="main__content-bottom-nav-item-icon fa fa-refresh"></i> {this.props.generation.individuals.length ? 'Regenerate' : 'Generate'}
                                     </a>
                                 }
 
                                 {this.state.activeView === 'individuals' &&  this.props.generation.individuals.length > 0 && 
                                     <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
-                                        <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Samples
+                                        <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate Samples
                                     </a>
                                 }
 

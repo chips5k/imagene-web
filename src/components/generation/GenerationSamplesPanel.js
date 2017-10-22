@@ -21,7 +21,9 @@ export default class GenerationSamplesPanel extends Component {
             this.refs.greenThreshold.value,
             this.refs.blueThreshold.value
         );
-        this.props.toggleContentSidebar(e);
+        if(window.innerWidth < 1224) {
+            this.props.toggleContentSidebar(e);
+        }
     }
 
     getFormData() {
