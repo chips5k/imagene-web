@@ -3,8 +3,7 @@ import React, {Component} from 'react';
 import {
     ContentSidebarPanel,
     ContentSidebarPanelBody,
-    ContentSidebarPanelHeader, 
-    ContentSidebarPanelFooter
+    ContentSidebarPanelHeader
 } from '../content';
 
 import FormControl from '../controls/FormControl';
@@ -32,7 +31,7 @@ export default class GenerationIndividualsPanel extends Component {
         return (
             <ContentSidebarPanel>
                 <ContentSidebarPanelHeader>
-                    Population
+                    <i className="fa fa-sitemap"></i> Population
                 </ContentSidebarPanelHeader>
                 <ContentSidebarPanelBody>
                     <div className="hbox">
@@ -47,13 +46,12 @@ export default class GenerationIndividualsPanel extends Component {
                         <FormControl label="Max Depth" last>
                             <StepperInput  ref="maxDepth" value={this.props.config.maxExpressionDepth} minValue={0}  maxValue={24} />
                         </FormControl>
+                        
                     </div>
-                </ContentSidebarPanelBody>
-                <ContentSidebarPanelFooter>
                     <button className="main-sidebar-panel__action-button" onClick={this.onClickGenerateIndividuals.bind(this)}>
-                        <i className="fa fa-refresh"></i> Generate
+                        <i className="fa fa-refresh"></i> {this.props.generation.individuals.length > 0 ? 'Regenerate' : 'Generate'}
                     </button>
-                </ContentSidebarPanelFooter>
+                </ContentSidebarPanelBody>
             </ContentSidebarPanel>
         );
     }

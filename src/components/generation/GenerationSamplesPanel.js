@@ -3,8 +3,7 @@ import React, {Component} from 'react';
 import {
     ContentSidebarPanel,
     ContentSidebarPanelBody,
-    ContentSidebarPanelHeader, 
-    ContentSidebarPanelFooter
+    ContentSidebarPanelHeader
 } from '../content';
 
 import FormControl from '../controls/FormControl';
@@ -39,7 +38,7 @@ export default class GenerationSamplesPanel extends Component {
         return (
             <ContentSidebarPanel>
                 <ContentSidebarPanelHeader>
-                    Generate Samples
+                    <i className="fa fa-image"></i> Generate Samples
                 </ContentSidebarPanelHeader>
                 <ContentSidebarPanelBody>
                     <div className="hbox">
@@ -70,12 +69,10 @@ export default class GenerationSamplesPanel extends Component {
                             <ColourRangeInput ref="blueThreshold"  colour="blue"  minValue={0} maxValue={255} />  
                         </FormControl>
                     </div>
-                </ContentSidebarPanelBody>
-                <ContentSidebarPanelFooter>
                     <button className="main-sidebar-panel__action-button" onClick={this.onClickGenerateSamples.bind(this)}>
-                        <i className="fa fa-refresh"></i> Generate
+                        <i className="fa fa-plus"></i> Generate
                     </button> 
-                </ContentSidebarPanelFooter>
+                </ContentSidebarPanelBody>
             </ContentSidebarPanel>
         );
     }

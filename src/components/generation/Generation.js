@@ -109,11 +109,12 @@ export default class Generation extends Component {
                         <ContentPrimaryTopNav>
 
                             <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'individuals' ? 'main__content-top-nav-item--active' : ''}`} onClick={this.changeActiveView.bind(this, 'individuals')}>
-                                <i className="fa fa-users"></i> Individuals
+                                <i className="main__content-top-nav-item-icon fa fa-users"></i> Individuals
                             </a>
                             <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'samples' ? 'main__content-top-nav-item--active' : ''}`}  onClick={this.changeActiveView.bind(this, 'samples')}>
-                                <i className="fa fa-image"></i> Samples
+                                <i className="main__content-top-nav-item-icon fa fa-image"></i> Samples
                             </a>
+
                         </ContentPrimaryTopNav>
                         <ContentPrimaryBody topNav bottomNav>
                             {this.state.activeView === 'individuals' && 
@@ -172,6 +173,7 @@ export default class Generation extends Component {
                             <GenerationIndividualsPanel 
                                 ref="population-panel"
                                 config={this.props.config} 
+                                generation={this.props.generation}
                                 onClickGenerateIndividuals={this.generateIndividuals.bind(this)}
                             />
                         }

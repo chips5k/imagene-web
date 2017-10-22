@@ -40,11 +40,11 @@ class Sidebar extends Component {
                             Version 1.0.0
                         </div>
                     </div>
-                    <div className="sidebar__subheader">
+                    <div className="sidebar__subheader"  onClick={this.props.toggleSidebar}>
                         <div className="sidebar__subheader-title">
                             Navigation
                         </div>
-                        <a href="" className="sidebar__subheader-icon" onClick={this.props.toggleSidebar}>
+                        <a href="" className="sidebar__subheader-icon">
                             <i className="fa fa-bars" />   
                         </a>
                     </div>
