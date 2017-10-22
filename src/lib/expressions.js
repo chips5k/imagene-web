@@ -35,7 +35,7 @@ export const tokenEvaluators =  {
         operands: {
             'pX': (x, y) => x,
             'pY': (x, y) => y,
-            'PI': () => Math.PI,
+            'PI': () => Math.PI
         }
 };
 
@@ -76,6 +76,7 @@ export const tokenCreators = {
         'CIR': () => ['pX', 'pY', 'CIR']
     }
 };
+
 
 export const getToken = (tokenCreators, getRandomReal, getRandomInteger, type) => {
 
@@ -139,7 +140,8 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                     r = Math.min(x, y);
                 } else if(!isFinite(r)) {
                     //console.log('Operand failure - infinite', tokenEvaluators.operands[n], x, y);
-                    r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
+                    //r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
+                    r = Math.max(x, y);
                   
                 }
                 operandStack.push(r);
@@ -158,7 +160,8 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                     r = a;
                 } else if(!isFinite(r)) {
                     //console.log('Single Operator failure - infinite', a, f);
-                    r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
+                    //r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
+                    r = Math.max(a, b);
                 }
                 operandStack.push(r);
 
@@ -172,7 +175,8 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                     r = Math.min(a, b);
                 } else if(!isFinite(r)) {
                     //console.log('Double Operator failure - infinite', a, b, f, );
-                    r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
+                    //r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
+                    r = Math.max(a, b);
                 }
                 operandStack.push(r);
 
@@ -200,12 +204,12 @@ export const mutateExpression = (tokenCreators, getRandomInteger, tokenSelector,
     if(tokenCreators.singleOperators.hasOwnProperty(token)) {
 
         //Swap token for another operand
-        mutatedExpression.splice(index, 1, tokenSelector(OPERATOR_SINGLE));
+        mutatedExpression.splice(index, 1, ...tokenSelector(OPERATOR_SINGLE));
     }
 
     if(tokenCreators.doubleOperators.hasOwnProperty(token)) {
         //Swap token for another operand
-        mutatedExpression.splice(index, 1, tokenSelector(OPERATOR_DOUBLE));
+        mutatedExpression.splice(index, 1, ...tokenSelector(OPERATOR_DOUBLE));
     }
 
     if(tokenCreators.operands.hasOwnProperty(token)) {
@@ -213,7 +217,7 @@ export const mutateExpression = (tokenCreators, getRandomInteger, tokenSelector,
         switch(chance) {
             case 0:
                 //Swap token for another operand
-                mutatedExpression.splice(index, 1, tokenSelector(OPERAND));
+                mutatedExpression.splice(index, 1, ...tokenSelector(OPERAND));
                 break;
             case 1:
             default:
@@ -247,13 +251,11 @@ export const findBinaryTreeNodeByIndex = (node, currentIndex, index) => {
 }
  
 export const insertNodeIntoBinaryTreeAtIndex = (parentNode, key, node, currentIndex, index, nodeToInsert) => {
-    
+   
     if(currentIndex.value === index) {
         parentNode[key] = nodeToInsert;
         return true;
     }
-
-    
 
     let result = null;
     if(node.a) {
@@ -266,6 +268,7 @@ export const insertNodeIntoBinaryTreeAtIndex = (parentNode, key, node, currentIn
         result = insertNodeIntoBinaryTreeAtIndex(node, 'b', node.b, currentIndex, index, nodeToInsert);
     }
 
+    
     return result;
 }
 
@@ -290,7 +293,6 @@ export const crossOverExpressions = (tokenEvaluators, getRandomInteger, expressi
 
     
     if(node) {
-        
         if(insertNodeIntoBinaryTreeAtIndex(root, 'a', parentTo, { value: 0 }, toIndex, node)) {
             return treeToExpression(root.a);  
         }
