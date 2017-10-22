@@ -248,10 +248,8 @@ hr {
     bottom:5rem;
     left: 0px;
     right:0px;
-    padding-left:45px;
-    padding-right:30px;
+    padding: 1rem;
     font-size:0.8rem;
-    padding-top:30px;
     z-index: 0;
 }
 
@@ -336,10 +334,11 @@ hr {
     color: #222;
     display:flex;
     text-decoration: none;
-    min-width: 120px;
+    width: 100px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align:center;
 }
 
 .main__content-bottom-nav-item i{
@@ -574,9 +573,16 @@ hr {
 
 @media(max-width: 1224px) {
     .generation-sample {
-        max-width: 250px;
+        max-width:320px;
     }
 } 
+
+@media(max-width: 670px) {
+    .generation-sample {
+        margin-left:0;
+        margin-right:0.5rem;
+    }
+}
 
 .generation-sample__header {
     border-bottom:1px solid #ccc;

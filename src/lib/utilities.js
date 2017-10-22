@@ -34,5 +34,6 @@ export const selectRoulette = (getRandomReal, items, excludedIndexes) => {
         return -1;
     }
 
-    return items.length - 1;
+    return -1
 }
+

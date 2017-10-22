@@ -35,23 +35,25 @@ export const tokenCreators = {
         '-': () => ['-'],
         '/': () => ['/'],
         '*': () => ['*'], 
-        '^': () => ['^'],
         '%': () => ['%'],
-        'CIR': () => ['CIR']
     },
     singleOperators: {
-        'sqrt': ()=> ['sqrt'],
-        'double': ()=> ['double'],
-        'triple': ()=> ['triple'],
         'sin': ()=> ['sin'],
         'cos': ()=> ['cos'],
         'tan': ()=> ['tan'],
-        'log': ()=> ['log']
     },
     operands: {
         'pX': () => ['pX'],
         'pY': () => ['pY'],
         'PI': () => ['PI'],
+        'xLog': ()=> ['pY', '1', '+', 'log'],
+        'yLog': ()=> ['pX', '1', '+', 'log'],
+        'xSqrt': ()=> ['pY', 'sqrt'],
+        'yDouble': ()=> ['pY', 'double'],
+        'yTriple': ()=> ['pY', 'triple'],
+        'ySqrt': ()=> ['pX', 'sqrt'],
+        'xDouble': ()=> ['pX', 'double'],
+        'xTriple': ()=> ['pX', 'triple'],
         'PIx': () => ['PI', 'pX', '*'],
         'PIy': () => ['PI', 'pY','*'],
         'cosY': () => ['pY', 'cos'],
@@ -75,11 +77,12 @@ export const getToken = (tokenCreators, getRandomReal, getRandomInteger, type) =
 
 export const buildExpression = (tokenSelector, getRandomInteger, minSubexpressions, maxSubexpressions, currentDepth = 0) => {
     let expression = [];
-
+    
 
     //Todo randomize whether or not to nest
     
     let type = getRandomInteger(1, 2);
+       
     if(type === 1) {
         
         if(currentDepth < maxSubexpressions) {
@@ -96,7 +99,6 @@ export const buildExpression = (tokenSelector, getRandomInteger, minSubexpressio
         if(currentDepth < maxSubexpressions) {
             let currentMaxSubExpressions = getRandomInteger(minSubexpressions, maxSubexpressions);
             expression = expression.concat(buildExpression(tokenSelector, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
-            
         } else {
             expression = expression.concat(tokenSelector(OPERAND));
         }
@@ -123,6 +125,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
             } else if(tokenEvaluators.operands.hasOwnProperty(n)) {
                 let r = tokenEvaluators.operands[n](x, y);
                 if(isNaN(r) || !isFinite(r)) {
+                    console.log('Operand failure');
                     r = Math.max(x, y);
                 }
                 operandStack.push(r);
@@ -137,6 +140,7 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                 r = f(a);
 
                 if(isNaN(r) || !isFinite(r)) {
+                    console.log('Single Operator failure', a, f);
                     r = a;
                 }
                 operandStack.push(r);
@@ -147,7 +151,8 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
                 r = f(b, a);
 
                 if(isNaN(r) || !isFinite(r)) {
-                    r = Math.max(a, b);
+                   //console.log('Double Operator failure', f, a, b);
+                   r = Math.max(a, b);
                 }
                 operandStack.push(r);
 

@@ -45,8 +45,6 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
                 selectedIndividualIndex = individualSelector(previousIndividuals);
                 if(selectedIndividualIndex !== -1) {
                     individuals.push(previousIndividuals.splice(selectedIndividualIndex, 1)[0]);
-                } else {
-                    limit--;
                 }
                 
                 break;
@@ -73,8 +71,6 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
                 selectedIndividualIndex = individualSelector(previousIndividuals);
                 if(selectedIndividualIndex !== -1) {
                     individuals.push(individualMutator(previousIndividuals.splice(selectedIndividualIndex, 1)[0]));
-                } else {
-                    limit--;
                 }
 
                 break;

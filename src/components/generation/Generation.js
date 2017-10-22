@@ -151,7 +151,7 @@ export default class Generation extends Component {
                                 }
 
                                 {this.state.activeView === 'individuals' &&  this.props.generation.individuals.length > 0 && 
-                                    <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
+                                    <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)} style={{width: 160}}>
                                         <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate Samples
                                     </a>
                                 }
