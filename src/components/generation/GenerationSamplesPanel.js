@@ -45,7 +45,7 @@ export default class GenerationSamplesPanel extends Component {
                 </ContentSidebarPanelHeader>
                 <ContentSidebarPanelBody>
                     <FormControl label="No. Samples">
-                        <StepperInput ref="numSamples" value={6} />  
+                        <StepperInput ref="numSamples" value={4} />  
                     </FormControl>
 
                     <div className="hbox">

@@ -8,18 +8,18 @@ export const tokenEvaluators =  {
             '+': (a, b) => a + b,
             '-': (a, b) => a - b,
             '/': (a, b) => {
-                return a / (b === 0 ? 0.5 : b);
+                return a / (b === 0 ? 0.000000000000001 : b);
             },
             '*': (a, b) => a * b, 
             '^': (a, b) => {
                 if(a < 0 && (Math.abs(a) - parseInt(Math.abs(a), 10) >= 0)) {
-                    return Math.pow(Math.abs(a === 0 ? a + 0.5 : a), b);
+                    return Math.pow(Math.abs(a === 0 ? a + 0.000000000000001 : a), b);
                 } else {
                     return Math.pow(a, b);
                 }
             },
             '%': (a, b) => {
-                return a % (b === 0 ? 0.5 : b);
+                return a % (b === 0 ? 0.000000000000001 : b);
             },
             'CIR': (a, b) => Math.sin(Math.sqrt(a * a + b * b) * Math.PI / 180.00)
         },
@@ -31,7 +31,7 @@ export const tokenEvaluators =  {
             'cos': (a) => Math.cos(a % 3.16),
             'tan': (a) => Math.tan(a),
             'log': (a) => {
-                return Math.log(Math.abs(a) === 0 ? 0.5 : Math.abs(a));
+                return Math.log(Math.abs(a) === 0 ? 0.000000000000001 : Math.abs(a));
             }
         },
         operands: {
@@ -65,16 +65,16 @@ export const tokenCreators = {
         'pY': () => ['pY'],
         'PI': () => ['PI'],
         'PIx': () => ['PI', 'pX', '*'],
-        'PIy': () => ['PI', 'pY','*'],
+        'PIy': () => ['PI', 'pY', '*'],
         'cosX': () => ['pX', 'cos'],
         'cosY': () => ['pY', 'cos'],
         'sinX': () => ['pX', 'sin'],
         'sinY': () => ['pY', 'sin'],
         'tanX': () => ['pX', 'tan'],
         'tanY': () => ['pY', 'tan'],
-        'rand': (r) => [r(0, 255)],
-        'randX': (r) => ['pX', r(0, 255), '*'],
-        'randY': (r) => ['pY', r(0, 255), '*'],
+        'rand': (r) => [r(-10000, 10000)],
+        'randX': (r) => ['pX', r(-10000, 10000), '*'],
+        'randY': (r) => ['pY', r(-10000, 10000), '*'],
         'CIR': () => ['pX', 'pY', 'CIR']
     }
 };
