@@ -20,7 +20,7 @@ export default class Home extends Component {
                 <ContentBody>
                     <ContentPrimary>
                         <ContentPrimaryBody>
-                            <div className="home hbox">
+                            <div className="home hbox" style={{padding: '1rem'}}>
                                 <div style={{marginRight: 20, minWidth: 300}}>
                                     <h2>Get Started</h2>
 

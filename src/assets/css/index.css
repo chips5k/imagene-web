@@ -548,8 +548,8 @@ hr {
     border-radius: 5px;
     overflow:hidden;
     margin-bottom:1rem;
-    min-width: 150px;
-    min-height: 150px;
+    min-width: 320px;
+    min-height: 320px;
     border:1px solid #ccc;
     width: 100%;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
@@ -567,13 +567,13 @@ hr {
 
 @media(min-width: 1224px) {
     .generation-sample {
-        max-width: 320px;
+       max-width: 320px;
     }
 } 
 
 @media(max-width: 1224px) {
     .generation-sample {
-        max-width:320px;
+        max-width: 320px;
     }
 } 
 
@@ -598,12 +598,10 @@ hr {
     flex: 1;
 }
 .generation-sample__canvas-wrap {
-    padding: 1rem;
+   
 }
 .generation-sample__canvas {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    width: 100% !important;
-    height: 100% !important;
+ 
 }
 
 .generation-sample__details {

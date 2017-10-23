@@ -4,7 +4,7 @@ export default (state = { numberOfIndividuals: 0, minExpressionDepth: 0, maxExpr
         case 'CREATE_INITIAL_GENERATION':
             return {
                 numberOfIndividuals: 24,
-                minExpressionDepth: 0,
+                minExpressionDepth: 6,
                 maxExpressionDepth: 12
             };
             

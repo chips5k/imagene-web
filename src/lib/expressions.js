@@ -8,18 +8,18 @@ export const tokenEvaluators =  {
             '+': (a, b) => a + b,
             '-': (a, b) => a - b,
             '/': (a, b) => {
-                return a / (b === 0 ? b + 0.000000001 : b);
+                return a / (b === 0 ? 0.5 : b);
             },
             '*': (a, b) => a * b, 
             '^': (a, b) => {
                 if(a < 0 && (Math.abs(a) - parseInt(Math.abs(a), 10) >= 0)) {
-                    return Math.pow(Math.abs(a === 0 ? a + 0.000000001 : a), b);
+                    return Math.pow(Math.abs(a === 0 ? a + 0.5 : a), b);
                 } else {
                     return Math.pow(a, b);
                 }
             },
             '%': (a, b) => {
-                return a % (b === 0 ? b + 0.000000001 : b);
+                return a % (b === 0 ? 0.5 : b);
             },
             'CIR': (a, b) => Math.sin(Math.sqrt(a * a + b * b) * Math.PI / 180.00)
         },
@@ -30,7 +30,9 @@ export const tokenEvaluators =  {
             'sin': (a) => Math.sin(a % 3.16),
             'cos': (a) => Math.cos(a % 3.16),
             'tan': (a) => Math.tan(a),
-            'log': (a) => Math.log(Math.abs(a))
+            'log': (a) => {
+                return Math.log(Math.abs(a) === 0 ? 0.5 : Math.abs(a));
+            }
         },
         operands: {
             'pX': (x, y) => x,
@@ -68,12 +70,12 @@ export const tokenCreators = {
         'cosY': () => ['pY', 'cos'],
         'sinX': () => ['pX', 'sin'],
         'sinY': () => ['pY', 'sin'],
-        // 'tanX': () => ['pX', 'tan'],
-        // 'tanY': () => ['pY', 'tan'],
+        'tanX': () => ['pX', 'tan'],
+        'tanY': () => ['pY', 'tan'],
         'rand': (r) => [r(0, 255)],
-        // 'randX': (r) => ['pX', r(0, 255), '*'],
-        // 'randY': (r) => ['pY', r(0, 255), '*'],
-        // 'CIR': () => ['pX', 'pY', 'CIR']
+        'randX': (r) => ['pX', r(0, 255), '*'],
+        'randY': (r) => ['pY', r(0, 255), '*'],
+        'CIR': () => ['pX', 'pY', 'CIR']
     }
 };
 
@@ -90,29 +92,35 @@ export const buildExpression = (tokenSelector, getRandomInteger, minSubexpressio
     let expression = [];
     
 
-    //Todo randomize whether or not to nest
-    
     let type = getRandomInteger(1, 2);
-       
+    
+    //Build a double expression
     if(type === 1) {
         
+        //Build a nested double expression
         if(currentDepth < maxSubexpressions) {
             let currentMaxSubExpressions = getRandomInteger(minSubexpressions, maxSubexpressions);
             expression = expression.concat(buildExpression(tokenSelector, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
             expression = expression.concat(buildExpression(tokenSelector, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
-            expression = expression.concat(tokenSelector(OPERATOR_DOUBLE));
         } else {
+            //Build a flat double expression
             expression = expression.concat(tokenSelector(OPERAND));
             expression = expression.concat(tokenSelector(OPERAND));
-            expression = expression.concat(tokenSelector(OPERATOR_DOUBLE));
         }
-    } else {
+
+        expression = expression.concat(tokenSelector(OPERATOR_DOUBLE));
+
+    }//Build a single expression 
+    else {
+        //Build a nested singular expression
         if(currentDepth < maxSubexpressions) {
             let currentMaxSubExpressions = getRandomInteger(minSubexpressions, maxSubexpressions);
             expression = expression.concat(buildExpression(tokenSelector, getRandomInteger, minSubexpressions, currentMaxSubExpressions, currentDepth + 1));
         } else {
+            //Build a flat singular expression
             expression = expression.concat(tokenSelector(OPERAND));
         }
+
         expression = expression.concat(tokenSelector(OPERATOR_SINGLE));
     }
     
@@ -129,55 +137,72 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
         if(!isNaN(parseFloat(n))) {
             operandStack.push(parseFloat(n));
         } else {
+            //If double operator
             if(tokenEvaluators.doubleOperators.hasOwnProperty(n)) {
                 operatorStack.push(tokenEvaluators.doubleOperators[n]);
-            } else if(tokenEvaluators.singleOperators.hasOwnProperty(n)) {
+
+            } //if single operator 
+            else if(tokenEvaluators.singleOperators.hasOwnProperty(n)) {
                 operatorStack.push(tokenEvaluators.singleOperators[n]);
-            } else if(tokenEvaluators.operands.hasOwnProperty(n)) {
-                let r = tokenEvaluators.operands[n](x, y);
-                if(isNaN(r)) {
-                    //console.log('Operand failure - NaN', tokenEvaluators.operands[n], x, y);
-                    r = Math.max(x, y);
-                } else if(!isFinite(r)) {
-                    //console.log('Operand failure - infinite', tokenEvaluators.operands[n], x, y);
-                    //r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
-                    r = Math.max(x, y);
-                  
+
+            } //if operand 
+            else if(tokenEvaluators.operands.hasOwnProperty(n)) {
+                let a = tokenEvaluators.operands[n](x, y);
+                if(isNaN(a)) {
+                    
+                } else if(!isFinite(a)) {
+                    
                 }
-                operandStack.push(r);
+
+                operandStack.push(a);
             }
         }
-    
+        
+        //If we have enough operands and operators to attempt a solution
         if(operandStack.length > 0 && operatorStack.length > 0) {
+            //Pop the function
             let f = operatorStack.pop();
+            //initialise result and argument vars
             let r, a, b;
+            //If function only expects a single argument
             if(f.length === 1) {
+                //Pop the first operand
                 a = operandStack.pop();
+                //Evaluate the function
                 r = f(a);
 
                 if(isNaN(r)) {
-                    //console.log('Single Operator failure - NaN', a, f);
+                    //console.log('Single Operator failure - NaN', f, a);
                     r = a;
                 } else if(!isFinite(r)) {
-                    //console.log('Single Operator failure - infinite', a, f);
+                    //console.log('Single Operator failure - infinite', f, a);
                     //r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
-                    r = Math.max(a, b);
+                    r = a;
                 }
+
+                //Push the result back as an operand
                 operandStack.push(r);
 
-            } else if(operandStack.length > 1) {
+            } //Otherwise we are dealing with a double operator, so check if we have enough operands
+            else if(operandStack.length > 1) {
+
+                //Pop both arguments
                 b = operandStack.pop();
                 a = operandStack.pop();
+
+                //And evaluate the function
                 r = f(a, b);
 
                 if(isNaN(r)) {
-                    //console.log('Double Operator failure - NaN', a, b, f, );
+                    //console.log('Double Operator failure - NaN', f, a, b);
                     r = Math.max(a, b);
                 } else if(!isFinite(r)) {
-                    //console.log('Double Operator failure - infinite', a, b, f, );
+                    //console.log('Double Operator failure - infinite', f, a, b);
                     //r = r === Number.POSITIVE_INFINITY ? Number.MAX_VALUE : -Number.MAX_VALUE;
                     r = Math.max(a, b);
                 }
+
+                //Push the result back onto the operand stack
                 operandStack.push(r);
 
             } else {
@@ -186,11 +211,14 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
             }
         }
     }
-    
+
+    //If we get to this point, and only a single operand exists, the solution has been found
     if(operandStack.length === 1 && operatorStack.length === 0) {
+        //so return it
         return operandStack.pop();
     }
     
+    //Otherwise we failed to solve
     throw new Error('Unable to solve expression: operands: ' + operandStack + ' operators: ' + operatorStack);
 };
 
