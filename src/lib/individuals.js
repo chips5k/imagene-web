@@ -21,7 +21,7 @@ export const selectEvolutionMethod = (selectByFitness, elitismChance, crossOverC
         }
     ];
     
-    let index = selectByFitness(options);
+    let index = selectByFitness(options.map(n => n.fitness));
     return options[index].name;
 }
 
@@ -34,15 +34,16 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
     let iteration = 0;
     let limit = previousIndividuals.length;
    
-    while(individuals.length < limit && iteration < limit) {
+    while(individuals.length < limit && iteration < limit * 4) {
 
         iteration++;
         
         //Determine what to do this iteration
         let method = methodSelector();
+        
         switch(method) {   
             case 'elitism':
-                selectedIndividualIndex = individualSelector(previousIndividuals);
+                selectedIndividualIndex = individualSelector(previousIndividuals.map(n => n.fitness));
                 if(selectedIndividualIndex !== -1) {
                     individuals.push(previousIndividuals.splice(selectedIndividualIndex, 1)[0]);
                 }
@@ -53,9 +54,10 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
             case 'crossover':
             
                 //Select two parents for crossover
-                let parentAIndex = individualSelector(previousIndividuals);
-                let parentBIndex = individualSelector(previousIndividuals, [parentAIndex]);
+                let parentAIndex = individualSelector(previousIndividuals.map(n => n.fitness));
+                let parentBIndex = individualSelector(previousIndividuals.map(n => n.fitness), [parentAIndex]);
 
+                
                 if(parentAIndex !== -1 && parentBIndex !== -1) {
                     let numChildren = getRandomInteger(1, 5);
                     for(var i = 0; i < numChildren; i++) {
@@ -68,11 +70,10 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
 
             //Mutation
             case 'mutation':
-                selectedIndividualIndex = individualSelector(previousIndividuals);
+                selectedIndividualIndex = individualSelector(previousIndividuals.map(n => n.fitness));
                 if(selectedIndividualIndex !== -1) {
                     individuals.push(individualMutator(previousIndividuals.splice(selectedIndividualIndex, 1)[0]));
                 }
-
                 break;
             case 'reduction':
                     limit--;

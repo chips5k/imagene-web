@@ -1,45 +1,28 @@
 import { evolveIndividuals, selectEvolutionMethod } from '../../lib/individuals';
 
-describe('individuals',
-() => {
+describe('individuals', () => {
 
     describe('selectEvolutionMethod', () => {
 
         it('should call the fitness selector with the supplied weighted data', () => {
 
             const selector = jest.fn((methods) => 1); 
-
-            let method = selectEvolutionMethod(selector, 0, 1, 2);
-
-            expect(selector).toHaveBeenCalledWith([
-                {
-                    name: 'elitism',
-                    fitness: 0
-                },
-                {
-                    name: 'crossover',
-                    fitness: 1
-                },
-                {
-                    name: 'mutation',
-                    fitness: 2
-                }
-            ]);
+            let method = selectEvolutionMethod(selector, 0, 1, 2, 4);
+            expect(selector).toHaveBeenCalledWith([0, 1, 2, 4]);
         });
 
         it('should return the method name', () => {
-           expect(selectEvolutionMethod((methods) => 2), 0, 1, 2, ).toEqual('mutation');
+           expect(selectEvolutionMethod((methods) => 2), 0, 0, 1, 0).toEqual('mutation');
         });
 
     });
 
     describe('evolveIndividuals', () => {
-
         it('should retain individuals when elitism is selected', () => {
             const noop = () => {};
             const individuals = [
                 {
-                    id: 1,
+                    id: 1
                 }, 
                 {
                     id: 2
@@ -53,8 +36,9 @@ describe('individuals',
                 evolveIndividuals(
                     noop, 
                     () => 'elitism', 
-                    () => 0, 
                     noop, 
+                    noop, 
+                    noop,
                     noop,
                     individuals
                 )
@@ -97,6 +81,7 @@ describe('individuals',
                     }, 
                     noop, 
                     breeder,
+                    () => 1,
                     individuals
                 )
             ).toEqual([
@@ -144,6 +129,7 @@ describe('individuals',
                         return 0;
                     }, 
                     mutator, 
+                    noop,
                     noop,
                     individuals
                 )

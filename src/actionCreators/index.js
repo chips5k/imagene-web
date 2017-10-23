@@ -84,9 +84,9 @@ export const generateSamples = (getRandomReal, generation, numSamples, width, he
             usedIndexes = [];
         }
         
-        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals, usedIndexes.slice())); 
-        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals, usedIndexes.slice())); 
-        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals, usedIndexes.slice())); 
+        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
+        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
+        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
 
         samples.push({
             generationId: generation.id,
