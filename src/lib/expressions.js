@@ -68,12 +68,12 @@ export const tokenCreators = {
         'cosY': () => ['pY', 'cos'],
         'sinX': () => ['pX', 'sin'],
         'sinY': () => ['pY', 'sin'],
-        'tanX': () => ['pX', 'tan'],
-        'tanY': () => ['pY', 'tan'],
+        // 'tanX': () => ['pX', 'tan'],
+        // 'tanY': () => ['pY', 'tan'],
         'rand': (r) => [r(0, 255)],
-        'randX': (r) => ['pX', r(0, 255), '*'],
-        'randY': (r) => ['pY', r(0, 255), '*'],
-        'CIR': () => ['pX', 'pY', 'CIR']
+        // 'randX': (r) => ['pX', r(0, 255), '*'],
+        // 'randY': (r) => ['pY', r(0, 255), '*'],
+        // 'CIR': () => ['pX', 'pY', 'CIR']
     }
 };
 
