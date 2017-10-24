@@ -45,12 +45,12 @@ export default class GenerationSamplesPanel extends Component {
                 </ContentSidebarPanelHeader>
                 <ContentSidebarPanelBody>
                     <FormControl label="No. Samples">
-                        <StepperInput ref="numSamples" value={4} />  
+                        <StepperInput ref="numSamples" value={4} maxValue={6} />  
                     </FormControl>
 
                     <div className="hbox">
                         <FormControl label="Width">
-                            <input className="text-input" type="text" ref="width" defaultValue={320}/>
+                            <input className="text-input" type="text" ref="width" defaultValue={320} />
                         </FormControl>
 
                         <FormControl label="Height" last>
@@ -58,7 +58,7 @@ export default class GenerationSamplesPanel extends Component {
                         </FormControl>
                     </div>
 
-                    <div className="vbox">
+                    <div className="vbox" style={{width: 300}}>
                         
                         <FormControl label="Red Threshold" last>
                             <ColourRangeInput  ref="redThreshold"  colour="red" minValue={0} maxValue={255} />  

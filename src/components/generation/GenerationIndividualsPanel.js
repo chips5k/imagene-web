@@ -44,11 +44,11 @@ export default class GenerationIndividualsPanel extends Component {
                     
                     <div className="hbox">
                         <FormControl label="Min Depth">
-                            <StepperInput ref="minDepth" value={this.props.config.minExpressionDepth} minValue={0}  maxValue={24} />
+                            <StepperInput ref="minDepth" value={this.props.config.minExpressionDepth} minValue={0}  maxValue={12} />
                         </FormControl>
             
                         <FormControl label="Max Depth" last>
-                            <StepperInput  ref="maxDepth" value={this.props.config.maxExpressionDepth} minValue={0}  maxValue={24} />
+                            <StepperInput  ref="maxDepth" value={this.props.config.maxExpressionDepth} minValue={0}  maxValue={12} />
                         </FormControl>
                     </div>
                     <button className="button button--primary" onClick={this.onClickGenerateIndividuals.bind(this)}>
