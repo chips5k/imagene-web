@@ -817,3 +817,95 @@ animation: spinner .6s linear infinite;
     justify-content: center;
 }
 
+
+.individuals {
+    margin:0;
+    padding:0;  
+}
+
+.individual {
+    border:1px solid #ccc;
+    display: flex;
+    margin:0;
+    padding:0;
+    margin-bottom:1rem;
+    flex-direction: row;
+    justify-content: stretch;
+   border-left: none;
+   margin:1rem;
+}
+
+
+.individual__ref {
+    border-left: 1px solid #ccc;
+}
+
+.individual__ref-label {
+    font-weight: bold;
+    padding: 0.3rem;
+    font-size:0.6rem;
+    background: #f7f7f7;    
+    border-bottom:1px solid #ccc;
+}
+
+.individual__ref-value {
+    padding: 0.3rem;
+    font-size:0.75rem;
+}
+
+
+.individual__expression {
+    flex: 1;
+    border-left: 1px solid #ccc;
+}
+
+.individual__expression-label {
+    font-weight: bold;
+    padding: 0.3rem;
+    font-size:0.6rem;
+    background: #f7f7f7;    
+    border-bottom:1px solid #ccc;
+}
+
+.individual__expression-value {
+    padding: 0.3rem;
+    font-size:0.75rem;
+}
+
+.individual__fitness {
+    border-left: 1px solid #ccc;
+}
+
+.individual__fitness-label {
+    font-weight: bold;
+    padding: 0.3rem;
+    font-size:0.6rem;
+    background: #f7f7f7;
+    border-bottom:1px solid #ccc;
+}
+
+.individual__fitness-value {
+    padding: 0.3rem;
+    text-align:center;
+    font-size:0.75rem;
+}
+
+.individual__id {
+    border-left: 1px solid #ccc;
+}
+
+.individual__id-label {
+    font-weight: bold;
+    padding: 0.3rem;
+    font-size:0.6rem;
+    background: #f7f7f7;
+    border-bottom:1px solid #ccc;
+}
+
+.individual__id-value {
+    padding: 0.3rem;
+    text-align:center;
+    font-size:0.75rem;
+    
+}
+

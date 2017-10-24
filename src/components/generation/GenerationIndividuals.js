@@ -11,9 +11,22 @@ const GenerationIndividuals = (props) => {
 
                     <p>Note, you may choose to rollback/re-evolve from a generation by tapping the "evolve" button. If you would like to regenerate a population, use the main menu and navigate back to the initial generation.</p>
 
-                    <ul>
+                    <ul className="individuals">
                         {props.individuals.map((n, i) => 
-                            <li key={i}><b>Fitness:</b> {n.fitness}, <b>Expression:</b> {n.expression.join(" ")}</li>
+                            <li key={i} className="individual">
+                                <div className="individual__id">
+                                    <div className="individual__id-label">Id</div>
+                                    <div className="individual__id-value">{n.id}</div>
+                                </div>
+                                <div className="individual__fitness">
+                                    <div className="individual__fitness-label">Fitness</div>
+                                    <div className="individual__fitness-value">{n.fitness}</div>
+                                </div>
+                                <div className="individual__expression">
+                                    <div className="individual__expression-label">Expression</div>
+                                    <div className="individual__expression-value">{n.expression.join(" ")}</div>
+                                </div>
+                            </li>
                         )}
                     </ul>
                 </div>

@@ -113,10 +113,61 @@ export default class GenerationSample extends Component {
                     <canvas ref="canvas" className="generation-sample__canvas" width={this.props.sample.width} height={this.props.sample.height} />
                 </div>
                 <div className={this.state.showDetails ? 'generation-sample__details generation-sample__details--open' : 'generation-sample__details'}>
-                    <ul>
-                        <li><b>Red: </b><br/><b>Fitness:</b> {this.props.sample.redIndividual.fitness}, <b>Expression:</b> {this.props.sample.redIndividual.expression.join(" ")}</li>
-                        <li><b>Green: </b><br/><b>Fitness:</b> {this.props.sample.greenIndividual.fitness}, <b>Expression:</b> {this.props.sample.greenIndividual.expression.join(" ")}</li>
-                        <li><b>Blue: </b><br/><b>Fitness:</b> {this.props.sample.blueIndividual.fitness}, <b>Expression:</b> {this.props.sample.blueIndividual.expression.join(" ")}</li>
+                    <ul className="individuals">
+                        <li className="individual">
+                            <div className="individual__ref">
+                                <div className="individual__ref-label">#</div>
+                                <div className="individual__ref-value">R</div>
+                            </div>
+                            <div className="individual__id">
+                                <div className="individual__id-label">Id</div>
+                                <div className="individual__id-value">{this.props.sample.redIndividual.id}</div>
+                            </div>
+                            <div className="individual__fitness">
+                                <div className="individual__fitness-label">Fitness</div>
+                                <div className="individual__fitness-value">{this.props.sample.redIndividual.fitness}</div>
+                            </div>
+                            <div className="individual__expression">
+                                <div className="individual__expression-label">Expression</div>
+                                <div className="individual__expression-value">{this.props.sample.redIndividual.expression.join(" ")}</div>
+                            </div>
+                        </li>
+                        <li className="individual">
+                            <div className="individual__ref">
+                                <div className="individual__ref-label">#</div>
+                                <div className="individual__ref-value">G</div>
+                            </div>
+                            <div className="individual__id">
+                                <div className="individual__id-label">Id</div>
+                                <div className="individual__id-value">{this.props.sample.greenIndividual.id}</div>
+                            </div>
+                            <div className="individual__fitness">
+                                <div className="individual__fitness-label">Fitness</div>
+                                <div className="individual__fitness-value">{this.props.sample.greenIndividual.fitness}</div>
+                            </div>
+                            <div className="individual__expression">
+                                <div className="individual__expression-label">Expression</div>
+                                <div className="individual__expression-value">{this.props.sample.greenIndividual.expression.join(" ")}</div>
+                            </div>
+                        </li>
+                        <li className="individual">
+                            <div className="individual__ref">
+                                <div className="individual__ref-label">#</div>
+                                <div className="individual__ref-value">B</div>
+                            </div>
+                            <div className="individual__id">
+                                <div className="individual__id-label">Id</div>
+                                <div className="individual__id-value">{this.props.sample.blueIndividual.id}</div>
+                            </div>
+                            <div className="individual__fitness">
+                                <div className="individual__fitness-label">Fitness</div>
+                                <div className="individual__fitness-value">{this.props.sample.blueIndividual.fitness}</div>
+                            </div>
+                            <div className="individual__expression">
+                                <div className="individual__expression-label">Expression</div>
+                                <div className="individual__expression-value">{this.props.sample.blueIndividual.expression.join(" ")}</div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div className="generation-sample__actions">
