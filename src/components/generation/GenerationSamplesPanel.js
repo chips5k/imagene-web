@@ -15,8 +15,7 @@ export default class GenerationSamplesPanel extends Component {
     onClickGenerateSamples(e) {
         this.props.onClickGenerateSamples(
             this.refs.numSamples.value,
-            this.refs.width.value,
-            this.refs.height.value,
+            320, 320,
             this.refs.redThreshold.value,
             this.refs.greenThreshold.value,
             this.refs.blueThreshold.value
@@ -29,8 +28,6 @@ export default class GenerationSamplesPanel extends Component {
     getFormData() {
         return {
             numSamples: this.refs.numSamples.value,
-            width: this.refs.width.value,
-            height: this.refs.height.value,
             redThreshold: this.refs.redThreshold.value,
             greenThreshold: this.refs.greenThreshold.value,
             blueThreshold: this.refs.blueThreshold.value
@@ -48,7 +45,7 @@ export default class GenerationSamplesPanel extends Component {
                         <StepperInput ref="numSamples" value={4} maxValue={6} />  
                     </FormControl>
 
-                    <div className="hbox">
+                    {/* <div className="hbox">
                         <FormControl label="Width">
                             <input className="text-input" type="text" ref="width" defaultValue={320} />
                         </FormControl>
@@ -56,7 +53,7 @@ export default class GenerationSamplesPanel extends Component {
                         <FormControl label="Height" last>
                             <input  className="text-input" type="text" ref="height" defaultValue={320} />
                         </FormControl>
-                    </div>
+                    </div> */}
 
                     <div className="vbox" style={{width: 300}}>
                         
@@ -75,6 +72,12 @@ export default class GenerationSamplesPanel extends Component {
                     <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
                         <i className="fa fa-plus"></i> Generate
                     </button> 
+                    <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
+                        <i className="fa fa-refresh"></i> Update
+                    </button>
+                    <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
+                        <i className="fa fa-save"></i> Export
+                    </button>
                 </ContentSidebarPanelBody>
             </ContentSidebarPanel>
         );

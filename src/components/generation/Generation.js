@@ -49,7 +49,7 @@ export default class Generation extends Component {
     onClickGenerateSamples(e) {
         e.preventDefault();
         const data = this.refs['samples-panel'].getFormData();
-        this.props.generateSamples(this.props.generation, data.numSamples, data.width, data.height, data.redThreshold, data.greenThreshold, data.blueThreshold, this.props.lastSampleId);
+        this.props.generateSamples(this.props.generation, data.numSamples, 320, 320, data.redThreshold, data.greenThreshold, data.blueThreshold, this.props.lastSampleId);
         this.setState({
             activeView: 'samples'
         });
@@ -186,7 +186,9 @@ export default class Generation extends Component {
                         </ContentPrimaryBottomNav>
                     </ContentPrimary>
                     <ContentSidebar toggleContentSidebar={this.toggleContentSidebar.bind(this)}>
-                        {this.props.generation.id === 1 && 
+                                
+                        
+                        {this.props.generation.id === 1 && this.state.activeView === 'individuals' && 
                             <GenerationIndividualsPanel 
                                 ref="population-panel"
                                 config={this.props.config} 
@@ -196,7 +198,7 @@ export default class Generation extends Component {
                             />
                         }
 
-                        {this.props.generation.individuals.length > 0 && 
+                        {this.props.generation.individuals.length > 0 &&
                             <GenerationSamplesPanel 
                                 ref="samples-panel"
                                 onClickGenerateSamples={this.generateSamples.bind(this)}
@@ -205,10 +207,11 @@ export default class Generation extends Component {
                         }
                         
                         {this.props.generation.samples.length > 0 && 
-                           <GenerationEvolutionPanel 
+                        <GenerationEvolutionPanel 
                             onClickEvolveGeneration={this.evolveGeneration.bind(this)}
                             toggleContentSidebar={this.toggleContentSidebar.bind(this)} />
                         }
+
                     </ContentSidebar>
                 </ContentBody>
             </Content>

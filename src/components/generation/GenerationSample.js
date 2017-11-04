@@ -105,7 +105,10 @@ export default class GenerationSample extends Component {
         return (
             <div className="generation-sample">
                 <div className="generation-sample__header">
-                    <h3 className="generation-sample__title">Sample {this.props.sample.id} ({this.props.symmetric ? 'Symmetric' : 'Asymmetric'})</h3>
+                    <label className="generation-sample__label">
+                        <input type="checkbox" className="generation-sample__checkbox" value="y"/>
+                        <span className="generation-sample__title">Sample {this.props.sample.id} ({this.props.symmetric ? 'Symmetric' : 'Asymmetric'})</span>
+                    </label>
                     <button className="generation-sample__edit-button" onClick={this.props.editSample}><i className="fa fa-cog"></i></button>
                 </div>
                 <div className="generation-sample__canvas-wrap">
