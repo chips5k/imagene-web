@@ -25,6 +25,16 @@ export default class GenerationSamplesPanel extends Component {
         }
     }
 
+    onClickUpdateSelectedSamples(e) {
+        e.preventDefault();
+        this.props.onClickUpdateSelectedSamples(
+            this.props.selectedSamples,
+            320, 320,
+            this.refs.redThreshold.value,
+            this.refs.greenThreshold.value,
+            this.refs.blueThreshold.value)
+    }
+
     getFormData() {
         return {
             numSamples: this.refs.numSamples.value,
@@ -67,14 +77,22 @@ export default class GenerationSamplesPanel extends Component {
                     <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
                         <i className="fa fa-plus"></i> Generate
                     </button>}
+                    {this.props.selectedSamples.length === 0 && 
+                    <button className="button button--danger" onClick={this.onClickGenerateSamples.bind(this)}>
+                        <i className="fa fa-remove"></i> Remove All Samples
+                    </button>}
 
                     {this.props.selectedSamples.length > 0 &&  
-                    <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
+                    <button className="button button--primary" onClick={this.onClickUpdateSelectedSamples.bind(this)}>
                         <i className="fa fa-refresh"></i> Update
                     </button>}
                     {this.props.selectedSamples.length > 0 &&  
                     <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
                         <i className="fa fa-save"></i> Export
+                    </button>}
+                    {this.props.selectedSamples.length > 0 &&  
+                    <button className="button button--danger" onClick={this.onClickGenerateSamples.bind(this)}>
+                        <i className="fa fa-remove"></i> Remove 
                     </button>}
                 </ContentSidebarPanelBody>
             </ContentSidebarPanel>

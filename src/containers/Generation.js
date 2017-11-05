@@ -26,6 +26,7 @@ class GenerationContainer extends Component {
                     decreaseSampleFitness={this.props.actions.decreaseSampleFitness}
                     generateIndividuals={this.props.actions.generateIndividuals}
                     generateSamples={this.props.actions.generateSamples}
+                    updateSamples={this.props.actions.updateSamples}
                     generateSampleData={this.props.actions.generateSampleData}
                     evolveGeneration={this.props.actions.evolveIndividuals}
                     lastSampleId={this.props.lastSampleId}

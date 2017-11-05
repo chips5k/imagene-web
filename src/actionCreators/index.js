@@ -112,6 +112,20 @@ export const generateSamples = (getRandomReal, generation, numSamples, width, he
     };
 };
 
+export const updateSamples = (samples, redThreshold, greenThreshold, blueThreshold) => {
+    return {
+        type: 'UPDATE_SAMPLES',
+        samples: samples.map((sample) => {
+            return {
+                ...sample,
+                redThreshold,
+                greenThreshold,
+                blueThreshold
+            }
+        })
+    }
+}
+
 export const generateSampleData = (addToWorkerQueue, sample, coordinateType) => {
     return (dispatch) => {
 

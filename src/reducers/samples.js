@@ -24,6 +24,19 @@ export default (state = { byId: {}, allIds: []}, action) => {
 
             return newState;
         }
+
+        case 'UPDATE_SAMPLES': {
+            let newState = {
+                byId: {...state.byId},
+                allIds: [...state.allIds]
+            }
+
+            action.samples.forEach(n => {
+                newState.byId[n.id] = {...cloneDeep(n), cache: {}}
+            });
+
+            return newState;
+        }
         
         case 'SAMPLE_DATA_GENERATING': {
             let sample = state.byId[action.sampleId];

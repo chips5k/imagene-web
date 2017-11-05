@@ -56,6 +56,15 @@ export default class Generation extends Component {
         });
 
     }
+
+    onClickUpdateSamples() {
+        const data = this.refs['samples-panel'].getFormData();
+        this.props.updateSamples(this.props.generation.samples.filter((n) => this.state.selectedSamples.indexOf(n.id) !== -1), data.redThreshold, data.greenThreshold, data.blueThreshold);
+        this.setState({
+            activeView: 'samples',
+            selectedSamples: []
+        });
+    }
     
     generateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
         this.props.generateSamples(this.props.generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, this.props.lastSampleId);
@@ -261,6 +270,7 @@ export default class Generation extends Component {
                                 onClickGenerateSamples={this.generateSamples.bind(this)}
                                 toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                                 selectedSamples={this.state.selectedSamples}
+                                onClickUpdateSelectedSamples={this.onClickUpdateSamples.bind(this)}
                             />
                         }
                         
