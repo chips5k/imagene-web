@@ -26,6 +26,28 @@ export default (state = { byId: {}, allIds: []}, action) => {
             }
         }
 
+        case 'REMOVE_SAMPLES': {
+
+            let newState = {
+                byId: {
+                    ...state.byId,
+                    [action.generationId]: {
+                        ...state.byId[action.generationId],
+                        samples: state.byId[action.generationId].samples.filter(n => {
+                            if(action.sampleIds.length === 0 || action.sampleIds.indexOf(n) !== -1) {
+                                return false;
+                            }
+                            return true;
+                        })
+                    }
+                },
+                allIds: [...state.allIds]
+            }
+
+            console.log(newState);
+            return newState;
+        }
+
         case 'EVOLVE_INDIVIDUALS': {
 
             //First check if any of the supplied individual ids already exist in previous generations

@@ -9,6 +9,11 @@ export default class GenerationSample extends Component {
         };
     }
 
+    removeSample(e) {
+        e.preventDefault();
+        this.props.removeSample(this.props.sample.id);
+    }
+
     renderImage() {
         let key = this.props.coordinateType;
         if(this.props.sample.cache[key]) {
@@ -114,6 +119,7 @@ export default class GenerationSample extends Component {
                         <span className="generation-sample__title">Sample {this.props.sample.id} ({this.props.symmetric ? 'Symmetric' : 'Asymmetric'})</span>
                     </label>
                     <button className="generation-sample__edit-button" onClick={this.props.editSample}><i className="fa fa-cog"></i></button>
+                    <button className="generation-sample__edit-button" onClick={this.removeSample.bind(this)}><i className="fa fa-remove"></i></button>
                 </div>
                 <div className="generation-sample__canvas-wrap">
                     {this.props.sample.processing && <div className="generation-sample__canvas-loader" />}

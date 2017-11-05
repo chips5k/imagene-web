@@ -37,6 +37,32 @@ export default (state = { byId: {}, allIds: []}, action) => {
 
             return newState;
         }
+
+        case 'REMOVE_SAMPLES': {
+
+            let byId = {};
+            let allIds = state.allIds.filter(n => {
+                if(state.byId[n].generationId === action.generationId) {
+                    if(action.sampleIds.length > 0) {
+                       if(action.sampleIds.indexOf(n) !== -1) {
+                           return false;
+                       }
+                    } else {
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            allIds.forEach(n => {
+                byId[n] = {...state.byId[n]}
+            });
+            
+
+            return {
+                byId, allIds
+            };
+        }
         
         case 'SAMPLE_DATA_GENERATING': {
             let sample = state.byId[action.sampleId];

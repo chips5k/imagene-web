@@ -130,6 +130,20 @@ export default class Generation extends Component {
         return className + (this.state[property] === value ? ' main__content-top-nav-item--active' : '');
     }
 
+    onClickRemoveSamples(e) {
+        e.preventDefault();
+
+        this.props.removeSamples(this.props.generation.id, this.state.selectedSamples);
+        this.setState({
+            selectedSamples: [],
+            contentSidebarVisible: window.innerWidth <= 1224 ? false : this.state.contentSidebarVisible
+        });
+    }
+
+    onClickRemoveSample(sampleId) {
+        this.props.removeSamples(this.props.generation.id, [sampleId]);
+    }
+
     clearSelectedSamples(e) {
         e.preventDefault();
         this.setState({
@@ -188,6 +202,7 @@ export default class Generation extends Component {
                                     generateSampleData={this.props.generateSampleData}
                                     generateSamples={this.onClickGenerateSamples.bind(this)}
                                     selectedSamples={this.state.selectedSamples}
+                                    removeSample={this.onClickRemoveSample.bind(this)}
                                     toggleSample={this.toggleSample.bind(this)}
                                 />
                             }
@@ -270,7 +285,9 @@ export default class Generation extends Component {
                                 onClickGenerateSamples={this.generateSamples.bind(this)}
                                 toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                                 selectedSamples={this.state.selectedSamples}
+                                samples={this.props.generation.samples}
                                 onClickUpdateSelectedSamples={this.onClickUpdateSamples.bind(this)}
+                                onClickRemoveSamples={this.onClickRemoveSamples.bind(this)}
                             />
                         }
                         

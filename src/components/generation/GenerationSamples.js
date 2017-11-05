@@ -17,6 +17,7 @@ const GenerationSamples = (props) => {
                             onClickDecreaseSampleFitness={props.decreaseSampleFitness}
                             generateSampleData={props.generateSampleData}
                             selected={(props.selectedSamples.indexOf(s.id) !== -1)}
+                            removeSample={props.removeSample}
                             toggleSample={props.toggleSample}
                         />
                     )}

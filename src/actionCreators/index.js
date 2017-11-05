@@ -13,6 +13,15 @@ export const createInitialGeneration = (redirect) => {
     }
 };
 
+
+export const removeSamples = (generationId, sampleIds) => {
+    return {
+        type: 'REMOVE_SAMPLES',
+        generationId: generationId,
+        sampleIds: sampleIds
+    }
+}
+
 /**
  * Generate Individuals
  * @param {integer} numIndividuals the number of individuals to generate 

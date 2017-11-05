@@ -78,6 +78,7 @@ let partiallyAppliedActionCreators = {
     generateSamples: actionCreators.generateSamples.bind(null, getRandomReal),
     updateSamples: actionCreators.updateSamples.bind(null),
     generateSampleData: actionCreators.generateSampleData.bind(null, addToWorkerQueue),
+    removeSamples: actionCreators.removeSamples.bind(null),
     evolveIndividuals: actionCreators.evolveIndividuals.bind(null, individualsEvolver, push)
 }
 

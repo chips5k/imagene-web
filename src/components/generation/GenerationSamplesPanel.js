@@ -77,8 +77,8 @@ export default class GenerationSamplesPanel extends Component {
                     <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
                         <i className="fa fa-plus"></i> Generate
                     </button>}
-                    {this.props.selectedSamples.length === 0 && 
-                    <button className="button button--danger" onClick={this.onClickGenerateSamples.bind(this)}>
+                    {this.props.selectedSamples.length === 0 && this.props.samples.length > 0 && 
+                    <button className="button button--danger" onClick={this.props.onClickRemoveSamples}>
                         <i className="fa fa-remove"></i> Remove All Samples
                     </button>}
 
@@ -91,7 +91,7 @@ export default class GenerationSamplesPanel extends Component {
                         <i className="fa fa-save"></i> Export
                     </button>}
                     {this.props.selectedSamples.length > 0 &&  
-                    <button className="button button--danger" onClick={this.onClickGenerateSamples.bind(this)}>
+                    <button className="button button--danger"  onClick={this.props.onClickRemoveSamples}>
                         <i className="fa fa-remove"></i> Remove 
                     </button>}
                 </ContentSidebarPanelBody>
