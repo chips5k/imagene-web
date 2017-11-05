@@ -26,6 +26,7 @@ export default class Generation extends Component {
         this.state = {
             activeView: 'individuals',
             coordinateType: 'cartesian',
+            selectedSamples: [],
             symmetric: false,
             contentSidebarVisible: window.innerWidth >= 1224
         };
@@ -100,8 +101,39 @@ export default class Generation extends Component {
         });
     }
     
+    toggleSample(sample) {
+        
+        const index = this.state.selectedSamples.indexOf(sample.id);
+        const selectedSamples = this.state.selectedSamples.slice(0);
+        if(index !== -1) {
+            selectedSamples.splice(index, 1);
+        } else {
+            selectedSamples.push(sample.id);
+        }
+
+        
+        this.setState({
+            selectedSamples: selectedSamples
+        });
+    }
+    
     determineClass = (className, property, value) => {
         return className + (this.state[property] === value ? ' main__content-top-nav-item--active' : '');
+    }
+
+    clearSelectedSamples(e) {
+        e.preventDefault();
+        this.setState({
+            selectedSamples: []
+        });
+    }
+    editSelectedSamples(e) {
+        this.toggleContentSidebar(e);
+
+    }
+    openExportSelectedSamplesModal(e) {
+        e.preventDefault();
+
     }
 
     render() {
@@ -113,6 +145,12 @@ export default class Generation extends Component {
                 </ContentHeader>
                 <ContentBody contentSidebarVisible={this.state.contentSidebarVisible} sidebar={true}>
                     <ContentPrimary>
+                        {this.state.selectedSamples.length > 0 && 
+                            <ContentPrimaryTopNav>
+                                <span className="main__content-top-nav-item main__content-top-nav-item--active" style={{width: '100%'}}><b>{this.state.selectedSamples.length}</b>&nbsp;sample(s) selected</span>
+                            </ContentPrimaryTopNav>
+                        }
+                        {this.state.selectedSamples.length === 0 && 
                         <ContentPrimaryTopNav>
 
                             <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'individuals' ? 'main__content-top-nav-item--active' : ''}`} onClick={this.changeActiveView.bind(this, 'individuals')}>
@@ -126,6 +164,7 @@ export default class Generation extends Component {
                             }
 
                         </ContentPrimaryTopNav>
+                        }
                         <ContentPrimaryBody topNav bottomNav>
                             {this.state.activeView === 'individuals' && 
                                 <GenerationIndividuals individuals={this.props.generation.individuals} generateIndividuals={this.onClickGenerateIndividuals.bind(this)}/>
@@ -139,11 +178,29 @@ export default class Generation extends Component {
                                     decreaseSampleFitness={this.props.decreaseSampleFitness}
                                     generateSampleData={this.props.generateSampleData}
                                     generateSamples={this.onClickGenerateSamples.bind(this)}
+                                    selectedSamples={this.state.selectedSamples}
+                                    toggleSample={this.toggleSample.bind(this)}
                                 />
                             }
                         </ContentPrimaryBody>
-                        <ContentPrimaryBottomNav>
+                        
+                        {this.state.selectedSamples.length > 0 &&
+                            <ContentPrimaryBottomNav>
+                                <a className="main__content-bottom-nav-item" href="" onClick={this.clearSelectedSamples.bind(this)}>
+                                    <i className="main__content-bottom-nav-item-icon fa fa-remove"></i> Clear
+                                </a>
+                                {this.state.contentSidebarVisible === false && 
+                                <a className="main__content-bottom-nav-item" href="" onClick={this.editSelectedSamples.bind(this)}>
+                                    <i className="main__content-bottom-nav-item-icon fa fa-cog"></i> Edit
+                                </a>}
+                                <a className="main__content-bottom-nav-item" href="" onClick={this.openExportSelectedSamplesModal.bind(this)}>
+                                    <i className="main__content-bottom-nav-item-icon fa fa-save"></i> Export
+                                </a>    
+                            </ContentPrimaryBottomNav>
+                        }
 
+                        {this.state.selectedSamples.length === 0 && 
+                            <ContentPrimaryBottomNav>
                                 {this.state.activeView === 'individuals' && this.props.generation.id === 1 && 
                                     <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateIndividuals.bind(this)}>
                                         <i className="main__content-bottom-nav-item-icon fa fa-refresh"></i> {this.props.generation.individuals.length ? 'Regenerate' : 'Generate'}
@@ -155,7 +212,7 @@ export default class Generation extends Component {
                                         <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate Samples
                                     </a>
                                 }
-
+                                
                                 {this.state.activeView === 'samples' &&
                                 <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
                                     <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate
@@ -182,12 +239,12 @@ export default class Generation extends Component {
                                         <i className="main__content-bottom-nav-item-icon fa fa-sitemap"></i> Evolve
                                     </a>
                                 }
+                            </ContentPrimaryBottomNav>
+                        }
                             
-                        </ContentPrimaryBottomNav>
                     </ContentPrimary>
                     <ContentSidebar toggleContentSidebar={this.toggleContentSidebar.bind(this)}>
                                 
-                        
                         {this.props.generation.id === 1 && this.state.activeView === 'individuals' && 
                             <GenerationIndividualsPanel 
                                 ref="population-panel"
@@ -203,10 +260,11 @@ export default class Generation extends Component {
                                 ref="samples-panel"
                                 onClickGenerateSamples={this.generateSamples.bind(this)}
                                 toggleContentSidebar={this.toggleContentSidebar.bind(this)}
+                                selectedSamples={this.state.selectedSamples}
                             />
                         }
                         
-                        {this.props.generation.samples.length > 0 && 
+                        {this.state.selectedSamples.length === 0 && this.props.generation.samples.length > 0 && 
                         <GenerationEvolutionPanel 
                             onClickEvolveGeneration={this.evolveGeneration.bind(this)}
                             toggleContentSidebar={this.toggleContentSidebar.bind(this)} />

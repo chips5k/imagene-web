@@ -38,22 +38,16 @@ export default class GenerationSamplesPanel extends Component {
         return (
             <ContentSidebarPanel>
                 <ContentSidebarPanelHeader>
-                    <i className="fa fa-image"></i> Generate Samples
+                    <i className="fa fa-image"></i> {this.props.selectedSamples.length > 0 ? 'Update/Export' : 'Generate'} Samples
                 </ContentSidebarPanelHeader>
                 <ContentSidebarPanelBody>
+                    {this.props.selectedSamples.length > 0 &&
+                    <p>{this.props.selectedSamples.length} sample(s) selected, you can adjust the options below and regenerate or export these items.</p>}
+                    <div style={{display: this.props.selectedSamples.length > 0  ? 'none' : 'block'}}>
                     <FormControl label="No. Samples">
                         <StepperInput ref="numSamples" value={4} maxValue={6} />  
                     </FormControl>
-
-                    {/* <div className="hbox">
-                        <FormControl label="Width">
-                            <input className="text-input" type="text" ref="width" defaultValue={320} />
-                        </FormControl>
-
-                        <FormControl label="Height" last>
-                            <input  className="text-input" type="text" ref="height" defaultValue={320} />
-                        </FormControl>
-                    </div> */}
+                    </div>
 
                     <div className="vbox" style={{width: 300}}>
                         
@@ -69,15 +63,19 @@ export default class GenerationSamplesPanel extends Component {
                             <ColourRangeInput ref="blueThreshold"  colour="blue"  minValue={0} maxValue={255} />  
                         </FormControl>
                     </div>
+                    {this.props.selectedSamples.length === 0 && 
                     <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
                         <i className="fa fa-plus"></i> Generate
-                    </button> 
+                    </button>}
+
+                    {this.props.selectedSamples.length > 0 &&  
                     <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
                         <i className="fa fa-refresh"></i> Update
-                    </button>
+                    </button>}
+                    {this.props.selectedSamples.length > 0 &&  
                     <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
                         <i className="fa fa-save"></i> Export
-                    </button>
+                    </button>}
                 </ContentSidebarPanelBody>
             </ContentSidebarPanel>
         );

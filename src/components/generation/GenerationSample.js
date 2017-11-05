@@ -101,12 +101,16 @@ export default class GenerationSample extends Component {
         this.props.onClickDecreaseSampleFitness(this.props.sample);
     }
 
+    toggleSample(e) {
+        this.props.toggleSample(this.props.sample);
+    }
+
     render() {
         return (
             <div className="generation-sample">
                 <div className="generation-sample__header">
                     <label className="generation-sample__label">
-                        <input type="checkbox" className="generation-sample__checkbox" value="y"/>
+                        <input type="checkbox" className="generation-sample__checkbox" checked={this.props.selected} onChange={this.toggleSample.bind(this)}/>
                         <span className="generation-sample__title">Sample {this.props.sample.id} ({this.props.symmetric ? 'Symmetric' : 'Asymmetric'})</span>
                     </label>
                     <button className="generation-sample__edit-button" onClick={this.props.editSample}><i className="fa fa-cog"></i></button>
@@ -178,7 +182,7 @@ export default class GenerationSample extends Component {
                     <div className="generation-sample__controls">
                         <button className="generation-sample__control" onClick={this.onClickIncreaseFitness.bind(this)}><i className="fa fa-plus"></i></button>
                         <button className="generation-sample__control" onClick={this.onClickDecreaseFitness.bind(this)}><i className="fa fa-minus"></i></button>
-                        <button className="generation-sample__control"><i className="fa fa-search"></i></button>
+                        <button className="generation-sample__control"><i className="fa fa-save"></i></button>
                         <button className="generation-sample__control" onClick={this.toggleDetails.bind(this)}><i className={this.state.showDetail ? 'fa fa-eye' : 'fa fa-eye-slash'}></i></button>
                         
                     </div>
