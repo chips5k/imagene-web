@@ -216,38 +216,38 @@ export default class Generation extends Component {
                                     </a>
                                 }
 
-                                {this.state.activeView === 'individuals' &&  this.props.generation.individuals.length > 0 && 
-                                    <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)} style={{width: 160}}>
-                                        <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate Samples
-                                    </a>
-                                }
-                                
-                                {this.state.activeView === 'samples' &&
-                                <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
-                                    <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate
-                                </a>
-                                }
-                                
-                                {this.state.activeView === 'samples' &&
-                                <a className="main__content-bottom-nav-item" href="" onClick={this.toggleCoordinateType.bind(this)}>
-                                    <i className={`main__content-bottom-nav-item-icon fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
-                                    {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
-                                </a>
-                                }
-
-
-                                {this.state.activeView === 'samples' &&
-                                <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
-                                    <i className={`main__content-bottom-nav-item-icon fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
-                                    {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
-                                </a>
-                                }
-
                                 {this.props.generation.samples.length > 0 && 
                                     <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
                                         <i className="main__content-bottom-nav-item-icon fa fa-sitemap"></i> Evolve
                                     </a>
                                 }
+                                
+                                {this.state.activeView === 'samples' &&
+                                    <a className="main__content-bottom-nav-item" href="" onClick={this.toggleCoordinateType.bind(this)}>
+                                        <i className={`main__content-bottom-nav-item-icon fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
+                                        {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
+                                    </a>
+                                }
+
+                                {this.state.activeView === 'samples' &&
+                                    <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
+                                        <i className={`main__content-bottom-nav-item-icon fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
+                                        {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
+                                    </a>
+                                }
+
+                                {this.state.activeView === 'individuals' &&  this.props.generation.individuals.length > 0 && 
+                                    <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)} style={{width: 160}}>
+                                        <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate Samples
+                                    </a>
+                                }
+
+                                {this.state.activeView === 'samples' &&
+                                    <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
+                                        <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate
+                                    </a>
+                                }
+
                             </ContentPrimaryBottomNav>
                         }
                             
