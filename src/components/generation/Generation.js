@@ -181,20 +181,15 @@ export default class Generation extends Component {
         });
     }
 
-    exportSamples() {
-
-    }
+    
 
     handleExportSamplesModalExportClick() {
-
         this.props.exportSamples(
             this.props.generation.samples.filter(n => this.state.selectedSamples.indexOf(n.id) !== -1),
-            this.refs.exportSamplesModal.refs.width,
-            this.refs.exportSamplesModal.refs.height
+            ...this.refs.exportSamplesModal.getFormData()
         );
-
     }
-
+    
     render() {
 
         return (
@@ -341,10 +336,12 @@ export default class Generation extends Component {
                     </ContentBody>
                 </Content>
                 <ExportSamplesModal 
+                    ref="exportSamplesModal"
                     open={this.state.exportModalOpen} 
                     selectedSamples={this.state.selectedSamples}
                     onExportSamplesClick={this.handleExportSamplesModalExportClick.bind(this)} 
                     onCloseModalClick={this.closeExportSamplesModal.bind(this)}
+                    samples={this.props.generation.samples}
                     
                 />
             </div>

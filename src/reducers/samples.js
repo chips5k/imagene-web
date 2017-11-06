@@ -100,6 +100,75 @@ export default (state = { byId: {}, allIds: []}, action) => {
             }
         }
 
+        case 'SAMPLE_EXPORT_DATA_GENERATING': {
+
+            let newState = {...state};
+            let exportTypes = {};
+
+            action.coordinateTypes.forEach(n => {
+                exportTypes[n] = []
+            });
+
+            action.sampleIds.forEach(n => {
+
+
+                newState.byId[n] = {
+                    ...newState.byId[n],
+                    exporting: true,
+                    exports: exportTypes
+                }
+            });
+
+            return {
+                ...state,
+                byId: state.byId.map(n => {
+                    if(action.sampleIds.indexOf(n.id)) {
+                        return {
+                            ...n,
+                            exporting: true,
+                            exports: {}
+                        }
+                    }
+                    return {...n}
+                })
+            }
+        }
+
+        case 'SAMPLE_EXPORT_DATA_GENERATED': {
+            
+            let sample = state.byId[action.sampleId];
+            let key = action.coordinateType;
+
+            let exporting = true;
+            let completed = 1;
+            for(let i in state.byId[action.sampleId].exports) {
+                if(i !== action.coordinateType) {
+                    if(state.byId[action.sampleId].exports[i].length > 0) {
+                        completed++;
+                    }
+                }
+            }
+
+            if(completed === Object.keys(state.byId[action.sampleId].exports).length) {
+                exporting = false;
+            }
+
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [sample.id]: {
+                        ...sample,
+                        exports: {
+                            ...sample.exports,
+                            [key]: Uint8ClampedArray.from(action.data)
+                        },
+                        exporting
+                    }
+                }
+            }
+        }
+
         case 'INCREASE_SAMPLE_FITNESS': {
             let sample = state.byId[action.sampleId];
             return {
