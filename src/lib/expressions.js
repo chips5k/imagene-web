@@ -257,7 +257,6 @@ export const mutateExpression = (tokenCreators, getRandomInteger, tokenSelector,
     return mutatedExpression;
 };
 
-
 export const findBinaryTreeNodeByIndex = (node, currentIndex, index) => {
     
     if(currentIndex.value === index) {

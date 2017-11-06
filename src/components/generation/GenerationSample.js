@@ -110,6 +110,11 @@ export default class GenerationSample extends Component {
         this.props.toggleSample(this.props.sample);
     }
 
+    handleClickExportSample(e) {
+        e.preventDefault();
+        this.props.onClickExportSample(this.props.sample.id);
+    }
+
     render() {
         return (
             <div className="generation-sample">
@@ -188,7 +193,7 @@ export default class GenerationSample extends Component {
                     <div className="generation-sample__controls">
                         <button className="generation-sample__control" onClick={this.onClickIncreaseFitness.bind(this)}><i className="fa fa-plus"></i></button>
                         <button className="generation-sample__control" onClick={this.onClickDecreaseFitness.bind(this)}><i className="fa fa-minus"></i></button>
-                        <button className="generation-sample__control"><i className="fa fa-save"></i></button>
+                        <button className="generation-sample__control" onClick={this.handleClickExportSample.bind(this)}><i className="fa fa-save"></i></button>
                         <button className="generation-sample__control" onClick={this.toggleDetails.bind(this)}><i className={this.state.showDetail ? 'fa fa-eye' : 'fa fa-eye-slash'}></i></button>
                         
                     </div>

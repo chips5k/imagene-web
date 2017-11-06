@@ -13,6 +13,11 @@ export const createInitialGeneration = (redirect) => {
     }
 };
 
+export const exportSamples = (samples, width, height) => {
+    return {
+        type: 'EXPORT_SAMPLES'
+    }
+};
 
 export const removeSamples = (generationId, sampleIds) => {
     return {

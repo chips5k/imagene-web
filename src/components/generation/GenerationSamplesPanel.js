@@ -35,6 +35,11 @@ export default class GenerationSamplesPanel extends Component {
             this.refs.blueThreshold.value)
     }
 
+    handleClickExportSamples(e) {
+        e.preventDefault();
+        this.props.onClickExportSamples();
+    }
+
     getFormData() {
         return {
             numSamples: this.refs.numSamples.value,
@@ -87,7 +92,7 @@ export default class GenerationSamplesPanel extends Component {
                         <i className="fa fa-refresh"></i> Update
                     </button>}
                     {this.props.selectedSamples.length > 0 &&  
-                    <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
+                    <button className="button button--primary" onClick={this.handleClickExportSamples.bind(this)}>
                         <i className="fa fa-save"></i> Export
                     </button>}
                     {this.props.selectedSamples.length > 0 &&  

@@ -19,6 +19,7 @@ const GenerationSamples = (props) => {
                             selected={(props.selectedSamples.indexOf(s.id) !== -1)}
                             removeSample={props.removeSample}
                             toggleSample={props.toggleSample}
+                            onClickExportSample={props.onClickExportSample}
                         />
                     )}
                 </div>
