@@ -135,7 +135,6 @@ export const updateSamples = (samples, redThreshold, greenThreshold, blueThresho
 }
 
 export const exportSamples = (addToWorkerQueue, samples, width, height, coordinateTypes, redThreshold, greenThreshold, blueThreshold) => {
-    console.log(samples, width, height, coordinateTypes, redThreshold, greenThreshold, blueThreshold)
     return (dispatch) => {
 
         dispatch({

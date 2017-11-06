@@ -110,8 +110,6 @@ export default (state = { byId: {}, allIds: []}, action) => {
             });
 
             action.sampleIds.forEach(n => {
-
-
                 newState.byId[n] = {
                     ...newState.byId[n],
                     exporting: true,
@@ -119,19 +117,7 @@ export default (state = { byId: {}, allIds: []}, action) => {
                 }
             });
 
-            return {
-                ...state,
-                byId: state.byId.map(n => {
-                    if(action.sampleIds.indexOf(n.id)) {
-                        return {
-                            ...n,
-                            exporting: true,
-                            exports: {}
-                        }
-                    }
-                    return {...n}
-                })
-            }
+            return newState;
         }
 
         case 'SAMPLE_EXPORT_DATA_GENERATED': {

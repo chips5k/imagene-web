@@ -184,9 +184,15 @@ export default class Generation extends Component {
     
 
     handleExportSamplesModalExportClick() {
+        const formData = this.refs.exportSamplesModal.getFormData();
         this.props.exportSamples(
             this.props.generation.samples.filter(n => this.state.selectedSamples.indexOf(n.id) !== -1),
-            ...this.refs.exportSamplesModal.getFormData()
+            formData.width,
+            formData.height,
+            formData.coordinateTypes,
+            formData.redThreshold,
+            formData.greenThreshold,
+            formData.blueThreshold
         );
     }
     

@@ -47,9 +47,15 @@ export default class ExportSamplesModal extends Component {
 
                         <h3>Available Exports</h3>
                         <ul>
-                            {this.props.samples.filter(n => n.exports && Object.keys(n.exports)).map((n, i) => 
-                                <li>{n.exporting ? (<span>Exporting...</span>) : (<a href="">Download (i)</a>)}</li>
-                            )};
+                            {this.props.samples.filter(n => n.exports && Object.keys(n.exports)).map((x, i) => 
+                                <li key={i}>
+                                    Sample: {x.id}: 
+                                    {x.exporting && <span>Exporting...</span>}
+                                    {!x.exporting && Object.keys(x.exports).map((n, j) => 
+                                        <a key={j} href="">Download {n}</a>
+                                    )}
+                                </li>
+                            )}
                         </ul>
 
                         <p>You have selected <b>{this.props.selectedSamples.length}</b> samples to export, please adjust the width/height and RGB thresholds for the export.<b>Please note</b>, the values adjusted here, will not alter the original samples.</p>
