@@ -27,9 +27,9 @@ class GenerationContainer extends Component {
                     generateIndividuals={this.props.actions.generateIndividuals}
                     generateSamples={this.props.actions.generateSamples}
                     updateSamples={this.props.actions.updateSamples}
-                    exportSamples={this.props.actions.exportSamples}
                     removeSamples={this.props.actions.removeSamples}
                     generateSampleData={this.props.actions.generateSampleData}
+                    addToWorkerQueue={this.props.addToWorkerQueue}
                     evolveGeneration={this.props.actions.evolveIndividuals}
                     lastSampleId={this.props.lastSampleId}
                     toggleSidebar={this.props.toggleSidebar}

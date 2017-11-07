@@ -76,7 +76,6 @@ let partiallyAppliedActionCreators = {
     createInitialGeneration: actionCreators.createInitialGeneration.bind(null, push),
     generateIndividuals: actionCreators.generateIndividuals.bind(null, expressionBuilder),
     generateSamples: actionCreators.generateSamples.bind(null, getRandomReal),
-    exportSamples: actionCreators.exportSamples.bind(null, addToWorkerQueue),
     updateSamples: actionCreators.updateSamples.bind(null),
     generateSampleData: actionCreators.generateSampleData.bind(null, addToWorkerQueue),
     removeSamples: actionCreators.removeSamples.bind(null),
@@ -93,7 +92,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const AppContainer = connect(mapStateToProps, mapDispatchToProps)((props) => {
     return (
         <ConnectedRouter history={history}>
-            <Layout {...props} />
+            <Layout {...props} addToWorkerQueue={addToWorkerQueue} />
         </ConnectedRouter>
     );
 });

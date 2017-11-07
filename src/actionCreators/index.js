@@ -134,44 +134,6 @@ export const updateSamples = (samples, redThreshold, greenThreshold, blueThresho
     }
 }
 
-export const exportSamples = (addToWorkerQueue, samples, width, height, coordinateTypes, redThreshold, greenThreshold, blueThreshold) => {
-    return (dispatch) => {
-
-        dispatch({
-            type: 'SAMPLE_EXPORT_DATA_GENERATING',
-            sampleIds: samples.map( n => n.id ), 
-            width, height,
-            coordinateTypes
-        });
-
-        samples.map(sample => 
-            coordinateTypes.map(coordinateType => 
-                addToWorkerQueue(
-                    {
-                        sample: {
-                            ...sample,
-                            width,
-                            height,
-                            redThreshold,
-                            blueThreshold,
-                            greenThreshold   
-                        },
-                        coordinateType
-                    },
-                    (e) => {
-                        dispatch({
-                            type: 'SAMPLE_EXPORT_DATA_GENERATED',
-                            sampleId: sample.id,
-                            data: e.data,
-                            coordinateType
-                        });
-                    }
-                )
-            )
-        );
-    }
-}
-
 export const generateSampleData = (addToWorkerQueue, sample, coordinateType) => {
     return (dispatch) => {
 

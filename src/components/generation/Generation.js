@@ -30,6 +30,8 @@ export default class Generation extends Component {
             coordinateType: 'cartesian',
             selectedSamples: [],
             symmetric: false,
+            exportSamplesModalOpen: false,
+            exportedSamples: [],
             contentSidebarVisible: window.innerWidth >= 1224
         };
     }
@@ -84,7 +86,6 @@ export default class Generation extends Component {
     }
 
     changeActiveView(view, e) {
-        console.log(view);
         e.preventDefault();
         this.setState({
             activeView: view
@@ -171,30 +172,145 @@ export default class Generation extends Component {
 
     openExportSamplesModal() {
         this.setState({
-            exportModalOpen: true
+            exportSamplesModalOpen: true
         });
     }
 
     closeExportSamplesModal() {
         this.setState({
-            exportModalOpen: false
+            exportSamplesModalOpen: false
+        });
+    }
+    
+    handleExportSamplesModalExportClick() {
+        const formData = this.refs.exportSamplesModal.getFormData();
+        const exportedSamples = [];
+        
+        this.props.generation.samples.filter(n => this.state.selectedSamples.indexOf(n.id) !== -1).forEach((sample, i) => {
+            formData.coordinateTypes.forEach(coordinateType => {
+                exportedSamples.push({ 
+                    name: `Sample: ${sample.id} ${coordinateType} ${formData.width}x${formData.height}`,
+                    data: [],
+                    sample: {
+                        width: formData.width,
+                        height: formData.height,
+                        redIndividual: sample.redIndividual,
+                        greenIndividual: sample.greenIndividual,
+                        blueIndividual: sample.blueIndividual,
+                        redThreshold: formData.redThreshold,
+                        greenThreshold: formData.greenThreshold,
+                        blueThreshold: formData.blueThreshold,
+                    },
+                    coordinateType,
+                    processing: true
+                });
+            });
+        });
+
+        this.setState({
+            exporting: true,
+            exportedSamples
+        }, () => {
+            this.state.exportedSamples.forEach((n, i) => {
+                this.props.addToWorkerQueue({
+                    sample: n.sample,
+                    coordinateType: n.coordinateType
+                }, (e) => {
+                    const exportedSamples = this.state.exportedSamples.slice(0);
+                    exportedSamples[i].data =  Uint8ClampedArray.from(e.data);
+                    exportedSamples[i].processing = false;
+                    this.setState({
+                        exportedSamples,
+                        exporting: this.state.exportedSamples.filter(n => n.processing).length < this.state.exportedSamples.length
+                    });
+                });
+            });
         });
     }
 
-    
-
-    handleExportSamplesModalExportClick() {
-        const formData = this.refs.exportSamplesModal.getFormData();
-        this.props.exportSamples(
-            this.props.generation.samples.filter(n => this.state.selectedSamples.indexOf(n.id) !== -1),
-            formData.width,
-            formData.height,
-            formData.coordinateTypes,
-            formData.redThreshold,
-            formData.greenThreshold,
-            formData.blueThreshold
-        );
+    handleDownloadSymmetricClick(item) {
+        var iframe = `<iframe width='100%' height='100%' src="${this.generateDataUri(item.sample.width, item.sample.height, item.data, true)}"></iframe>`;
+        var x = window.open();
+        x.document.open();
+        x.document.write(iframe);
+        x.document.close();
     }
+
+    handleDownloadAsymmetricClick(item) {
+        var iframe = `<iframe width='100%' height='100%' src="${this.generateDataUri(item.sample.width, item.sample.height, item.data, false)}"></iframe>`;
+        var x = window.open();
+        x.document.open();
+        x.document.write(iframe);
+        x.document.close();
+    }
+
+    generateDataUri(width, height, data, symmetric) {
+       
+        let exportCanvas = document.createElement('canvas');
+        exportCanvas.width = width;
+        exportCanvas.height = height;
+        
+        let ctx = exportCanvas.getContext('2d');
+        let image = ctx.getImageData(0, 0, width, height);
+        image.data.set(data);
+        ctx.putImageData(image, 0, 0);
+
+        if(symmetric) {
+            let degrees180 = 180 * (Math.PI/180); 
+            
+            //Setup temp canvas to hold rotated copy of a cropped top left canvas
+            let tempCanvas = document.createElement('canvas');
+            tempCanvas.width = image.width / 2;
+            tempCanvas.height = image.height / 2;
+            let tempCtx = tempCanvas.getContext('2d');
+            tempCtx.putImageData(ctx.getImageData(0, 0, image.width / 2, image.height / 2), 0, 0);
+
+            ctx.clearRect(0, 0, image.width, image.height);
+            //Rotate the quadrant image 180 degrees
+            tempCtx.save();
+            tempCtx.translate(image.width / 2, image.height / 2);
+            tempCtx.rotate(degrees180);
+            tempCtx.drawImage(tempCanvas, 0, 0);
+            tempCtx.restore(); 
+            
+            //Draw left hand side
+            ctx.drawImage(tempCanvas, 0, 0);
+
+            tempCtx.save();
+            // //Next mirror the quadrant onto itself by using negative scaling
+            tempCtx.scale(-1, 1);
+            tempCtx.translate(-image.width / 2, 0);
+            tempCtx.drawImage(tempCanvas, 0, 0);
+            tempCtx.restore();
+
+
+            //Draw the right hand side
+            ctx.drawImage(tempCanvas, image.width / 2, 0);
+
+            tempCtx.save();
+            tempCtx.scale(1, -1);
+            tempCtx.translate(0, -image.height / 2);
+            tempCtx.drawImage(tempCanvas, 0, 0);
+            tempCtx.restore();
+
+            //Draw the right hand side
+            ctx.drawImage(tempCanvas, image.width / 2, image.height / 2);
+
+
+            tempCtx.save();
+            tempCtx.scale(-1, 1);
+            tempCtx.translate(-image.width / 2, 0);
+            tempCtx.drawImage(tempCanvas, 0, 0);
+            tempCtx.restore();
+
+            //Draw the right hand side
+            ctx.drawImage(tempCanvas, 0, image.height / 2);    
+        }
+
+        return exportCanvas.toDataURL();
+    }
+
+
     
     render() {
 
@@ -343,10 +459,14 @@ export default class Generation extends Component {
                 </Content>
                 <ExportSamplesModal 
                     ref="exportSamplesModal"
-                    open={this.state.exportModalOpen} 
+                    open={this.state.exportSamplesModalOpen} 
                     selectedSamples={this.state.selectedSamples}
+                    exportedSamples={this.state.exportedSamples}
+                    exporting={this.state.exporting}
                     onExportSamplesClick={this.handleExportSamplesModalExportClick.bind(this)} 
                     onCloseModalClick={this.closeExportSamplesModal.bind(this)}
+                    onDownloadAsymmetricClick={this.handleDownloadAsymmetricClick.bind(this)}
+                    onDownloadSymmetricClick={this.handleDownloadSymmetricClick.bind(this)}
                     samples={this.props.generation.samples}
                     
                 />

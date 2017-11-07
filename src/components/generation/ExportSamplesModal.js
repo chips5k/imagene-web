@@ -34,6 +34,16 @@ export default class ExportSamplesModal extends Component {
         }
     }
 
+    handleDownloadSymmetricClick(item, e) {
+        e.preventDefault();
+        this.props.onDownloadSymmetricClick(item);
+    }
+
+    handleDownloadAsymmetricClick(item, e) {
+        e.preventDefault();
+        this.props.onDownloadAsymmetricClick(item);
+    }
+
     render() {
         return (
             <div className={'modal' + (this.props.open ? ' modal--open' : '')}>
@@ -47,17 +57,25 @@ export default class ExportSamplesModal extends Component {
 
                         <h3>Available Exports</h3>
                         <ul>
-                            {this.props.samples.filter(n => n.exports && Object.keys(n.exports)).map((x, i) => 
+                            {this.props.exportedSamples.map((n, i) => 
                                 <li key={i}>
-                                    Sample: {x.id}: 
-                                    {x.exporting && <span>Exporting...</span>}
-                                    {!x.exporting && Object.keys(x.exports).map((n, j) => 
-                                        <a key={j} href="">Download {n}</a>
-                                    )}
+                                    {n.name} [
+                                        {n.processing && 
+                                            <span>
+                                                <span>processing...</span>
+                                                <i className="fa fa-spin fa-spinner"></i>
+                                            </span>    
+                                        }
+                                        
+                                        {!n.processing && 
+                                            <span><a href="" onClick={this.handleDownloadAsymmetricClick.bind(this, n)}>Asymmetric</a> | <a href="" onClick={this.handleDownloadSymmetricClick.bind(this, n)}>Symmetric</a></span>
+                                        }
+                                    ]
                                 </li>
                             )}
                         </ul>
-
+                        
+                        
                         <p>You have selected <b>{this.props.selectedSamples.length}</b> samples to export, please adjust the width/height and RGB thresholds for the export.<b>Please note</b>, the values adjusted here, will not alter the original samples.</p>
 
                         <div className="hbox">
