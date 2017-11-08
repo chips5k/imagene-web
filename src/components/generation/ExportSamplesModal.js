@@ -43,11 +43,12 @@ export default class ExportSamplesModal extends Component {
         e.preventDefault();
         this.props.onDownloadAsymmetricClick(item);
     }
+    
 
     render() {
         return (
             <div className={'modal' + (this.props.open ? ' modal--open' : '')}>
-                    
+                
                 <div className="modal__panel">
                     <div className="modal__header">
                         <h2 className="modal__title">Export <b>{this.props.selectedSamples.length}</b> Sample(s)</h2>
@@ -59,18 +60,21 @@ export default class ExportSamplesModal extends Component {
                         <ul>
                             {this.props.exportedSamples.map((n, i) => 
                                 <li key={i}>
-                                    {n.name} [
+                                    {n.name}&nbsp;[&nbsp;
                                         {n.processing && 
                                             <span>
-                                                <span>processing...</span>
+                                                <span>processing...</span>&nbsp;
                                                 <i className="fa fa-spin fa-spinner"></i>
                                             </span>    
                                         }
                                         
                                         {!n.processing && 
-                                            <span><a href="" onClick={this.handleDownloadAsymmetricClick.bind(this, n)}>Asymmetric</a> | <a href="" onClick={this.handleDownloadSymmetricClick.bind(this, n)}>Symmetric</a></span>
+                                            <span>
+                                                <a href={n.symmetricDataUri} download={`${n.name} asymmetric.png`}>Asymmetric</a> | &nbsp;
+                                                <a href={n.asymmetricDataUri} download={`${n.name} symmetric.png`}>Symmetric</a>
+                                            </span>
                                         }
-                                    ]
+                                    &nbsp;]
                                 </li>
                             )}
                         </ul>
@@ -103,18 +107,18 @@ export default class ExportSamplesModal extends Component {
                             </FormControl>
                         </div>
 
-                        <div className="vbox" style={{width: 300}}>
+                        <div className="vbox">
                         
                             <FormControl label="Red Threshold" last>
-                                <ColourRangeInput  ref="redThreshold"  colour="red" minValue={0} maxValue={255} />  
+                                <ColourRangeInput  ref="redThreshold"  colour="red" minValue={0} maxValue={255} width={300}/>  
                             </FormControl>
 
                             <FormControl label="Green Threshold" last>
-                                <ColourRangeInput ref="greenThreshold"  colour="green"  minValue={0} maxValue={255} />  
+                                <ColourRangeInput ref="greenThreshold"  colour="green"  minValue={0} maxValue={255} width={300} />  
                             </FormControl>
 
                             <FormControl label="Blue Threshold" last>
-                                <ColourRangeInput ref="blueThreshold"  colour="blue"  minValue={0} maxValue={255} />  
+                                <ColourRangeInput ref="blueThreshold"  colour="blue"  minValue={0} maxValue={255}  width={300}/>  
                             </FormControl>
                         </div>
 
@@ -124,6 +128,7 @@ export default class ExportSamplesModal extends Component {
                         <button className="button" onClick={this.handleCloseModalClick.bind(this)}>Cancel</button>
                     </div>
                 </div>
+                <div className="modal__blocker"  onClick={this.handleCloseModalClick.bind(this)}></div>
             </div>
         );
     }

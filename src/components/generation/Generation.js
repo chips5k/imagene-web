@@ -219,6 +219,8 @@ export default class Generation extends Component {
                     const exportedSamples = this.state.exportedSamples.slice(0);
                     exportedSamples[i].data =  Uint8ClampedArray.from(e.data);
                     exportedSamples[i].processing = false;
+                    exportedSamples[i].symmetricDataUri = this.generateDataUri(n.sample.width, n.sample.height, n.data, false);
+                    exportedSamples[i].asymmetricDataUri = this.generateDataUri(n.sample.width, n.sample.height, n.data, true)
                     this.setState({
                         exportedSamples,
                         exporting: this.state.exportedSamples.filter(n => n.processing).length < this.state.exportedSamples.length

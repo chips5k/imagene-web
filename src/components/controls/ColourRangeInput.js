@@ -11,7 +11,6 @@ export default class ColourRangeInput extends Component {
         this.state = {
             mouseStart: false,
             activeHandle: false,
-            trackWidth: false,
             handles: {
                 min: {
                     left: 0,
@@ -26,8 +25,8 @@ export default class ColourRangeInput extends Component {
             }
         }
 
-        this.onMouseMove = this.onMouseMove.bind(this);
-        this.onMouseUp = this.onMouseUp.bind(this);
+        this.handleDrag = this.handleDrag.bind(this);
+        this.handleDragStop = this.handleDragStop.bind(this);
         
        
     }
@@ -47,20 +46,17 @@ export default class ColourRangeInput extends Component {
         
         let state = {...this.state};
 
-        //Get pixel width of the track for this
-        let trackWidth = this.refs.track.getBoundingClientRect().width;
-
         
-         //Convert the actual values into pixel values
-        state.handles.min.left = trackWidth / 255 * this.state.handles.min.value;
-        state.handles.max.left = trackWidth / 255 * this.state.handles.max.value - 14;
-        state.trackWidth = trackWidth;
+        //Convert the actual values into percent values
+        state.handles.min.left = 100 / 255 * this.state.handles.min.value;
+        state.handles.max.left = 100 / 255 * this.state.handles.max.value;
 
         this.setState(state);
     }
 
+
     
-    onMouseDown(ref, e) {
+    handleDragStart(ref, e) {
         e.preventDefault();
         
         let state = {...this.state, activeHandle: ref };
@@ -69,22 +65,24 @@ export default class ColourRangeInput extends Component {
 
         this.setState(state);
 
-        document.addEventListener('mousemove', this.onMouseMove);
-        document.addEventListener('mouseup', this.onMouseUp);
+        document.addEventListener('mousemove', this.handleDrag);
+        document.addEventListener('mouseup', this.handleDragStop);
+        document.addEventListener('touchmove', this.handleDrag);
+        document.addEventListener('touchend', this.handleDragStop);
     }
 
-    onMouseMove(e) {
+    handleDrag(e) {
         e.preventDefault();
         let state = {...this.state};
         
-        let currentLeft = this.state.handles[this.state.activeHandle].prevLeft + e.clientX - this.state.mouseStart;
+        let currentLeft = (this.state.handles[this.state.activeHandle].prevLeft + (e.clientX - this.state.mouseStart) / this.refs.track.getBoundingClientRect().width * 100);
 
         if(currentLeft < 0) {
             currentLeft = 0;
         }
 
-        if(currentLeft > this.state.trackWidth) {
-            currentLeft = this.state.trackWidth;
+        if(currentLeft > 100) {
+            currentLeft = 100;
         }
 
         //TODO Add checks for preventing overlaps;
@@ -92,32 +90,36 @@ export default class ColourRangeInput extends Component {
 
 
         //Calculate value from pixel positions
-        state.handles[this.state.activeHandle].value = Math.round(255 / this.state.trackWidth * currentLeft);
+        state.handles[this.state.activeHandle].value = Math.round(255 / 100 * currentLeft);
 
         //Adjust for overhang visually
-        state.handles[this.state.activeHandle].left = currentLeft > this.state.trackWidth - 14 ? currentLeft - 14 : currentLeft;
+        state.handles[this.state.activeHandle].left = currentLeft > 100 ? currentLeft : currentLeft;
         
 
         this.setState(state);
     }
 
-    onMouseUp(e) {
+    handleDragStop(e) {
         e.preventDefault();
 
-        document.removeEventListener('mousemove', this.onMouseMove);
-        document.removeEventListener('mouseup', this.onMouseUp);
+        document.removeEventListener('mousemove', this.handleDrag);
+        document.removeEventListener('mouseup', this.handleDragStop);
+        document.removeEventListener('touchmove', this.handleDrag);
+        document.removeEventListener('touchstop', this.handleDragStop);
     }
-
-
+    
 
     render() {
+        
         let baseClass = `colour-range-input colour-range-input--${this.props.colour}`;
+        
         return (
             <span className={baseClass}>
                 <div className="colour-range-input__track" ref="track" />
-                <div className="colour-range-input_handle" onMouseDown={this.onMouseDown.bind(this, 'min')} style={{left: this.state.handles.min.left}}/>
-                <div className="colour-range-input_handle"  onMouseDown={this.onMouseDown.bind(this, 'max')} style={{left: this.state.handles.max.left}}/>
+                <div className="colour-range-input__handle" onTouchStart={this.handleDragStart.bind(this, 'min')} onMouseDown={this.handleDragStart.bind(this, 'min')} style={{left: (this.state.handles.min.left + '%')}}/>
+                <div className="colour-range-input__handle colour-range-input__handle-right"  onTouchStart={this.handleDragStart.bind(this, 'max')} onMouseDown={this.handleDragStart.bind(this, 'max')} style={{left: (this.state.handles.max.left + '%')}}/>
             </span>
         );
+    
     } 
 }

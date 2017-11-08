@@ -531,7 +531,7 @@ hr {
 
 
 
-.colour-range-input_handle{
+.colour-range-input__handle{
     width: 10px;
     height: 100%;
     top: 6px;
@@ -540,6 +540,11 @@ hr {
     border-radius: 5px;
     background: rgba(255,255,255,0.4);
     position:absolute;
+    cursor: pointer;
+}
+
+.colour-range-input__handle-right {
+    margin-left:-14px;
 }
 
 .colour-range-input_handle:hover {
@@ -939,7 +944,6 @@ animation: spinner .6s linear infinite;
 }
 
 .modal {
-    background: rgba(0, 0, 0, 0.5);
     position:fixed;
     left: 0px;
     right: 0px;
@@ -951,22 +955,54 @@ animation: spinner .6s linear infinite;
     display:none;
 }
 
+.modal__blocker {
+    background: rgba(0, 0, 0, 0.5);
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    top:0px;
+
+}
+
 .modal.modal--open {
     display:flex;
 }
 
-
 .modal__panel {
-    max-width:600px;
-    min-width:250px;
     margin:3rem;
     background: white;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
+    z-index:1;
+    display: flex;
+    flex-direction: column;
+    max-height:90vh;
+
 }   
+
 
 .modal__header {
     border-bottom:1px solid #ccc;
     padding:1rem;
+    display:flex;
+    align-items: center;
+    min-height:20px;
+}
+
+.modal__title {
+    flex: 1;
+    font-size:1rem;
+    margin:0;
+    padding:0;
+}
+
+.modal__close:link {
+    color: black;
+    text-decoration: none;
+}
+
+.modal__close {
+    color: black;
 }
 
 .modal__body {
@@ -974,10 +1010,12 @@ animation: spinner .6s linear infinite;
     padding:1rem;
     padding-top:0.5rem;
     font-size:0.9rem;
-    max-height: 600px;
+    overflow-y: auto;
+    
 }
 
 .modal__footer {
     border-top:1px solid #ccc;
     padding:1rem;
+    min-height:40px;
 }   

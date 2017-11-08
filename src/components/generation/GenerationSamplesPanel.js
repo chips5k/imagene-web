@@ -64,18 +64,17 @@ export default class GenerationSamplesPanel extends Component {
                     </FormControl>
                     </div>
 
-                    <div className="vbox" style={{width: 300}}>
-                        
+                    <div className="vbox">
                         <FormControl label="Red Threshold" last>
-                            <ColourRangeInput  ref="redThreshold"  colour="red" minValue={0} maxValue={255} />  
+                            <ColourRangeInput  ref="redThreshold"  colour="red" minValue={0} maxValue={255} width={300} />  
                         </FormControl>
 
                         <FormControl label="Green Threshold" last>
-                            <ColourRangeInput ref="greenThreshold"  colour="green"  minValue={0} maxValue={255} />  
+                            <ColourRangeInput ref="greenThreshold"  colour="green"  minValue={0} maxValue={255}  width={300}/>  
                         </FormControl>
 
                         <FormControl label="Blue Threshold" last>
-                            <ColourRangeInput ref="blueThreshold"  colour="blue"  minValue={0} maxValue={255} />  
+                            <ColourRangeInput ref="blueThreshold"  colour="blue"  minValue={0} maxValue={255} width={300} />  
                         </FormControl>
                     </div>
                     {this.props.selectedSamples.length === 0 && 
