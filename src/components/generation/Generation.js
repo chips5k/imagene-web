@@ -189,7 +189,7 @@ export default class Generation extends Component {
         this.props.generation.samples.filter(n => this.state.selectedSamples.indexOf(n.id) !== -1).forEach((sample, i) => {
             formData.coordinateTypes.forEach(coordinateType => {
                 exportedSamples.push({ 
-                    name: `Sample: ${sample.id} ${coordinateType} ${formData.width}x${formData.height}`,
+                    name: `Sample ${sample.id} ${coordinateType} ${formData.width}x${formData.height}`,
                     data: [],
                     sample: {
                         width: formData.width,
@@ -228,22 +228,6 @@ export default class Generation extends Component {
                 });
             });
         });
-    }
-
-    handleDownloadSymmetricClick(item) {
-        var iframe = `<iframe width='100%' height='100%' src="${this.generateDataUri(item.sample.width, item.sample.height, item.data, true)}"></iframe>`;
-        var x = window.open();
-        x.document.open();
-        x.document.write(iframe);
-        x.document.close();
-    }
-
-    handleDownloadAsymmetricClick(item) {
-        var iframe = `<iframe width='100%' height='100%' src="${this.generateDataUri(item.sample.width, item.sample.height, item.data, false)}"></iframe>`;
-        var x = window.open();
-        x.document.open();
-        x.document.write(iframe);
-        x.document.close();
     }
 
     generateDataUri(width, height, data, symmetric) {
@@ -308,7 +292,6 @@ export default class Generation extends Component {
             //Draw the right hand side
             ctx.drawImage(tempCanvas, 0, image.height / 2);    
         }
-
         return exportCanvas.toDataURL();
     }
 
@@ -467,8 +450,6 @@ export default class Generation extends Component {
                     exporting={this.state.exporting}
                     onExportSamplesClick={this.handleExportSamplesModalExportClick.bind(this)} 
                     onCloseModalClick={this.closeExportSamplesModal.bind(this)}
-                    onDownloadAsymmetricClick={this.handleDownloadAsymmetricClick.bind(this)}
-                    onDownloadSymmetricClick={this.handleDownloadSymmetricClick.bind(this)}
                     samples={this.props.generation.samples}
                     
                 />

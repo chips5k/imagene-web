@@ -60,7 +60,7 @@ export default class ExportSamplesModal extends Component {
                         <ul>
                             {this.props.exportedSamples.map((n, i) => 
                                 <li key={i}>
-                                    {n.name}&nbsp;[&nbsp;
+                                    {n.name}<br/>[&nbsp;
                                         {n.processing && 
                                             <span>
                                                 <span>processing...</span>&nbsp;
@@ -70,8 +70,8 @@ export default class ExportSamplesModal extends Component {
                                         
                                         {!n.processing && 
                                             <span>
-                                                <a href={n.symmetricDataUri} download={`${n.name} asymmetric.png`}>Asymmetric</a> | &nbsp;
-                                                <a href={n.asymmetricDataUri} download={`${n.name} symmetric.png`}>Symmetric</a>
+                                                <a href={n.symmetricDataUri} download={`${n.name} asymmetric.png`} target="_BLANK">Asymmetric</a> | &nbsp;
+                                                <a href={n.asymmetricDataUri} download={`${n.name} symmetric.png`} target="_BLANK">Symmetric</a>
                                             </span>
                                         }
                                     &nbsp;]

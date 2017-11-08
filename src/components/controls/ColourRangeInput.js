@@ -9,7 +9,7 @@ export default class ColourRangeInput extends Component {
         let maxValue = this.props.maxValue > 0 ? this.props.maxValue < 255 ? this.props.maxValue : 255 : 0;
         
         this.state = {
-            mouseStart: false,
+            dragStart: false,
             activeHandle: false,
             handles: {
                 min: {
@@ -42,6 +42,7 @@ export default class ColourRangeInput extends Component {
         return this.state.handles.max.value;
     }
 
+    
     componentDidMount() {
         
         let state = {...this.state};
@@ -57,10 +58,9 @@ export default class ColourRangeInput extends Component {
 
     
     handleDragStart(ref, e) {
-        e.preventDefault();
-        
         let state = {...this.state, activeHandle: ref };
-        state.mouseStart = e.clientX;
+        let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        state.dragStart = clientX;
         state.handles[ref].prevLeft = state.handles[ref].left;
 
         this.setState(state);
@@ -72,10 +72,10 @@ export default class ColourRangeInput extends Component {
     }
 
     handleDrag(e) {
-        e.preventDefault();
+       
         let state = {...this.state};
-        
-        let currentLeft = (this.state.handles[this.state.activeHandle].prevLeft + (e.clientX - this.state.mouseStart) / this.refs.track.getBoundingClientRect().width * 100);
+        let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        let currentLeft = (this.state.handles[this.state.activeHandle].prevLeft + (clientX - this.state.dragStart) / this.refs.track.getBoundingClientRect().width * 100);
 
         if(currentLeft < 0) {
             currentLeft = 0;
@@ -100,7 +100,7 @@ export default class ColourRangeInput extends Component {
     }
 
     handleDragStop(e) {
-        e.preventDefault();
+       
 
         document.removeEventListener('mousemove', this.handleDrag);
         document.removeEventListener('mouseup', this.handleDragStop);

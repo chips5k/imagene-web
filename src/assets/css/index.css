@@ -510,7 +510,7 @@ hr {
 }
 
 .colour-range-input__track {
-    height: 10px;
+    height: 20px;
     width: 100%;
     border-radius: 5px;
     margin-bottom:0.25rem;
@@ -532,10 +532,9 @@ hr {
 
 
 .colour-range-input__handle{
-    width: 10px;
-    height: 100%;
-    top: 6px;
-    height:10px;
+    width: 20px;
+    top:6px;
+    height:20px;
     border: 2px solid rgb(10, 10, 10);
     border-radius: 5px;
     background: rgba(255,255,255,0.4);
@@ -544,7 +543,7 @@ hr {
 }
 
 .colour-range-input__handle-right {
-    margin-left:-14px;
+    margin-left:-23px;
 }
 
 .colour-range-input_handle:hover {
@@ -970,13 +969,13 @@ animation: spinner .6s linear infinite;
 }
 
 .modal__panel {
-    margin:3rem;
+    margin:1.5rem;
     background: white;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
     z-index:1;
     display: flex;
     flex-direction: column;
-    max-height:90vh;
+    max-height:80vh;
 
 }   
 
@@ -1019,3 +1018,22 @@ animation: spinner .6s linear infinite;
     padding:1rem;
     min-height:40px;
 }   
+
+.home {
+    display: flex;
+}
+
+.home .media {
+    margin-left: 3rem;
+}
+
+@media(max-width: 600px) {
+    .home {
+        display:flex;
+        flex-direction: column;
+    }
+
+    .home .media {
+        margin-left: 0rem;
+    }
+}
