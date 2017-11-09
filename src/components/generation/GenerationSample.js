@@ -115,6 +115,11 @@ export default class GenerationSample extends Component {
         this.props.onClickExportSample(this.props.sample.id);
     }
 
+    handleClickEditSample(e) {
+        e.preventDefault();
+        this.props.onClickEditSample(this.props.sample.id);
+    }
+
     render() {
         return (
             <div className="generation-sample">
@@ -123,11 +128,12 @@ export default class GenerationSample extends Component {
                         <input type="checkbox" className="generation-sample__checkbox" checked={this.props.selected} onChange={this.toggleSample.bind(this)}/>
                         <span className="generation-sample__title">Sample {this.props.sample.id} ({this.props.symmetric ? 'Symmetric' : 'Asymmetric'})</span>
                     </label>
-                    <button className="generation-sample__edit-button" onClick={this.props.editSample}><i className="fa fa-cog"></i></button>
-                    <button className="generation-sample__edit-button" onClick={this.removeSample.bind(this)}><i className="fa fa-remove"></i></button>
+                    <button className=" generation-sample__control" onClick={this.handleClickEditSample.bind(this)}><i className="fa fa-cog"></i></button>
+                    <button className="generation-sample__control" onClick={this.removeSample.bind(this)}><i className="fa fa-remove"></i></button>
                 </div>
                 <div className="generation-sample__canvas-wrap">
-                    {this.props.sample.processing && <div className="generation-sample__canvas-loader" />}
+                    
+                    <div className={`generation-sample__canvas-loader ${this.props.sample.processing ? 'generation-sample__canvas-loader--visible' : ''}`} />
                     <canvas ref="canvas" className="generation-sample__canvas" width={this.props.sample.width} height={this.props.sample.height} />
                 </div>
                 <div className={this.state.showDetails ? 'generation-sample__details generation-sample__details--open' : 'generation-sample__details'}>

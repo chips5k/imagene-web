@@ -420,22 +420,34 @@ hr {
     display:flex;
 }
 
+button {
+    cursor: pointer;
+}
+
+a {
+    cursor: pointer;
+}
+
+
+
 .button {
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    border-radius:0.3rem;
+    padding:0.9rem;
+    font-size:0.8rem;
+    border:none;
+    flex:1;
+    border-radius:0.35rem;
     text-decoration: none;
+    margin-right:0.5rem;
+    overflow:hidden;
+    background: #eee;
+    transition: background 500ms;
+    padding-right:1.2rem;
+
 }
 
 .button.button--primary {
     background: rgb(60, 128, 255);
-    border:none;
     color: white;
-    padding:0.9rem;
-    font-size:0.8rem;
-    flex:1;
-    border-radius: 0.2rem;
-    border-right: 1px solid #E4E4E4;
 }
 
 .button.button--save {
@@ -449,6 +461,19 @@ hr {
     padding: 1rem;
 }
 
+.button:hover, .button:focus {
+    background-color: #ccc;
+}
+
+.button--primary:hover, .button--primary:focus {
+    background-color: rgb(38, 99, 212);
+}
+
+
+.button i {
+    margin-right: 0.3rem;
+    margin-left:0.2rem;
+}
 
 .text-input {
     padding: 0.8rem;
@@ -487,6 +512,8 @@ hr {
     font-size:0.75em;   
     border-left:none;
     margin:0;
+    transition: background 400ms;
+    background: #f7f7f7;
 }
 
 .stepper-input__last-button {
@@ -498,6 +525,13 @@ hr {
     border-bottom-left-radius: 0;
     border-left:none;
     margin:0;
+    transition: background 400ms;
+    background: #f7f7f7;
+}
+
+
+.stepper-input__first-button:hover, .stepper-input__last-button:hover {
+    background: #eee;
 }
 
 /** End Stepper Input **/
@@ -531,23 +565,24 @@ hr {
 
 
 
-.colour-range-input__handle{
+.colour-range-input__handle {
     width: 20px;
     top:6px;
     height:20px;
     border: 2px solid rgb(10, 10, 10);
     border-radius: 5px;
-    background: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.2);
     position:absolute;
     cursor: pointer;
+    transition: background 200ms;
 }
 
 .colour-range-input__handle-right {
     margin-left:-23px;
 }
 
-.colour-range-input_handle:hover {
-    background: rgba(255,255,255,0.8);
+.colour-range-input__handle:hover {
+    background: rgba(255,255,255,0.6);
     cursor: pointer;
 }
 
@@ -602,7 +637,12 @@ hr {
 .generation-sample__label {
     flex: 1;
     display:flex;
+    cursor: pointer;
+    transition: background 400ms;
+}
 
+.generation-sample__label:hover {
+    background: #efefef;
 }
 
 .generation-sample__checkbox {
@@ -613,9 +653,19 @@ hr {
     margin-right:1rem;
 }
 
+label {
+    cursor: pointer;
+}
+
+.checkbox-inline {
+    margin-right:1rem;
+}
+
+
 .generation-sample__title {
     font-size: 0.8rem;
     padding:0.7rem;
+    padding-top:0.75rem;
     margin:0;
     font-weight: normal;
     white-space: nowrap;
@@ -657,13 +707,20 @@ hr {
     color: #555;
 }
 
+
+
 .generation-sample__control {
-    background: none;
+    background: rgba(255, 255, 255, 1);
     border:none;
     padding:0.7rem 1rem;
     font-size:1rem;
     color: #666;
     border-left:1px solid  #ccc;
+    transition: background 500ms;
+}
+
+.generation-sample__control:hover {
+    background: #ddd;
 }
 
 
@@ -680,12 +737,29 @@ hr {
     to {transform: rotate(360deg);}
   }
    
+.generation-sample__canvas-loader {
+    background: rgba(255, 255, 255, 0.55);
+    top:0px;
+    bottom:0px;
+    left: 0px;
+    right:0px;
+    width:100%;
+    height:100%;
+    position:absolute;
+    opacity: 0;
+    transition: opacity 300ms;
+}
+
+.generation-sample__canvas-loader--visible {
+    opacity: 1;
+}
+
 .generation-sample__canvas-loader:before {
 content: '';
 box-sizing: border-box;
 position: absolute;
-top: 60%;
-left: 60%;
+top: 58%;
+left: 58%;
 width: 50px;
 height: 50px;
 margin-left:-50px;
@@ -858,6 +932,8 @@ animation: spinner .6s linear infinite;
 .individual {
     border:1px solid #ccc;
     display: flex;
+    border-radius:5px;
+    overflow: hidden;
     margin:0;
     padding:0;
     margin-bottom:1rem;
@@ -921,7 +997,10 @@ animation: spinner .6s linear infinite;
     padding: 0.3rem;
     text-align:center;
     font-size:0.75rem;
+    max-width: 40px;
+    word-wrap: break-word;
 }
+
 
 .individual__id {
     border-left: 1px solid #ccc;

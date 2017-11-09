@@ -20,6 +20,7 @@ const GenerationSamples = (props) => {
                             removeSample={props.removeSample}
                             toggleSample={props.toggleSample}
                             onClickExportSample={props.onClickExportSample}
+                            onClickEditSample={props.onClickEditSample}
                         />
                     )}
                 </div>

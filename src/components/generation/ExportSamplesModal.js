@@ -34,16 +34,6 @@ export default class ExportSamplesModal extends Component {
         }
     }
 
-    handleDownloadSymmetricClick(item, e) {
-        e.preventDefault();
-        this.props.onDownloadSymmetricClick(item);
-    }
-
-    handleDownloadAsymmetricClick(item, e) {
-        e.preventDefault();
-        this.props.onDownloadAsymmetricClick(item);
-    }
-    
 
     render() {
         return (
@@ -56,40 +46,43 @@ export default class ExportSamplesModal extends Component {
                     </div>
                     <div className="modal__body">
 
-                        <h3>Available Exports</h3>
-                        <ul>
-                            {this.props.exportedSamples.map((n, i) => 
-                                <li key={i}>
-                                    {n.name}<br/>[&nbsp;
-                                        {n.processing && 
-                                            <span>
-                                                <span>processing...</span>&nbsp;
-                                                <i className="fa fa-spin fa-spinner"></i>
-                                            </span>    
-                                        }
-                                        
-                                        {!n.processing && 
-                                            <span>
-                                                <a href={n.symmetricDataUri} download={`${n.name} asymmetric.png`} target="_BLANK">Asymmetric</a> | &nbsp;
-                                                <a href={n.asymmetricDataUri} download={`${n.name} symmetric.png`} target="_BLANK">Symmetric</a>
-                                            </span>
-                                        }
-                                    &nbsp;]
-                                </li>
-                            )}
-                        </ul>
+                        {this.props.exportedSamples.length > 0 && 
+                        <div>
+                            <h3>Available Exports</h3>
+                            <ul>
+                                {this.props.exportedSamples.map((n, i) => 
+                                    <li key={i}>
+                                        {n.name}<br/>[&nbsp;
+                                            {n.processing && 
+                                                <span>
+                                                    <span>processing...</span>&nbsp;
+                                                    <i className="fa fa-spin fa-spinner"></i>
+                                                </span>    
+                                            }
+                                            
+                                            {!n.processing && 
+                                                <span>
+                                                    <a href={n.symmetricDataUri} download={`${n.name} asymmetric.png`} target="_BLANK">Asymmetric</a> | &nbsp;
+                                                    <a href={n.asymmetricDataUri} download={`${n.name} symmetric.png`} target="_BLANK">Symmetric</a>
+                                                </span>
+                                            }
+                                        &nbsp;]
+                                    </li>
+                                )}
+                            </ul>
+                        </div>}
                         
                         
-                        <p>You have selected <b>{this.props.selectedSamples.length}</b> samples to export, please adjust the width/height and RGB thresholds for the export.<b>Please note</b>, the values adjusted here, will not alter the original samples.</p>
+                        <p>You have selected <b>{this.props.selectedSamples.length}</b> samples to export, please adjust the width/height and RGB thresholds for the export.<br/> <b>Please note</b>, the values adjusted here, will not alter the original samples.</p>
 
-                        <div className="hbox">
+                        <div className="hbox" style={{marginBottom: '1rem'}}>
                             <div>
-                                <h4>Coordinate Types</h4>
-                                <label>
+                                <span style={{marginTop: 0, marginBottom: '0.5rem', display: 'block', fontSize: '0.7rem'}}>Coordinate Types</span>
+                                <label className="checkbox-inline">
                                     <input type="checkbox" ref="cartesian" name="cartesian" value="y" defaultChecked={true} />
                                     Cartesian
                                 </label>
-                                <label>
+                                <label className="checkbox-inline">
                                     <input type="checkbox" ref="polar" name="polar" value="y" defaultChecked={true} />
                                     Polar
                                 </label>

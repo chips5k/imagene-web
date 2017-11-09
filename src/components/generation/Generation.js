@@ -106,7 +106,7 @@ export default class Generation extends Component {
     }
 
     toggleContentSidebar(e) {
-        e.preventDefault();
+        if(e) { e.preventDefault(); }
         this.setState({
             contentSidebarVisible: !this.state.contentSidebarVisible
         });
@@ -155,6 +155,16 @@ export default class Generation extends Component {
 
     editSelectedSamples(e) {
         this.toggleContentSidebar(e);
+    }
+
+    handleClickEditSample(sampleId) {
+        this.setState({
+            selectedSamples: [sampleId]
+        });
+
+        if(!this.state.contentSidebarVisible) {
+            this.toggleContentSidebar();
+        }
     }
 
     handleClickExportSamples(e) {
@@ -344,6 +354,7 @@ export default class Generation extends Component {
                                         removeSample={this.onClickRemoveSample.bind(this)}
                                         toggleSample={this.toggleSample.bind(this)}
                                         onClickExportSample={this.handleClickExportSample.bind(this)}
+                                        onClickEditSample={this.handleClickEditSample.bind(this)}
                                     />
                                 }
                             </ContentPrimaryBody>
