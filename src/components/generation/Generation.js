@@ -92,9 +92,9 @@ export default class Generation extends Component {
         const data = this.refs["population-panel"].getFormData();
         this.props.generateIndividuals(data.size, data.minDepth, data.maxDepth); 
 
-        if(window.innerWidth < 1224) {
-            this.toggleContentSidebar(e);
-        }  
+        // if(window.innerWidth < 1224) {
+        //     this.toggleContentSidebar(e);
+        // }  
     }
     
     handleEvolveGenerationClick(e) {
