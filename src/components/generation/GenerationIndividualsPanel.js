@@ -11,17 +11,6 @@ import StepperInput from '../controls/StepperInput';
 
 export default class GenerationIndividualsPanel extends Component {
 
-    onClickGenerateIndividuals(e) {
-        this.props.onClickGenerateIndividuals(
-            this.refs.size.value,
-            this.refs.minDepth.value,
-            this.refs.maxDepth.value
-        );
-        if(window.innerWidth < 1224) {
-            this.props.toggleContentSidebar(e);
-        }
-    }
-
     getFormData() {
         return {
             size: this.refs.size.value,
@@ -51,7 +40,7 @@ export default class GenerationIndividualsPanel extends Component {
                             <StepperInput  ref="maxDepth" value={this.props.config.maxExpressionDepth} minValue={0}  maxValue={12} />
                         </FormControl>
                     </div>
-                    <button className="button button--primary" onClick={this.onClickGenerateIndividuals.bind(this)}>
+                    <button className="button button--primary" onClick={this.props.onGenerateIndividualsClick}>
                         <i className="fa fa-refresh"></i> {this.props.generation.individuals.length > 0 ? 'Regenerate' : 'Generate'}
                     </button>
                 </ContentSidebarPanelBody>

@@ -1,43 +1,47 @@
 import React from 'react';
-import { GenerationSample } from './';
+import Sample from '../Sample';
 
-const GenerationSamples = (props) => {
-    
-    return (
-        <div className="generation-samples">
-            {props.samples.length > 0 &&
-                <div className="flex-grid">
-                    {props.samples.map(s => 
-                        <GenerationSample 
-                            key={s.id} 
-                            sample={s} 
-                            coordinateType={props.coordinateType}
-                            symmetric={props.symmetric}
-                            onClickIncreaseSampleFitness={props.increaseSampleFitness}
-                            onClickDecreaseSampleFitness={props.decreaseSampleFitness}
-                            generateSampleData={props.generateSampleData}
-                            selected={(props.selectedSamples.indexOf(s.id) !== -1)}
-                            removeSample={props.removeSample}
-                            toggleSample={props.toggleSample}
-                            onClickExportSample={props.onClickExportSample}
-                            onClickEditSample={props.onClickEditSample}
-                        />
-                    )}
-                </div>
-            }
-
-            {props.samples.length === 0  && 
-                    <div style={{textAlign: 'center'}}>
-                       <h2>Generate Samples</h2>
-                       <p>You have not generated any samples, please use the sidebar/click settings to customize sample generation, or click the button below.</p>
-   
-                       <button onClick={props.generateSamples} className="button button--primary button--extra-large">
-                           <i className="fa fa-refresh"></i> Generate Samples
-                       </button>
+const GenerationSamples = props => (
+    <div className="generation__samples">
+        {props.samples.length > 0 ? 
+            (
+                <div className="generation__samples-list">
+                    <div className="flex-grid">
+                        {props.samples.map((n, i) => 
+                            <Sample
+                                key={n.id}
+                                sample={n}
+                                coordinateType={props.coordinateType}
+                                symmetric={props.symmetric} 
+                                onIncreaseFitnessClick={props.onSampleIncreaseFitnessClick.bind(null, n)}
+                                onDecreaseFitnessClick={props.onSampleDecreaseFitnessClick.bind(null, n)}
+                                onRemoveClick={props.onSampleRemoveClick.bind(null, n)}
+                                onEditClick={props.onSampleEditClick.bind(null, n)}
+                                onLabelClick={props.onSampleLabelClick.bind(null, n)}
+                                onSaveClick={props.onSampleSaveClick.bind(null, n)}
+                                selected={props.selectedSamples.indexOf(n.id) !== -1}
+                                onRedraw={props.onSampleRedraw.bind(null, n)}
+                            />  
+                        )}
                     </div>
-            }
-        </div>
-    );
-}
+                </div>
+            ) :
+            (
+                <div className="generation__samples-no-result">
+                    <h2>Generate Samples</h2>
+                    <p>
+                        You have not generated any samples, please use the sidebar/click settings to customize sample generation, or click the button below.
+                    </p>
+                    <button 
+                        onClick={props.onGenerateSamplesClick} 
+                        className="button button--primary button--extra-large"
+                    >
+                        <i className="fa fa-refresh"></i> Generate Samples
+                    </button>
+                </div>
+            )
+        }
+    </div>
+);
 
 export default GenerationSamples;

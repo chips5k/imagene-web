@@ -1,19 +1,9 @@
-import FormControl from '../controls/FormControl';
-import ColourRangeInput from '../controls/ColourRangeInput';
+import FormControl from './controls/FormControl';
+import ColourRangeInput from './controls/ColourRangeInput';
 import React, { Component } from 'react';
 
 export default class ExportSamplesModal extends Component {
     
-    handleCloseModalClick(e) {
-        e.preventDefault();
-        this.props.onCloseModalClick();
-    }
-
-    handleExportSamplesClick(e) {
-        e.preventDefault();
-        this.props.onExportSamplesClick();
-    }
-
     getFormData() {
         const types = [];
 
@@ -34,18 +24,15 @@ export default class ExportSamplesModal extends Component {
         }
     }
 
-
     render() {
         return (
             <div className={'modal' + (this.props.open ? ' modal--open' : '')}>
-                
                 <div className="modal__panel">
                     <div className="modal__header">
                         <h2 className="modal__title">Export <b>{this.props.selectedSamples.length}</b> Sample(s)</h2>
-                        <a href="" className="modal__close" onClick={this.handleCloseModalClick.bind(this)}><i className="fa fa-remove"></i></a>
+                        <a href="" className="modal__close" onClick={this.props.onCloseModalClick}><i className="fa fa-remove"></i></a>
                     </div>
                     <div className="modal__body">
-
                         {this.props.exportedSamples.length > 0 && 
                         <div>
                             <h3>Available Exports</h3>
@@ -62,8 +49,8 @@ export default class ExportSamplesModal extends Component {
                                             
                                             {!n.processing && 
                                                 <span>
-                                                    <a href={n.symmetricDataUri} download={`${n.name} asymmetric.png`} target="_BLANK">Asymmetric</a> | &nbsp;
-                                                    <a href={n.asymmetricDataUri} download={`${n.name} symmetric.png`} target="_BLANK">Symmetric</a>
+                                                    <a href={n.asymmetricDataUrl} download={`${n.name} asymmetric.png`} target="_BLANK">Asymmetric</a> | &nbsp;
+                                                    <a href={n.symmetricDataUrl} download={`${n.name} symmetric.png`} target="_BLANK">Symmetric</a>
                                                 </span>
                                             }
                                         &nbsp;]
@@ -117,11 +104,11 @@ export default class ExportSamplesModal extends Component {
 
                     </div>
                     <div className="modal__footer">
-                        <button className="button button--primary" onClick={this.handleExportSamplesClick.bind(this)}>Download/Export</button>
-                        <button className="button" onClick={this.handleCloseModalClick.bind(this)}>Cancel</button>
+                        <button className="button button--primary" onClick={this.props.onExportSamplesClick}>Export</button>
+                        <button className="button" onClick={this.props.onCloseModalClick}>Cancel</button>
                     </div>
                 </div>
-                <div className="modal__blocker"  onClick={this.handleCloseModalClick.bind(this)}></div>
+                <div className="modal__blocker"  onClick={this.props.onCloseModalClick}></div>
             </div>
         );
     }

@@ -16,6 +16,88 @@ class GenerationContainer extends Component {
         }
     }
 
+    renderImageDataToDataUrl(width, height, imageData, symmetric) {
+        let exportCanvas = document.createElement('canvas');
+        exportCanvas.width = width;
+        exportCanvas.height = height;
+        this.renderImageToCanvas(exportCanvas, imageData, symmetric);
+
+        return exportCanvas.toDataURL();
+    }
+
+    renderImageToCanvas = (canvas, imageData, symmetric) => {
+        
+        const ctx = canvas.getContext('2d');
+       
+        const image = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, image.width, image.height);
+        image.data.set(imageData);
+        ctx.putImageData(image, 0, 0);
+    
+        if(symmetric) {
+            const degrees180 = 180 * (Math.PI/180); 
+            //Setup temp canvas to hold rotated copy of a cropped top left canvas
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = image.width / 2;
+            tempCanvas.height = image.height / 2;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.putImageData(ctx.getImageData(0, 0, image.width / 2, image.height / 2), 0, 0);
+    
+           
+    
+            //Rotate the quadrant image 180 degrees
+            tempCtx.save();
+            tempCtx.translate(image.width / 2, image.height / 2);
+            tempCtx.rotate(degrees180);
+            tempCtx.drawImage(tempCanvas, 0, 0);
+            tempCtx.restore(); 
+            
+            //Draw left hand side
+            ctx.drawImage(tempCanvas, 0, 0);
+    
+            tempCtx.save();
+            // //Next mirror the quadrant onto itself by using negative scaling
+            tempCtx.scale(-1, 1);
+            tempCtx.translate(-image.width / 2, 0);
+            tempCtx.drawImage(tempCanvas, 0, 0);
+            tempCtx.restore();
+    
+    
+            //Draw the right hand side
+            ctx.drawImage(tempCanvas, image.width / 2, 0);
+    
+            tempCtx.save();
+            tempCtx.scale(1, -1);
+            tempCtx.translate(0, -image.height / 2);
+            tempCtx.drawImage(tempCanvas, 0, 0);
+            tempCtx.restore();
+    
+            //Draw the right hand side
+            ctx.drawImage(tempCanvas, image.width / 2, image.height / 2);
+    
+    
+            tempCtx.save();
+            tempCtx.scale(-1, 1);
+            tempCtx.translate(-image.width / 2, 0);
+            tempCtx.drawImage(tempCanvas, 0, 0);
+            tempCtx.restore();
+    
+            //Draw the right hand side
+            ctx.drawImage(tempCanvas, 0, image.height / 2);    
+        }
+    }
+
+    handleSampleRedraw(coordinateType, symmetric, sample, canvas) {
+        
+        if(sample.cache[coordinateType]) {
+            this.renderImageToCanvas(canvas, sample.cache[coordinateType], symmetric);
+        } else {
+            if(sample.processing === false) {
+                this.props.actions.generateSampleData(sample, coordinateType);
+            }
+        }
+    }
+
     render() {
         if(this.props.generation) {
             return ( 
@@ -28,11 +110,12 @@ class GenerationContainer extends Component {
                     generateSamples={this.props.actions.generateSamples}
                     updateSamples={this.props.actions.updateSamples}
                     removeSamples={this.props.actions.removeSamples}
-                    generateSampleData={this.props.actions.generateSampleData}
-                    addToWorkerQueue={this.props.addToWorkerQueue}
                     evolveGeneration={this.props.actions.evolveIndividuals}
                     lastSampleId={this.props.lastSampleId}
                     toggleSidebar={this.props.toggleSidebar}
+                    onSampleRedraw={this.handleSampleRedraw.bind(this)}
+                    renderImageDataToDataUrl={this.renderImageDataToDataUrl.bind(this)}
+                    addToWorkerQueue={this.props.addToWorkerQueue}
                 />
             );
         }

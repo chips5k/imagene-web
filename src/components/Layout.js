@@ -11,9 +11,7 @@ import Sidebar from '../containers/Sidebar';
 class Layout extends Component {
     constructor(props) {
         super(props);
-
-        console.log(props);
-
+        
         this.state = {
             manualToggle: false,
             sidebar: window.innerWidth >= 1224

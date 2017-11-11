@@ -19,7 +19,7 @@ import {
     GenerationSamplesPanel 
 } from './';
 
-import ExportSamplesModal from './ExportSamplesModal';
+import ExportSamplesModal from '../ExportSamplesModal';
 
 export default class Generation extends Component {
 
@@ -35,149 +35,9 @@ export default class Generation extends Component {
             contentSidebarVisible: window.innerWidth >= 1224
         };
     }
-
-    generateIndividuals(numberOfIndividuals, minExpressionDepth, maxExpressionDepth) {
-        this.props.generateIndividuals(numberOfIndividuals, minExpressionDepth, maxExpressionDepth);
-        this.setState({
-            activeView: 'individuals'
-        });
-    }
-
-    onClickGenerateIndividuals(e) {
-        e.preventDefault();
-        const data = this.refs["population-panel"].getFormData();
-        this.props.generateIndividuals(data.size, data.minDepth, data.maxDepth);   
-    }
-    
-    
-
-    onClickGenerateSamples(e) {
-        e.preventDefault();
-        const data = this.refs['samples-panel'].getFormData();
-        this.props.generateSamples(this.props.generation, data.numSamples, 320, 320, data.redThreshold, data.greenThreshold, data.blueThreshold, this.props.lastSampleId);
-        this.setState({
-            activeView: 'samples'
-        });
-
-    }
-
-    onClickUpdateSamples() {
-        const data = this.refs['samples-panel'].getFormData();
-        this.props.updateSamples(this.props.generation.samples.filter((n) => this.state.selectedSamples.indexOf(n.id) !== -1), data.redThreshold, data.greenThreshold, data.blueThreshold);
-        this.setState({
-            activeView: 'samples'
-        });
-    }
-    
-    generateSamples(numSamples, width, height, redThreshold, greenThreshold, blueThreshold) {
-        this.props.generateSamples(this.props.generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, this.props.lastSampleId);
-        this.setState({
-            activeView: 'samples'
-        });
-    }
-
-    evolveGeneration(e) {
-        e.preventDefault();
-        this.setState({
-            activeView: 'individuals'
-        });
-        this.props.evolveGeneration(this.props.generation);
-        
-    }
-
-    changeActiveView(view, e) {
-        e.preventDefault();
-        this.setState({
-            activeView: view
-        });
-    }   
-
-    toggleCoordinateType(e) {
-        e.preventDefault();
-        this.setState({
-            coordinateType: this.state.coordinateType === 'polar' ? 'cartesian' : 'polar'
-        });
-    }
-    toggleSymmetry(e) {
-        e.preventDefault();
-        this.setState({
-            symmetric: !this.state.symmetric
-        });
-    }
-
-    toggleContentSidebar(e) {
-        if(e) { e.preventDefault(); }
-        this.setState({
-            contentSidebarVisible: !this.state.contentSidebarVisible
-        });
-    }
-    
-    toggleSample(sample) {
-        
-        const index = this.state.selectedSamples.indexOf(sample.id);
-        const selectedSamples = this.state.selectedSamples.slice(0);
-        if(index !== -1) {
-            selectedSamples.splice(index, 1);
-        } else {
-            selectedSamples.push(sample.id);
-        }
-
-        
-        this.setState({
-            selectedSamples: selectedSamples
-        });
-    }
-    
+      
     determineClass = (className, property, value) => {
         return className + (this.state[property] === value ? ' main__content-top-nav-item--active' : '');
-    }
-
-    onClickRemoveSamples(e) {
-        e.preventDefault();
-
-        this.props.removeSamples(this.props.generation.id, this.state.selectedSamples);
-        this.setState({
-            selectedSamples: [],
-            contentSidebarVisible: window.innerWidth <= 1224 ? false : this.state.contentSidebarVisible
-        });
-    }
-
-    onClickRemoveSample(sampleId) {
-        this.props.removeSamples(this.props.generation.id, [sampleId]);
-    }
-
-    clearSelectedSamples(e) {
-        e.preventDefault();
-        this.setState({
-            selectedSamples: []
-        });
-    }
-
-    editSelectedSamples(e) {
-        this.toggleContentSidebar(e);
-    }
-
-    handleClickEditSample(sampleId) {
-        this.setState({
-            selectedSamples: [sampleId]
-        });
-
-        if(!this.state.contentSidebarVisible) {
-            this.toggleContentSidebar();
-        }
-    }
-
-    handleClickExportSamples(e) {
-        e.preventDefault();
-        this.openExportSamplesModal();
-    }
-    
-    handleClickExportSample(sampleId) {
-        this.setState({
-            selectedSamples: [sampleId]
-        });
-
-        this.openExportSamplesModal();
     }
 
     openExportSamplesModal() {
@@ -191,8 +51,105 @@ export default class Generation extends Component {
             exportSamplesModalOpen: false
         });
     }
+
+    toggleContentSidebar(e) {
+        if(e) { e.preventDefault(); }
+        this.setState({
+            contentSidebarVisible: !this.state.contentSidebarVisible
+        });
+    }
+
+    handleOpenExportSamplesModal(e) {
+        e.preventDefault();
+        this.openExportSamplesModal();
+    }
+
+    handleChangeActiveViewClick(view, e) {
+        e.preventDefault();
+        this.setState({
+            activeView: view
+        });
+    }
+
+    handleCoordinateTypeClick(e) {
+        e.preventDefault();
+        this.setState({
+            coordinateType: this.state.coordinateType === 'polar' ? 'cartesian' : 'polar'
+        });
+    }
+
+    handleSymmetryClick(e) {
+        e.preventDefault();
+        this.setState({
+            symmetric: !this.state.symmetric
+        });
+    }
+
     
-    handleExportSamplesModalExportClick() {
+
+    handleGenerateIndividualsClick(e) {
+        e.preventDefault();
+        const data = this.refs["population-panel"].getFormData();
+        this.props.generateIndividuals(data.size, data.minDepth, data.maxDepth); 
+
+        if(window.innerWidth < 1224) {
+            this.toggleContentSidebar(e);
+        }  
+    }
+    
+    handleEvolveGenerationClick(e) {
+        e.preventDefault();
+        this.setState({
+            activeView: 'individuals'
+        });
+        this.props.evolveGeneration(this.props.generation);  
+    }
+
+    handleRemoveSamplesClick(e) {
+        e.preventDefault();
+
+        this.props.removeSamples(this.props.generation.id, this.state.selectedSamples);
+        this.setState({
+            selectedSamples: [],
+            contentSidebarVisible: window.innerWidth <= 1224 ? false : this.state.contentSidebarVisible
+        });
+    }
+
+    handleClearSelectedSamplesClick(e) {
+        e.preventDefault();
+        this.setState({
+            selectedSamples: []
+        });
+    }
+
+    handleEditSelectedSamplesClick(e) {
+        e.preventDefault();
+        this.toggleContentSidebar();
+    }
+
+    handleUpdateSamplesClick(e) {
+        const data = this.refs['samples-panel'].getFormData();
+        this.props.updateSamples(this.props.generation.samples.filter((n) => this.state.selectedSamples.indexOf(n.id) !== -1), data.redThreshold, data.greenThreshold, data.blueThreshold);
+        this.setState({
+            activeView: 'samples'
+        });
+    }
+    
+    handleGenerateSamplesClick(e) {
+        e.preventDefault();
+        const data = this.refs['samples-panel'].getFormData();
+        this.props.generateSamples(this.props.generation, data.numSamples, 320, 320, data.redThreshold, data.greenThreshold, data.blueThreshold, this.props.lastSampleId);
+        this.setState({
+            activeView: 'samples'
+        });
+    }
+
+    handleClickExportSamples(e) {
+        e.preventDefault();
+        this.openExportSamplesModal();
+    }
+    
+    handleExportSamplesModalExportClick(e) {
         const formData = this.refs.exportSamplesModal.getFormData();
         const exportedSamples = [];
         
@@ -229,8 +186,8 @@ export default class Generation extends Component {
                     const exportedSamples = this.state.exportedSamples.slice(0);
                     exportedSamples[i].data =  Uint8ClampedArray.from(e.data);
                     exportedSamples[i].processing = false;
-                    exportedSamples[i].symmetricDataUri = this.generateDataUri(n.sample.width, n.sample.height, n.data, false);
-                    exportedSamples[i].asymmetricDataUri = this.generateDataUri(n.sample.width, n.sample.height, n.data, true)
+                    exportedSamples[i].symmetricDataUrl = this.props.renderImageDataToDataUrl(n.sample.width, n.sample.height, n.data, true);
+                    exportedSamples[i].asymmetricDataUrl = this.props.renderImageDataToDataUrl(n.sample.width, n.sample.height, n.data, false)
                     this.setState({
                         exportedSamples,
                         exporting: this.state.exportedSamples.filter(n => n.processing).length < this.state.exportedSamples.length
@@ -240,75 +197,63 @@ export default class Generation extends Component {
         });
     }
 
-    generateDataUri(width, height, data, symmetric) {
-       
-        let exportCanvas = document.createElement('canvas');
-        exportCanvas.width = width;
-        exportCanvas.height = height;
-        
-        let ctx = exportCanvas.getContext('2d');
-        let image = ctx.getImageData(0, 0, width, height);
-        image.data.set(data);
-        ctx.putImageData(image, 0, 0);
-
-        if(symmetric) {
-            let degrees180 = 180 * (Math.PI/180); 
-            
-            //Setup temp canvas to hold rotated copy of a cropped top left canvas
-            let tempCanvas = document.createElement('canvas');
-            tempCanvas.width = image.width / 2;
-            tempCanvas.height = image.height / 2;
-            let tempCtx = tempCanvas.getContext('2d');
-            tempCtx.putImageData(ctx.getImageData(0, 0, image.width / 2, image.height / 2), 0, 0);
-
-            ctx.clearRect(0, 0, image.width, image.height);
-            //Rotate the quadrant image 180 degrees
-            tempCtx.save();
-            tempCtx.translate(image.width / 2, image.height / 2);
-            tempCtx.rotate(degrees180);
-            tempCtx.drawImage(tempCanvas, 0, 0);
-            tempCtx.restore(); 
-            
-            //Draw left hand side
-            ctx.drawImage(tempCanvas, 0, 0);
-
-            tempCtx.save();
-            // //Next mirror the quadrant onto itself by using negative scaling
-            tempCtx.scale(-1, 1);
-            tempCtx.translate(-image.width / 2, 0);
-            tempCtx.drawImage(tempCanvas, 0, 0);
-            tempCtx.restore();
-
-
-            //Draw the right hand side
-            ctx.drawImage(tempCanvas, image.width / 2, 0);
-
-            tempCtx.save();
-            tempCtx.scale(1, -1);
-            tempCtx.translate(0, -image.height / 2);
-            tempCtx.drawImage(tempCanvas, 0, 0);
-            tempCtx.restore();
-
-            //Draw the right hand side
-            ctx.drawImage(tempCanvas, image.width / 2, image.height / 2);
-
-
-            tempCtx.save();
-            tempCtx.scale(-1, 1);
-            tempCtx.translate(-image.width / 2, 0);
-            tempCtx.drawImage(tempCanvas, 0, 0);
-            tempCtx.restore();
-
-            //Draw the right hand side
-            ctx.drawImage(tempCanvas, 0, image.height / 2);    
-        }
-        return exportCanvas.toDataURL();
+    handleExportSamplesModalCloseClick(e) {
+        e.preventDefault();
+        this.closeExportSamplesModal();
     }
 
+    handleSampleLabelClick(sample, e) {
+        
+        const index = this.state.selectedSamples.indexOf(sample.id);
+        const selectedSamples = this.state.selectedSamples.slice(0);
+        if(index !== -1) {
+            selectedSamples.splice(index, 1);
+        } else {
+            selectedSamples.push(sample.id);
+        }
 
+        this.setState({
+            selectedSamples: selectedSamples
+        });
+    }
+
+    handleSampleRemoveClick(sample, e) {
+        e.preventDefault();
+        this.props.removeSamples(this.props.generation.id, [sample.id]);
+    }
+
+    handleSampleIncreaseFitnessClick(sample, e) {
+        e.preventDefault();
+        this.props.increaseSampleFitness(sample);
+
+    }
+
+    handleSampleDecreaseFitnessClick(sample, e) {
+        e.preventDefault();
+        this.props.decreaseSampleFitness(sample);
+    }
     
-    render() {
+    handleSampleEditClick(sample, e) {
+        e.preventDefault();
+        this.setState({
+            selectedSamples: [sample.id]
+        });
 
+        if(!this.state.contentSidebarVisible) {
+            this.toggleContentSidebar();
+        }
+    }
+
+    handleSampleSaveClick(sample, e) {
+        e.preventDefault();
+        this.setState({
+            selectedSamples: [sample.id]
+        });
+
+        this.openExportSamplesModal();
+    }
+
+    render() {
         return (
             <div>
                 <Content>
@@ -325,47 +270,51 @@ export default class Generation extends Component {
                             {this.state.selectedSamples.length === 0 && 
                             <ContentPrimaryTopNav>
 
-                                <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'individuals' ? 'main__content-top-nav-item--active' : ''}`} onClick={this.changeActiveView.bind(this, 'individuals')}>
+                                <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'individuals' ? 'main__content-top-nav-item--active' : ''}`} onClick={this.handleChangeActiveViewClick.bind(this, 'individuals')}>
                                     <i className="main__content-top-nav-item-icon fa fa-users"></i> Individuals
                                 </a>
                                 
                                 {this.props.generation.individuals.length > 0 &&
-                                    <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'samples' ? 'main__content-top-nav-item--active' : ''}`}  onClick={this.changeActiveView.bind(this, 'samples')}>
+                                    <a href="" className={`main__content-top-nav-item ${this.state.activeView === 'samples' ? 'main__content-top-nav-item--active' : ''}`}  onClick={this.handleChangeActiveViewClick.bind(this, 'samples')}>
                                         <i className="main__content-top-nav-item-icon fa fa-image"></i> Samples
                                     </a>
                                 }
 
                             </ContentPrimaryTopNav>
                             }
+                            
                             <ContentPrimaryBody topNav bottomNav>
+
                                 {this.state.activeView === 'individuals' && 
-                                    <GenerationIndividuals individuals={this.props.generation.individuals} generateIndividuals={this.onClickGenerateIndividuals.bind(this)}/>
-                                }
-                                {this.state.activeView === 'samples' &&
-                                    <GenerationSamples
-                                        samples={this.props.generation.samples} 
-                                        coordinateType={this.state.coordinateType} 
-                                        symmetric={this.state.symmetric}
-                                        increaseSampleFitness={this.props.increaseSampleFitness}
-                                        decreaseSampleFitness={this.props.decreaseSampleFitness}
-                                        generateSampleData={this.props.generateSampleData}
-                                        generateSamples={this.onClickGenerateSamples.bind(this)}
-                                        selectedSamples={this.state.selectedSamples}
-                                        removeSample={this.onClickRemoveSample.bind(this)}
-                                        toggleSample={this.toggleSample.bind(this)}
-                                        onClickExportSample={this.handleClickExportSample.bind(this)}
-                                        onClickEditSample={this.handleClickEditSample.bind(this)}
+                                    <GenerationIndividuals
+                                        individuals={this.props.generation.individuals} 
+                                        onGenerateIndividualsClick={this.handleGenerateIndividualsClick.bind(this)}
                                     />
+                                }
+
+                                {this.state.activeView === 'samples' && 
+                                    <GenerationSamples
+                                        samples={this.props.generation.samples}
+                                        selectedSamples={this.state.selectedSamples}
+                                        onSampleIncreaseFitnessClick={this.handleSampleIncreaseFitnessClick.bind(this)}
+                                        onSampleDecreaseFitnessClick={this.handleSampleDecreaseFitnessClick.bind(this)}
+                                        onSampleRemoveClick={this.handleSampleRemoveClick.bind(this)}
+                                        onSampleEditClick={this.handleSampleEditClick.bind(this)}
+                                        onSampleLabelClick={this.handleSampleLabelClick.bind(this)}
+                                        onSampleSaveClick={this.handleSampleSaveClick.bind(this)}
+                                        onGenerateSamplesClick={this.handleGenerateSamplesClick.bind(this)}
+                                        onSampleRedraw={this.props.onSampleRedraw.bind(null, this.state.coordinateType, this.state.symmetric)}
+                                     />
                                 }
                             </ContentPrimaryBody>
                             
                             {this.state.selectedSamples.length > 0 &&
                                 <ContentPrimaryBottomNav>
-                                    <a className="main__content-bottom-nav-item" href="" onClick={this.clearSelectedSamples.bind(this)}>
+                                    <a className="main__content-bottom-nav-item" href="" onClick={this.handleClearSelectedSamplesClick.bind(this)}>
                                         <i className="main__content-bottom-nav-item-icon fa fa-remove"></i> Clear
                                     </a>
                                     {this.state.contentSidebarVisible === false && 
-                                    <a className="main__content-bottom-nav-item" href="" onClick={this.editSelectedSamples.bind(this)}>
+                                    <a className="main__content-bottom-nav-item" href="" onClick={this.handleEditSelectedSamplesClick.bind(this)}>
                                         <i className="main__content-bottom-nav-item-icon fa fa-cog"></i> Edit
                                     </a>}
                                     <a className="main__content-bottom-nav-item" href="" onClick={this.handleClickExportSamples.bind(this)}>
@@ -377,39 +326,39 @@ export default class Generation extends Component {
                             {this.state.selectedSamples.length === 0 && 
                                 <ContentPrimaryBottomNav>
                                     {this.state.activeView === 'individuals' && this.props.generation.id === 1 && 
-                                        <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateIndividuals.bind(this)}>
+                                        <a className="main__content-bottom-nav-item" href="" onClick={this.handleGenerateIndividualsClick.bind(this)}>
                                             <i className="main__content-bottom-nav-item-icon fa fa-refresh"></i> {this.props.generation.individuals.length ? 'Regenerate' : 'Generate'}
                                         </a>
                                     }
 
                                     {this.props.generation.samples.length > 0 && 
-                                        <a className="main__content-bottom-nav-item" href="" onClick={this.evolveGeneration.bind(this)}>
+                                        <a className="main__content-bottom-nav-item" href="" onClick={this.handleEvolveGenerationClick.bind(this)}>
                                             <i className="main__content-bottom-nav-item-icon fa fa-sitemap"></i> Evolve
                                         </a>
                                     }
                                     
                                     {this.state.activeView === 'samples' &&
-                                        <a className="main__content-bottom-nav-item" href="" onClick={this.toggleCoordinateType.bind(this)}>
+                                        <a className="main__content-bottom-nav-item" href="" onClick={this.handleCoordinateTypeClick.bind(this)}>
                                             <i className={`main__content-bottom-nav-item-icon fa ${this.state.coordinateType === 'cartesian' ? 'fa-th' : 'fa-globe'}`}></i>
                                             {' '}  {this.state.coordinateType === 'cartesian' ? 'Cartesian' : 'Polar'}
                                         </a>
                                     }
 
                                     {this.state.activeView === 'samples' &&
-                                        <a href="" className="main__content-bottom-nav-item" onClick={this.toggleSymmetry.bind(this)}>
+                                        <a href="" className="main__content-bottom-nav-item" onClick={this.handleSymmetryClick.bind(this)}>
                                             <i className={`main__content-bottom-nav-item-icon fa ${this.state.symmetric ? 'fa-angle-left' : 'fa-angle-right'}`}></i> 
                                             {this.state.symmetric ? 'Symmetric' : 'Asymmetric'}
                                         </a>
                                     }
 
                                     {this.state.activeView === 'individuals' &&  this.props.generation.individuals.length > 0 && 
-                                        <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)} style={{width: 160}}>
+                                        <a className="main__content-bottom-nav-item" href="" onClick={this.handleGenerateSamplesClick.bind(this)} style={{width: 160}}>
                                             <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate Samples
                                         </a>
                                     }
 
                                     {this.state.activeView === 'samples' &&
-                                        <a className="main__content-bottom-nav-item" href="" onClick={this.onClickGenerateSamples.bind(this)}>
+                                        <a className="main__content-bottom-nav-item" href="" onClick={this.handleGenerateSamplesClick.bind(this)}>
                                             <i className="main__content-bottom-nav-item-icon fa fa-image"></i> Generate
                                         </a>
                                     }
@@ -425,7 +374,7 @@ export default class Generation extends Component {
                                     ref="population-panel"
                                     config={this.props.config} 
                                     generation={this.props.generation}
-                                    onClickGenerateIndividuals={this.generateIndividuals.bind(this)}
+                                    onGenerateIndividualsClick={this.handleGenerateIndividualsClick.bind(this)}
                                     toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                                 />
                             }
@@ -433,20 +382,19 @@ export default class Generation extends Component {
                             {this.props.generation.individuals.length > 0 &&
                                 <GenerationSamplesPanel 
                                     ref="samples-panel"
-                                    onClickGenerateSamples={this.generateSamples.bind(this)}
                                     toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                                     selectedSamples={this.state.selectedSamples}
                                     samples={this.props.generation.samples}
-                                    onClickUpdateSelectedSamples={this.onClickUpdateSamples.bind(this)}
-                                    onClickRemoveSamples={this.onClickRemoveSamples.bind(this)}
-                                    onClickExportSamples={this.openExportSamplesModal.bind(this)}
-                                    
+                                    onGenerateSamplesClick={this.handleGenerateSamplesClick.bind(this)}
+                                    onUpdateSamplesClick={this.handleUpdateSamplesClick.bind(this)}
+                                    onRemoveSamplesClick={this.handleRemoveSamplesClick.bind(this)}
+                                    onExportSamplesClick={this.handleOpenExportSamplesModal.bind(this)}
                                 />
                             }
                             
                             {this.state.selectedSamples.length === 0 && this.props.generation.samples.length > 0 && 
                             <GenerationEvolutionPanel 
-                                onClickEvolveGeneration={this.evolveGeneration.bind(this)}
+                                onClickEvolveGeneration={this.handleEvolveGenerationClick.bind(this)}
                                 toggleContentSidebar={this.toggleContentSidebar.bind(this)} />
                             }
 
@@ -460,9 +408,8 @@ export default class Generation extends Component {
                     exportedSamples={this.state.exportedSamples}
                     exporting={this.state.exporting}
                     onExportSamplesClick={this.handleExportSamplesModalExportClick.bind(this)} 
-                    onCloseModalClick={this.closeExportSamplesModal.bind(this)}
+                    onCloseModalClick={this.handleExportSamplesModalCloseClick.bind(this)}
                     samples={this.props.generation.samples}
-                    
                 />
             </div>
             

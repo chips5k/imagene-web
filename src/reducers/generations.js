@@ -43,8 +43,7 @@ export default (state = { byId: {}, allIds: []}, action) => {
                 },
                 allIds: [...state.allIds]
             }
-
-            console.log(newState);
+            
             return newState;
         }
 

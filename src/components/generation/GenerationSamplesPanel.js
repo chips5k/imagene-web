@@ -12,34 +12,6 @@ import ColourRangeInput from '../controls/ColourRangeInput';
 
 export default class GenerationSamplesPanel extends Component {
     
-    onClickGenerateSamples(e) {
-        this.props.onClickGenerateSamples(
-            this.refs.numSamples.value,
-            320, 320,
-            this.refs.redThreshold.value,
-            this.refs.greenThreshold.value,
-            this.refs.blueThreshold.value
-        );
-        if(window.innerWidth < 1224) {
-            this.props.toggleContentSidebar(e);
-        }
-    }
-
-    onClickUpdateSelectedSamples(e) {
-        e.preventDefault();
-        this.props.onClickUpdateSelectedSamples(
-            this.props.selectedSamples,
-            320, 320,
-            this.refs.redThreshold.value,
-            this.refs.greenThreshold.value,
-            this.refs.blueThreshold.value)
-    }
-
-    handleClickExportSamples(e) {
-        e.preventDefault();
-        this.props.onClickExportSamples();
-    }
-
     getFormData() {
         return {
             numSamples: this.refs.numSamples.value,
@@ -78,24 +50,24 @@ export default class GenerationSamplesPanel extends Component {
                         </FormControl>
                     </div>
                     {this.props.selectedSamples.length === 0 && 
-                    <button className="button button--primary" onClick={this.onClickGenerateSamples.bind(this)}>
+                    <button className="button button--primary" onClick={this.props.onGenerateSamplesClick}>
                         <i className="fa fa-plus"></i> Generate
                     </button>}
                     {this.props.selectedSamples.length === 0 && this.props.samples.length > 0 && 
-                    <button className="button button--danger" onClick={this.props.onClickRemoveSamples}>
+                    <button className="button button--danger" onClick={this.props.onRemoveSamplesClick}>
                         <i className="fa fa-remove"></i> Remove All Samples
                     </button>}
 
                     {this.props.selectedSamples.length > 0 &&  
-                    <button className="button button--primary" onClick={this.onClickUpdateSelectedSamples.bind(this)}>
+                    <button className="button button--primary" onClick={this.props.onUpdateSamplesClick}>
                         <i className="fa fa-refresh"></i> Update
                     </button>}
                     {this.props.selectedSamples.length > 0 &&  
-                    <button className="button button--primary" onClick={this.handleClickExportSamples.bind(this)}>
+                    <button className="button button--primary" onClick={this.props.onExportSamplesClick}>
                         <i className="fa fa-save"></i> Export
                     </button>}
                     {this.props.selectedSamples.length > 0 &&  
-                    <button className="button button--danger"  onClick={this.props.onClickRemoveSamples}>
+                    <button className="button button--danger" onClick={this.props.onRemoveSamplesClick}>
                         <i className="fa fa-remove"></i> Remove 
                     </button>}
                 </ContentSidebarPanelBody>
