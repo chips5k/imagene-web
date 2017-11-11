@@ -61,7 +61,7 @@ const getRandomInteger = (min, max) => {
 const tokenSelector = getToken.bind(null, tokenCreators, getRandomReal, getRandomInteger);
 const expressionBuilder = buildExpression.bind(null, tokenSelector, getRandomInteger);
 const rouletteSelector = selectRoulette.bind(null, getRandomReal); 
-const evolutionMethodSelector = selectEvolutionMethod.bind(null, rouletteSelector, 10, 7, 2.5, 0.0005);
+const evolutionMethodSelector = selectEvolutionMethod.bind(null, rouletteSelector, 7, 2.5);
 const individualSelector = rouletteSelector;
 const expressionMutator = mutateExpression.bind(null, tokenEvaluators, getRandomInteger, tokenSelector, expressionBuilder);
 const expressionBreeder = crossOverExpressions.bind(null, tokenEvaluators, getRandomInteger);
