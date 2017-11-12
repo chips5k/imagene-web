@@ -85,7 +85,7 @@ export const evolveIndividuals = (tokenSelector, methodSelector, individualSelec
 export const crossOverIndividuals = (expressionBreeder, individualA, individualB)  => {
     return {
         expression: expressionBreeder(individualA.expression, individualB.expression),
-        fitness: Math.floor((individualA.fitness + individualB.fitness) / 3)
+        fitness: Math.floor((individualA.fitness + individualB.fitness) / 2)
     }
 }
 

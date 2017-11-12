@@ -91,12 +91,19 @@ export default class Generation extends Component {
         e.preventDefault();
         const data = this.refs["population-panel"].getFormData();
         this.props.generateIndividuals(data.size, data.minDepth, data.maxDepth); 
-
-        // if(window.innerWidth < 1224) {
-        //     this.toggleContentSidebar(e);
-        // }  
+        
     }
     
+    handleIndividualsPanelGenerateIndividualsClick(e) {
+        e.preventDefault();
+        const data = this.refs["population-panel"].getFormData();
+        this.props.generateIndividuals(data.size, data.minDepth, data.maxDepth); 
+
+        if(window.innerWidth < 1224) {
+            this.toggleContentSidebar(e);
+        }  
+    }
+
     handleEvolveGenerationClick(e) {
         e.preventDefault();
         this.setState({
@@ -143,6 +150,20 @@ export default class Generation extends Component {
             activeView: 'samples'
         });
     }
+
+    handleSamplesPanelGenerateSamplesClick(e) {
+        e.preventDefault();
+        const data = this.refs['samples-panel'].getFormData();
+        this.props.generateSamples(this.props.generation, data.numSamples, 320, 320, data.redThreshold, data.greenThreshold, data.blueThreshold, this.props.lastSampleId);
+        this.setState({
+            activeView: 'samples'
+        });
+
+        if(window.innerWidth < 1224) {
+            this.toggleContentSidebar(e);
+        }
+    }
+    
 
     handleClickExportSamples(e) {
         e.preventDefault();
@@ -374,7 +395,7 @@ export default class Generation extends Component {
                                     ref="population-panel"
                                     config={this.props.config} 
                                     generation={this.props.generation}
-                                    onGenerateIndividualsClick={this.handleGenerateIndividualsClick.bind(this)}
+                                    onGenerateIndividualsClick={this.handleIndividualsPanelGenerateIndividualsClick.bind(this)}
                                     toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                                 />
                             }
@@ -385,7 +406,7 @@ export default class Generation extends Component {
                                     toggleContentSidebar={this.toggleContentSidebar.bind(this)}
                                     selectedSamples={this.state.selectedSamples}
                                     samples={this.props.generation.samples}
-                                    onGenerateSamplesClick={this.handleGenerateSamplesClick.bind(this)}
+                                    onGenerateSamplesClick={this.handleSamplesPanelGenerateSamplesClick.bind(this)}
                                     onUpdateSamplesClick={this.handleUpdateSamplesClick.bind(this)}
                                     onRemoveSamplesClick={this.handleRemoveSamplesClick.bind(this)}
                                     onExportSamplesClick={this.handleOpenExportSamplesModal.bind(this)}

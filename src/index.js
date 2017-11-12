@@ -60,14 +60,13 @@ const getRandomInteger = (min, max) => {
 //Bind functions
 const tokenSelector = getToken.bind(null, tokenCreators, getRandomReal, getRandomInteger);
 const expressionBuilder = buildExpression.bind(null, tokenSelector, getRandomInteger);
-const rouletteSelector = selectRoulette.bind(null, getRandomReal); 
+const rouletteSelector = selectRoulette.bind(null, getRandomReal, getRandomInteger); 
 const evolutionMethodSelector = selectEvolutionMethod.bind(null, rouletteSelector, 7, 1.5);
-const individualSelector = rouletteSelector;
 const expressionMutator = mutateExpression.bind(null, tokenEvaluators, getRandomInteger, tokenSelector, expressionBuilder);
 const expressionBreeder = crossOverExpressions.bind(null, tokenEvaluators, getRandomInteger);
 const individualMutator = mutateIndividual.bind(null, expressionMutator);
 const individualBreeder = crossOverIndividuals.bind(null, expressionBreeder)
-const individualsEvolver = evolveIndividuals.bind(null, tokenSelector, evolutionMethodSelector, individualSelector, individualMutator, individualBreeder, getRandomInteger);
+const individualsEvolver = evolveIndividuals.bind(null, tokenSelector, evolutionMethodSelector, rouletteSelector, individualMutator, individualBreeder, getRandomInteger);
 
 // bind action creators to required functions
 let partiallyAppliedActionCreators = {
@@ -75,7 +74,7 @@ let partiallyAppliedActionCreators = {
     redirect: push,
     createInitialGeneration: actionCreators.createInitialGeneration.bind(null, push),
     generateIndividuals: actionCreators.generateIndividuals.bind(null, expressionBuilder),
-    generateSamples: actionCreators.generateSamples.bind(null, getRandomReal),
+    generateSamples: actionCreators.generateSamples.bind(null, rouletteSelector),
     updateSamples: actionCreators.updateSamples.bind(null),
     generateSampleData: actionCreators.generateSampleData.bind(null, addToWorkerQueue),
     removeSamples: actionCreators.removeSamples.bind(null),

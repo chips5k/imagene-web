@@ -1,21 +1,16 @@
 //Adapted from http://www.obitko.com/tutorials/genetic-algorithms/selection.php AND https://en.wikipedia.org/wiki/Fitness_proportionate_selection
-export const selectRoulette = (getRandomReal, items, excludedIndexes) => {
-    
-    //[Sum] Calculate sum of all fitnesses in population - sum S.
-    let s = items.reduce((a, n) => a + n, 0);
+export const selectRoulette = (getRandomReal, getRandomInteger, items, excludedIndexes) => {
 
-
-    //[Select] Generate random number from interval (0,S) - r.
-    let r = getRandomReal(0, s);
-    // [Loop] Go through the population and sum fitnesses from 0 - sum s.
-    for(let i = 0; i < items.length; i++) {
-        r -= items[i];
-
-        if(r <= 0 ) {
-            return i;
+    const maxFitness = items.reduce((a, n) => Math.max(a, n));
+    let iterations = 0;
+    const MAX_ITERATIONS = 1000;
+    while(iterations < MAX_ITERATIONS) {
+        const currentIndex = getRandomInteger(0, items.length)
+        if(getRandomReal(0, 1) < items[currentIndex] / maxFitness) {
+            return currentIndex;
         }
+        iterations++;
     }
 
     return items.length - 1;
 }
-

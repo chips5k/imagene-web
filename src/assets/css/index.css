@@ -678,6 +678,8 @@ label {
     position:absolute;
     top:2.5rem;
     bottom:2.5rem;
+    left: 0px;
+    right: 0px;
     transition: opacity 400ms;
     background: rgba(0, 0, 0, 0.8);
     overflow-y: auto;

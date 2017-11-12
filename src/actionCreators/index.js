@@ -1,5 +1,3 @@
-import { selectRoulette } from '../lib/utilities';
-
 /**
  * Create Initial Generation
  */
@@ -81,7 +79,7 @@ export const evolveIndividuals = (individualsEvolver, redirect, generation) => {
  * @param {[0, 255]} blueThreshold array containing min/max blue colour values
  * @param {integer} lastSampleId (last sample id in the store)
  */
-export const generateSamples = (getRandomReal, generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
+export const generateSamples = (selectByFitness, generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
     
     let usedIndexes = [];
     let samples = [];
@@ -92,9 +90,9 @@ export const generateSamples = (getRandomReal, generation, numSamples, width, he
             usedIndexes = [];
         }
         
-        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
-        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
-        usedIndexes.push(selectRoulette(getRandomReal, generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
+        usedIndexes.push(selectByFitness(generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
+        usedIndexes.push(selectByFitness(generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
+        usedIndexes.push(selectByFitness(generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
 
         samples.push({
             generationId: generation.id,
