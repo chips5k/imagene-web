@@ -1,3 +1,10 @@
+import { push } from 'react-router-redux';
+import Random from 'random-js';
+import addToWorkerQueue from '../lib/generationSampleWorkerQueue';
+import { selectRoulette } from '../lib/utilities';
+import * as expressions from '../lib/expressions';
+import * as individuals from '../lib/individuals';
+
 /**
  * Create Initial Generation
  */
@@ -176,3 +183,41 @@ export const decreaseSampleFitness = (sample) => {
     }
 };
 
+export const bindActionCreators = (randomLibrary) => {
+    
+    //Initialite our random engine
+    const random = randomLibrary ? randomLibrary : new Random(Random.engines.mt19937().autoSeed());
+
+    //Setup the random functions we plan to use 
+    const getRandomReal = (min, max) => {
+        return random.real(min, max, true);
+    }
+    const getRandomInteger = (min, max) => {
+        return random.integer(min, max);
+    }
+
+    //Bind functions
+    const tokenSelector = expressions.getToken.bind(null, expressions.tokenCreators, getRandomReal, getRandomInteger);
+    const expressionBuilder = expressions.buildExpression.bind(null, tokenSelector, getRandomInteger);
+    const rouletteSelector = selectRoulette.bind(null, getRandomReal, getRandomInteger); 
+    const evolutionMethodSelector = individuals.selectEvolutionMethod.bind(null, rouletteSelector, 7, 1.5);
+    const expressionMutator = expressions.mutateExpression.bind(null, expressions.tokenEvaluators, getRandomInteger, tokenSelector, expressionBuilder);
+    const expressionBreeder = expressions.crossOverExpressions.bind(null, expressions.tokenEvaluators, getRandomInteger);
+    const individualMutator = individuals.mutateIndividual.bind(null, expressionMutator);
+    const individualBreeder = individuals.crossOverIndividuals.bind(null, expressionBreeder)
+    const individualsEvolver = individuals.evolveIndividuals.bind(null, tokenSelector, evolutionMethodSelector, rouletteSelector, individualMutator, individualBreeder, getRandomInteger);
+
+    // bind action creators to required functions
+    return {
+        increaseSampleFitness,
+        decreaseSampleFitness,
+        redirect: push,
+        createInitialGeneration: createInitialGeneration.bind(null, push),
+        generateIndividuals: generateIndividuals.bind(null, expressionBuilder),
+        generateSamples: generateSamples.bind(null, rouletteSelector),
+        updateSamples: updateSamples,
+        generateSampleData: generateSampleData.bind(null, addToWorkerQueue),
+        removeSamples: removeSamples,
+        evolveIndividuals: evolveIndividuals.bind(null, individualsEvolver, push)
+    }
+}

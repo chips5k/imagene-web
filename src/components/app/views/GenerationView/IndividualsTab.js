@@ -1,5 +1,5 @@
 import React from 'react';
-import IndividualList from '../IndividualList';
+import IndividualList from '../../common/individuals/IndividualList';
 
 const GenerationIndividuals = props => (
     <div className="generation__individuals">

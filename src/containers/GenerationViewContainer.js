@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Generation } from '../components/generation';
+import GenerationView from '../components/app/views/GenerationView';
 
 class GenerationContainer extends Component {
 
     componentDidMount() {
         if(!this.props.generation) {
-            this.props.actions.redirect('/');
+            this.props.actionCreators.redirect('/');
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if(!nextProps.generation) {
-            this.props.actions.redirect('/');
+            this.props.actionCreators.redirect('/');
         }
     }
 
@@ -93,7 +93,7 @@ class GenerationContainer extends Component {
             this.renderImageToCanvas(canvas, sample.cache[coordinateType], symmetric);
         } else {
             if(sample.processing === false) {
-                this.props.actions.generateSampleData(sample, coordinateType);
+                this.props.actionCreators.generateSampleData(sample, coordinateType);
             }
         }
     }
@@ -101,16 +101,17 @@ class GenerationContainer extends Component {
     render() {
         if(this.props.generation) {
             return ( 
-                <Generation 
+                <GenerationView 
                     generation={this.props.generation} 
                     config={this.props.config} 
-                    increaseSampleFitness={this.props.actions.increaseSampleFitness}
-                    decreaseSampleFitness={this.props.actions.decreaseSampleFitness}
-                    generateIndividuals={this.props.actions.generateIndividuals}
-                    generateSamples={this.props.actions.generateSamples}
-                    updateSamples={this.props.actions.updateSamples}
-                    removeSamples={this.props.actions.removeSamples}
-                    evolveGeneration={this.props.actions.evolveIndividuals}
+                    onNavSidebarToggleClick={this.props.onNavSidebarToggleClick}
+                    increaseSampleFitness={this.props.actionCreators.increaseSampleFitness}
+                    decreaseSampleFitness={this.props.actionCreators.decreaseSampleFitness}
+                    generateIndividuals={this.props.actionCreators.generateIndividuals}
+                    generateSamples={this.props.actionCreators.generateSamples}
+                    updateSamples={this.props.actionCreators.updateSamples}
+                    removeSamples={this.props.actionCreators.removeSamples}
+                    evolveGeneration={this.props.actionCreators.evolveIndividuals}
                     lastSampleId={this.props.lastSampleId}
                     toggleSidebar={this.props.toggleSidebar}
                     onSampleRedraw={this.handleSampleRedraw.bind(this)}
@@ -119,8 +120,7 @@ class GenerationContainer extends Component {
                 />
             );
         }
-        return <div />;           
-         
+        return <div />;       
     }
 }
 
@@ -152,7 +152,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         generation: generation,
         lastSampleId: state.samples.allIds.reduce((n, a) => Math.max(n, a), 0),
-        config: state.config
+        config: state.config,
+        actionCreators: ownProps.actionCreators
     }
 };
 

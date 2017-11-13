@@ -1,5 +1,5 @@
 import React from 'react';
-import Sample from '../Sample';
+import Sample from '../../common/samples/Sample';
 
 const GenerationSamples = props => (
     <div className="generation__samples">

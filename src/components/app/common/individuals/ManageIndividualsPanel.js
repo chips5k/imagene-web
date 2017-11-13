@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
 
-import {
-    ContentSidebarPanel,
-    ContentSidebarPanelBody,
-    ContentSidebarPanelHeader
-} from '../content';
+import { Panel, PanelBody, PanelHeader } from '../../../common/Panel';
+import FormControl from '../../../common/controls/FormControl';
+import StepperInput from '../../../common/controls/StepperInput';
 
-import FormControl from '../controls/FormControl';
-import StepperInput from '../controls/StepperInput';
-
-export default class GenerationIndividualsPanel extends Component {
+export default class ManageIndividualsPanel extends Component {
 
     getFormData() {
         return {
@@ -21,11 +16,11 @@ export default class GenerationIndividualsPanel extends Component {
 
     render() {
         return (
-            <ContentSidebarPanel>
-                <ContentSidebarPanelHeader>
+            <Panel>
+                <PanelHeader>
                     <i className="fa fa-sitemap"></i> Population
-                </ContentSidebarPanelHeader>
-                <ContentSidebarPanelBody>
+                </PanelHeader>
+                <PanelBody>
                 
                     <FormControl label="Population Size">
                         <StepperInput ref="size" value={this.props.config.numberOfIndividuals} minValue={0} maxValue={24}/>  
@@ -43,8 +38,8 @@ export default class GenerationIndividualsPanel extends Component {
                     <button className="button button--primary" onClick={this.props.onGenerateIndividualsClick}>
                         <i className="fa fa-refresh"></i> {this.props.generation.individuals.length > 0 ? 'Regenerate' : 'Generate'}
                     </button>
-                </ContentSidebarPanelBody>
-            </ContentSidebarPanel>
+                </PanelBody>
+            </Panel>
         );
     }
 }

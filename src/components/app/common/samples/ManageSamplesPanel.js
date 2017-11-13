@@ -1,16 +1,12 @@
 import React, {Component} from 'react';
 
-import {
-    ContentSidebarPanel,
-    ContentSidebarPanelBody,
-    ContentSidebarPanelHeader
-} from '../content';
+import { Panel, PanelBody, PanelHeader } from '../../../common/Panel';
 
-import FormControl from '../controls/FormControl';
-import StepperInput from '../controls/StepperInput';
-import ColourRangeInput from '../controls/ColourRangeInput';
+import FormControl from '../../../common/controls/FormControl';
+import StepperInput from '../../../common/controls/StepperInput';
+import ColourRangeInput from '../../../common/controls/ColourRangeInput';
 
-export default class GenerationSamplesPanel extends Component {
+export default class ManageSamplesPanel extends Component {
     
     getFormData() {
         return {
@@ -23,11 +19,11 @@ export default class GenerationSamplesPanel extends Component {
 
     render() {
         return (
-            <ContentSidebarPanel>
-                <ContentSidebarPanelHeader>
+            <Panel>
+                <PanelHeader>
                     <i className="fa fa-image"></i> {this.props.selectedSamples.length > 0 ? 'Update/Export' : 'Generate'} Samples
-                </ContentSidebarPanelHeader>
-                <ContentSidebarPanelBody>
+                </PanelHeader>
+                <PanelBody>
                     {this.props.selectedSamples.length > 0 &&
                     <p>{this.props.selectedSamples.length} sample(s) selected, you can adjust the options below and regenerate or export these items.</p>}
                     <div style={{display: this.props.selectedSamples.length > 0  ? 'none' : 'block'}}>
@@ -70,8 +66,8 @@ export default class GenerationSamplesPanel extends Component {
                     <button className="button button--danger" onClick={this.props.onRemoveSamplesClick}>
                         <i className="fa fa-remove"></i> Remove 
                     </button>}
-                </ContentSidebarPanelBody>
-            </ContentSidebarPanel>
+                </PanelBody>
+            </Panel>
         );
     }
 }

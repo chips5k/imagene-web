@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Individual from './Individual';
-import IndividualList from './IndividualList';
+import Individual from '../../common/individuals/Individual';
+import IndividualList from '../../common/individuals/IndividualList';
 
 export default class Sample extends Component {
 
