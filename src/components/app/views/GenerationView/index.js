@@ -6,7 +6,6 @@ import IndividualsTab from './IndividualsTab';
 import SamplesTab from './SamplesTab';
 
 import Header, { HeaderButton, HeaderTitle } from '../../layout/Header';
-import HorizontalFlexBox from '../../../common/HorizontalFlexBox';
 import VerticalFlexBox from '../../../common/VerticalFlexBox';
 import PanelSidebar from '../../layout/PanelSidebar';
 
@@ -278,7 +277,7 @@ export default class GenerationView extends Component {
                 <Header>
                     <HeaderButton iconClass="fa fa-bars" onClick={this.props.onNavSidebarToggleClick} />
                     <HeaderTitle>Generation {this.props.generation.id}</HeaderTitle>
-                    <HeaderButton iconClass="fa fa-cog" onClick={this.handlePanelSidebarToggleClick.bind(this)} >Settings</HeaderButton>
+                    <HeaderButton iconClass="fa fa-cog" onClick={this.handlePanelSidebarToggleClick.bind(this)}>Settings</HeaderButton>
                 </Header>
                 <div className="view-content">
                     <VerticalFlexBox>
@@ -309,7 +308,7 @@ export default class GenerationView extends Component {
                             </ActionBar>
                         }
                         
-                        <div className="flex-fill">
+                        <div className="flex-fill padding-1">
                             {this.state.activeView === 'individuals' && 
                                 <IndividualsTab
                                     individuals={this.props.generation.individuals} 

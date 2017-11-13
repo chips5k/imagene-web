@@ -7,7 +7,7 @@ export const ActionBar = props => (
 );
 
 export const ActionBarItem = props => (
-    <a className="action-bar__item" href="" onClick={props.onClick}>
+    <a className={`action-bar__item ${props.active ? 'action-bar__item--active' : ''}`} href="" onClick={props.onClick}>
         <i className={`icon ${props.iconClass}`}></i> {props.text}
     </a>
 );

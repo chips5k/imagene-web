@@ -12,7 +12,7 @@ export const HomeView = props => (
             <HeaderTitle>Home </HeaderTitle>
         </Header>
         
-        <div className="flex-fill">
+        <div className="flex-fill padding-1">
             <h2>Get Started</h2>
 
             <p>To create a new population/generation, click the <b>"New Generation"</b> button in the left hand menu. 
@@ -25,6 +25,7 @@ export const HomeView = props => (
             <hr/>
 
             <h2>About Imagene Web</h2>
+            
 
             <p>Imagene Web is a rebuild of the existing Imagene C++ application.
             The application is an implementation of a genetic programming.</p>
@@ -39,10 +40,11 @@ export const HomeView = props => (
             <p>Evolving a population creates a new generation by applying elitism, mutation and crossover to the previous individuals.</p> 
 
             <p><a href={ImagenePaper} target="_BLANK">You can download a copy of the original paper relating to the c++ application here.</a></p>
-            <div className="media" style={{minWidth: 200, maxWidth: 300}}>
-            <img className="media__image" src={Sample1} alt="Sample" />
-            <div className="media__caption" >Sample output of Imagene</div>
-        </div>
+
+            <div className="media" style={{ minWidth: 200, maxWidth: 300}}>
+                <img className="media__image" src={Sample1} alt="Sample" />
+                <div className="media__caption" >Sample output of Imagene</div>
+            </div>
         </div>
         
     </div>

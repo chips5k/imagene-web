@@ -41,23 +41,23 @@ class NavSidebar extends Component {
 
                             {this.props.generations.length === 0 && 
                             <a href="" onClick={this.props.onLinkClick.bind(null, "/new-generation")} className={this.determineClass()} >
-                                <i className="nav-sidebar__nav-icon fa fa-sitemap" /> <span className="nav-sidebar__item-label">New Generation</span>
+                                <i className="nav-sidebar__item-icon fa fa-sitemap" /> <span className="nav-sidebar__item-label">New Generation</span>
                             </a>}
 
                             <a href="" onClick={this.props.onLinkClick.bind(null, "/import")} className={this.determineClass("/import")}>
-                                <i className="nav-sidebar__nav-icon fa fa-download" /> <span className="nav-sidebar__item-label">Import</span>
+                                <i className="nav-sidebar__item-icon fa fa-download" /> <span className="nav-sidebar__item-label">Import</span>
                             </a>
                             
                             <a href="" onClick={this.props.onLinkClick.bind(null, "/export")} className={this.determineClass("/export")}>
-                                <i className="nav-sidebar__nav-icon fa fa-upload" /> <span className="nav-sidebar__item-label">Export</span>
+                                <i className="nav-sidebar__item-icon fa fa-upload" /> <span className="nav-sidebar__item-label">Export</span>
                             </a>
                         </div>
 
                         {this.props.generations.length > 0 &&
-                            <div className="nav-sidebar__nav-group">
-                                <div className="nav-sidebar__nav-group-header">
-                                    <div className="nav-sidebar__nav-group-title">Generations</div>
-                                    <i className="nav-sidebar__nav-group-toggle fa fa-angle-down"></i>
+                            <div className="nav-sidebar__item-group">
+                                <div className="nav-sidebar__item-group-header">
+                                    <div className="nav-sidebar__item-group-title">Generations</div>
+                                    <i className="nav-sidebar__item-group-toggle fa fa-angle-down"></i>
                                 </div>
 
                                 {this.props.generations.map(n => 

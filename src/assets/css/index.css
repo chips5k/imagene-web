@@ -259,6 +259,9 @@ hr {
 }
 
 
+.text-center {
+    text-align:center;
+}
 
 .header {
     background: rgb( 53, 57, 66);
@@ -267,51 +270,28 @@ hr {
     align-items: center;
     padding-left: 30px;
     justify-content: left;
+    color: white;
+}
+
+.padding-1 {
+    padding: 1rem;
+}
+
+.header__button {
+    padding-right: 1rem;
+    cursor: pointer;
 }
 
 .header__title {
     padding:1rem;
     color: white;
+    flex: 1;
     text-transform: uppercase;
 }
 
-.main__body {
-    top:70px;
-    bottom:0px;
-    left: 0px;
-    right: 0px;
-    position:absolute;
+.header__button-icon {
+    margin-right:0.5rem;
 }
-
-.main__content {
-    position:absolute;
-    right: 350px;
-    top: 0px;
-    transition: right 500ms;
-    left: 0px;
-    bottom: 0px;
-}
-
-.main__content p {
-    margin-bottom:1rem;
-    line-height:1.1rem;
-}
-
-
-.main__content-body {
-    overflow-y: auto;
-    overflow-x: hidden;
-    position:absolute;
-    top:4rem;
-    bottom:5rem;
-    left: 0px;
-    right:0px;
-    padding: 1rem;
-    font-size:0.8rem;
-    z-index: 0;
-}
-
-
 
 
 
@@ -337,10 +317,13 @@ hr {
     align-items: center;
     justify-content: center;
     border-right: 1px solid #ccc;
+    flex-direction: column;
+    text-align:center;
 }
 
 .action-bar__item-icon {
     margin-right:0.5rem;
+
 }
 
 .action-bar__item--active {
@@ -803,53 +786,6 @@ animation: spinner .6s linear infinite;
 
 
 
-@media (max-width: 500px) {
-    .hidden-narrow {
-        display: none !important;
-    }
-    .visible-short.visible-narrow {
-        display: flex !important;
-    }
- 
-    
-   
-}
-
-@media (min-width: 500px) {
-    .visible-narrow {
-        display: none !important;
-    }
-
-    .hidden-narrow {
-        display: flex !important;
-    }
-
-    
-
-}
-
-@media (max-height: 800px) {
-    .visible-short {
-        display: flex !important;
-    }
-    .visible-tall {
-        display: none !important;
-    }
-    
-}
-
-@media (min-height: 800px) {
-    .visible-tall {
-        display:auto !important;
-    }
-    .visible-short {
-        display:none !important;
-    }
-    
-}
-
-
-
 
 @media (max-width: 1224px) {
 
@@ -1122,4 +1058,5 @@ animation: spinner .6s linear infinite;
     .home .media {
         margin-left: 0rem;
     }
+
 }
