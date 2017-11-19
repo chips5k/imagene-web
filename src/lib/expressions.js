@@ -222,25 +222,25 @@ export const solveExpression = (tokenEvaluators, expression, x, y) => {
     throw new Error('Unable to solve expression: operands: ' + operandStack + ' operators: ' + operatorStack);
 };
 
-export const mutateExpression = (tokenCreators, getRandomInteger, tokenSelector, expressionBuilder, expression) => {
+export const mutateExpression = (tokenEvaluators, getRandomInteger, getIndexToMutate, tokenSelector, expressionBuilder, expression) => {
     let mutatedExpression = [...expression];
     
-    let index = getRandomInteger(0, mutatedExpression.length - 1);
+    let index = getIndexToMutate(expression);
 
     let token = mutatedExpression[index];
 
-    if(tokenCreators.singleOperators.hasOwnProperty(token)) {
+    if(tokenEvaluators.singleOperators.hasOwnProperty(token)) {
 
         //Swap token for another operand
         mutatedExpression.splice(index, 1, ...tokenSelector(OPERATOR_SINGLE));
     }
 
-    if(tokenCreators.doubleOperators.hasOwnProperty(token)) {
+    if(tokenEvaluators.doubleOperators.hasOwnProperty(token)) {
         //Swap token for another operand
         mutatedExpression.splice(index, 1, ...tokenSelector(OPERATOR_DOUBLE));
     }
 
-    if(tokenCreators.operands.hasOwnProperty(token)) {
+    if(tokenEvaluators.operands.hasOwnProperty(token)) {
         let chance = getRandomInteger(0, 1);
         switch(chance) {
             case 0:
@@ -299,19 +299,44 @@ export const insertNodeIntoBinaryTreeAtIndex = (parentNode, key, node, currentIn
     return result;
 }
 
-export const crossOverExpressions = (tokenEvaluators, getRandomInteger, expressionA, expressionB)  => {
-    let selection = getRandomInteger(0, 1);
-    let parentFrom = selection === 1 ? expressionB : expressionA;
-    let parentTo = selection === 1 ? expressionA : expressionB;
 
-    
-    let fromIndex = getRandomInteger(0, parentFrom.length - 1);
-    let toIndex = getRandomInteger(0, parentTo.length - 1);
-    
-    parentFrom = expressionToTree(tokenEvaluators, parentFrom);
-    parentTo = expressionToTree(tokenEvaluators, parentTo);
 
-    let node = findBinaryTreeNodeByIndex(parentFrom, {value: 0}, fromIndex);
+export const convertExpressionToWeightedArray = (tokenEvaluators, expression) => {
+   let tree = expressionToTree(tokenEvaluators, expression);
+    assignWeightToExpressionNode(tokenEvaluators, null, null, tree, 1, expression.length);
+    return treeToExpression(tree);
+};
+
+export const assignWeightToExpressionNode = (tokenEvaluators, parent, key, node, depth, expressionLength) => {
+    if(typeof node === 'object') {
+        if(node.a) {
+            assignWeightToExpressionNode(tokenEvaluators, node, 'a', node.a, depth + 1, expressionLength);
+        }
+        
+        if(node.b) {
+            assignWeightToExpressionNode(tokenEvaluators, node, 'b', node.b, depth + 1, expressionLength);
+        }
+
+        //if(tokenEvaluators.singleOperators[node.value] || tokenEvaluators.doubleOperators[node.value]) {
+            node.value = depth;
+        //} else {
+            node.value = depth;
+        //}
+    } else {
+        parent[key] = depth;
+    }
+}
+
+
+export const crossOverExpressions = (tokenEvaluators, getExpressionAIndex, getExpressionBIndex, expressionA, expressionB)  => {
+
+    const fromIndex = getExpressionAIndex(expressionA);
+    const toIndex = getExpressionBIndex(expressionB);
+    
+    const parentFrom = expressionToTree(tokenEvaluators, expressionA.slice(0));
+    const parentTo = expressionToTree(tokenEvaluators, expressionB.slice(0));
+
+    const node = findBinaryTreeNodeByIndex(parentFrom, {value: 0}, fromIndex);
 
     
     let root = {
@@ -364,7 +389,7 @@ export const expressionToTree = (tokenEvaluators, expression) => {
             value: stack.pop()
         }
     } else if (stack.length > 1) {
-        throw new Error('Stack not empty - unhandled condition');
+        throw new Error('Stack not empty - unhandled condition: ' + stack);
     }
 
     return currentNode;
@@ -410,7 +435,7 @@ export const treeToExpression = function(node) {
 
         if(node.hasOwnProperty('b')) {
             expression = expression.concat(treeToExpression(node.b));
-        }
+        }   
 
         if(node.hasOwnProperty('value')) {
             expression.push(node.value);

@@ -200,10 +200,29 @@ export const bindActionCreators = (addToWorkerQueue, randomLibrary) => {
 
     const buildExpression = expressions.buildExpression.bind(null, tokenSelector, getRandomInteger);
 
-    const crossOverExpressions = expressions.crossOverExpressions.bind(null, expressions.tokenEvaluators, getRandomInteger);
+    const convertExpressionToWeightedArray = expressions.convertExpressionToWeightedArray.bind(null, expressions.tokenEvaluators);
+
+    const selectExpressionIndex = (expression) => { 
+        let weights = convertExpressionToWeightedArray(expression);
+        let index = rouletteSelector(weights, [0]);
+        return index;
+    }
+    const crossOverExpressions = expressions.crossOverExpressions.bind(null, 
+        expressions.tokenEvaluators, 
+        selectExpressionIndex,
+        selectExpressionIndex,
+    );
+
     const crossOverIndividuals = individuals.crossOverIndividuals.bind(null, crossOverExpressions, rouletteSelector, rouletteSelector, getRandomInteger.bind(null, 1, 5));
     
-    const mutateExpression = expressions.mutateExpression.bind(null, expressions.tokenEvaluators, getRandomInteger, tokenSelector, buildExpression);
+    const mutateExpression = expressions.mutateExpression.bind(null, 
+        expressions.tokenEvaluators, 
+        getRandomInteger, 
+        selectExpressionIndex,
+        tokenSelector, 
+        buildExpression
+    );
+
     const mutateIndividual = individuals.mutateIndividual.bind(null, mutateExpression, individuals => getRandomInteger(0, individuals.length - 1));
 
     const selectEvolutionMethod = individuals.selectEvolutionMethod.bind(null, rouletteSelector, crossOverIndividuals, mutateIndividual, 7, 1.5);
