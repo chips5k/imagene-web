@@ -103,7 +103,6 @@ export default (state = { byId: {}, allIds: []}, action) => {
 
             return state;
         }
-        break;
 
         case 'INCREASE_SAMPLE_FITNESS': {
 
