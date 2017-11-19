@@ -241,6 +241,9 @@ export default class GenerationView extends Component {
     handleSampleRemoveClick(sample, e) {
         e.preventDefault();
         this.props.removeSamples(this.props.generation.id, [sample.id]);
+        this.setState({
+            selectedSamples: this.state.selectedSamples.filter(n => n !== sample.id)
+        });
     }
 
     handleSampleIncreaseFitnessClick(sample, e) {
