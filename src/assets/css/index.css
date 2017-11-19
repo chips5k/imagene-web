@@ -661,12 +661,7 @@ label {
     white-space: nowrap;
     border-left:1px solid #ccc;
 }
-.sample__canvas-wrap {
-   
-}
-.sample__canvas {
- 
-}
+
 
 .sample__details {
     opacity:0;
@@ -869,9 +864,6 @@ animation: spinner .6s linear infinite;
     list-style:none;
 }
 
-.individual-list__item {
-
-}
 
 .individual {
     border:1px solid #ccc;
