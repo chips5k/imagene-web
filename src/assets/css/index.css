@@ -319,10 +319,11 @@ hr {
     border-right: 1px solid #ccc;
     flex-direction: column;
     text-align:center;
+    font-size:0.9rem;
 }
 
 .action-bar__item-icon {
-    margin-right:0.5rem;
+    padding-bottom:0.3rem;
 
 }
 
@@ -608,8 +609,8 @@ a {
 
 @media(max-width: 670px) {
     .sample {
-        margin-left:0;
-        margin-right:0.5rem;
+        margin:0;
+        margin-bottom:2rem;
     }
 }
 
@@ -1058,5 +1059,12 @@ animation: spinner .6s linear infinite;
     .home .media {
         margin-left: 0rem;
     }
+}
 
+.generation__individuals-no-result, .generation__samples-no-result {
+    text-align:center;
+}
+
+canvas {
+    user-select: none;
 }

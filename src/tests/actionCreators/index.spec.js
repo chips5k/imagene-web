@@ -1,14 +1,17 @@
 
+
 import {
     createInitialGeneration,
     generateIndividuals,
     increaseSampleFitness,
     decreaseSampleFitness,
-    evolveIndividuals
+    evolveIndividuals,
+    generateSampleData,
+    generateSamples,
+    generateSample,
 
 } from '../../actionCreators';
 import { push } from 'react-router-redux';
-
 
 
 describe('actions', () => {
@@ -147,261 +150,263 @@ describe('actions', () => {
         });
     });
 
-    // describe('generateSamples', () => {
+    describe('generateSamples', () => {
 
-    //     it('should generate samples according to the supplied input', () => {
-    //         let lastSelection = 0;
-    //         core.rouletteWheelSelection = jest.fn((individuals, excludedIndexes) => {
-    //             if(lastSelection > 2) {
-    //                 lastSelection = 0;
-    //             }
-    //             return lastSelection++;
-    //         });
+        it('should generate samples according to the supplied input', () => {
+            let lastSelection = 0;
+            const selectByWeight = jest.fn((individuals, excludedIndexes) => {
+                if(lastSelection > 2) {
+                    lastSelection = 0;
+                }
+                return lastSelection++;
+            });
 
-    //         const generation = {
-    //             id: 1,
-    //             individuals: [
-    //                 { id: 1 }, { id: 2 }, { id: 3 }
-    //             ]
-    //         };
+            const generation = {
+                id: 1,
+                individuals: [
+                    { id: 1, fitness: 1 }, { id: 2, fitness: 1 }, { id: 3, fitness: 1 }
+                ]
+            };
 
-    //         const numSamples = 4;
-    //         const width = 320;
-    //         const height = 340;
-    //         const redThreshold = [0, 255];
-    //         const greenThreshold = [12, 128];
-    //         const blueThreshold = [66, 100];
-    //         let lastSampleId = 0;
+            const numSamples = 4;
+            const width = 320;
+            const height = 340;
+            const redThreshold = [0, 255];
+            const greenThreshold = [12, 128];
+            const blueThreshold = [66, 100];
+            let lastSampleId = 0;
             
-    //         expect(
-    //             generateSamples(
-    //                 generation,
-    //                 numSamples,
-    //                 width,
-    //                 height,
-    //                 redThreshold,
-    //                 greenThreshold,
-    //                 blueThreshold,
-    //                 lastSampleId
-    //             )
-    //         ).toEqual({
-    //             type: 'GENERATE_SAMPLES',
-    //             generationId: 1,
-    //             samples: [
-    //                 {
-    //                     id: ++lastSampleId,
-    //                     generationId: 1,
-    //                     redIndividualId: 1,
-    //                     greenIndividualId: 2,
-    //                     blueIndividualId: 3,
-    //                     width, 
-    //                     height,
-    //                     redThreshold, 
-    //                     greenThreshold, 
-    //                     blueThreshold,
-    //                     cache: {
-    //                         polar: null,
-    //                         cartesian: null
-    //                     },
-    //                     fitness: 0,
-    //                     processing: false
-    //                 },
-    //                 {
-    //                     id: ++lastSampleId,
-    //                     generationId: 1,
-    //                     redIndividualId: 1,
-    //                     greenIndividualId: 2,
-    //                     blueIndividualId: 3,
-    //                     width, 
-    //                     height,
-    //                     redThreshold, 
-    //                     greenThreshold, 
-    //                     blueThreshold,
-    //                     cache: {
-    //                         polar: null,
-    //                         cartesian: null
-    //                     },
-    //                     fitness: 0,
-    //                     processing: false
-    //                 },
-    //                 {
-    //                     id: ++lastSampleId,
-    //                     generationId: 1,
-    //                     redIndividualId: 1,
-    //                     greenIndividualId: 2,
-    //                     blueIndividualId: 3,
-    //                     width, 
-    //                     height,
-    //                     redThreshold, 
-    //                     greenThreshold, 
-    //                     blueThreshold,
-    //                     cache: {
-    //                         polar: null,
-    //                         cartesian: null
-    //                     },
-    //                     fitness: 0,
-    //                     processing: false
-    //                 },
-    //                 {
-    //                     id: ++lastSampleId,
-    //                     generationId: 1,
-    //                     redIndividualId: 1,
-    //                     greenIndividualId: 2,
-    //                     blueIndividualId: 3,
-    //                     width, 
-    //                     height,
-    //                     redThreshold, 
-    //                     greenThreshold, 
-    //                     blueThreshold,
-    //                     cache: {
-    //                         polar: null,
-    //                         cartesian: null
-    //                     },
-    //                     fitness: 0,
-    //                     processing: false
-    //                 }
-    //             ]
-    //         });
+            expect(
+                generateSamples(
+                    selectByWeight,
+                    generation,
+                    numSamples,
+                    width,
+                    height,
+                    redThreshold,
+                    greenThreshold,
+                    blueThreshold,
+                    lastSampleId
+                )
+            ).toEqual({
+                type: 'GENERATE_SAMPLES',
+                generationId: 1,
+                samples: [
+                    {
+                        id: ++lastSampleId,
+                        generationId: 1,
+                        redIndividualId: 1,
+                        greenIndividualId: 2,
+                        blueIndividualId: 3,
+                        width, 
+                        height,
+                        redThreshold, 
+                        greenThreshold, 
+                        blueThreshold,
+                        cache: {
+                            polar: null,
+                            cartesian: null
+                        },
+                        fitness: 0,
+                        processing: false
+                    },
+                    {
+                        id: ++lastSampleId,
+                        generationId: 1,
+                        redIndividualId: 1,
+                        greenIndividualId: 2,
+                        blueIndividualId: 3,
+                        width, 
+                        height,
+                        redThreshold, 
+                        greenThreshold, 
+                        blueThreshold,
+                        cache: {
+                            polar: null,
+                            cartesian: null
+                        },
+                        fitness: 0,
+                        processing: false
+                    },
+                    {
+                        id: ++lastSampleId,
+                        generationId: 1,
+                        redIndividualId: 1,
+                        greenIndividualId: 2,
+                        blueIndividualId: 3,
+                        width, 
+                        height,
+                        redThreshold, 
+                        greenThreshold, 
+                        blueThreshold,
+                        cache: {
+                            polar: null,
+                            cartesian: null
+                        },
+                        fitness: 0,
+                        processing: false
+                    },
+                    {
+                        id: ++lastSampleId,
+                        generationId: 1,
+                        redIndividualId: 1,
+                        greenIndividualId: 2,
+                        blueIndividualId: 3,
+                        width, 
+                        height,
+                        redThreshold, 
+                        greenThreshold, 
+                        blueThreshold,
+                        cache: {
+                            polar: null,
+                            cartesian: null
+                        },
+                        fitness: 0,
+                        processing: false
+                    }
+                ]
+            });
 
-    //         expect(core.rouletteWheelSelection).toHaveBeenCalledWith(generation.individuals, []);
-    //         expect(core.rouletteWheelSelection).toHaveBeenCalledWith(generation.individuals, [0]);
-    //         expect(core.rouletteWheelSelection).toHaveBeenCalledWith(generation.individuals, [0, 1]);
+            expect(selectByWeight).toHaveBeenCalledWith(generation.individuals.map(n => n.fitness), []);
+            expect(selectByWeight).toHaveBeenCalledWith(generation.individuals.map(n => n.fitness), [0]);
+            expect(selectByWeight).toHaveBeenCalledWith(generation.individuals.map(n => n.fitness), [0, 1]);
 
-    //     }); 
+        }); 
 
-    //     it('should assign unique ids based on last sample id', () => {
-    //         let lastSelection = 0;
-    //         core.rouletteWheelSelection = jest.fn((individuals, excludedIndexes) => {
-    //             return lastSelection++;
-    //         });
+        it('should assign unique ids based on last sample id', () => {
+            let lastSelection = 0;
+            const selectByWeight = jest.fn((individuals, excludedIndexes) => {
+                return lastSelection++;
+            });
 
-    //         const generation = {
-    //             id: 1,
-    //             individuals: [
-    //                 { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 8 }
-    //             ]
-    //         };
+            const generation = {
+                id: 1,
+                individuals: [
+                    { id: 1, fitness: 1 }, { id: 2, fitness: 1 }, { id: 3, fitness: 1 }, { id: 4, fitness: 1 }, { id: 5, fitness: 1 }, { id: 8, fitness: 1 }
+                ]
+            };
 
-    //         const numSamples = 1;
-    //         const width = 320;
-    //         const height = 340;
-    //         const redThreshold = [0, 255];
-    //         const greenThreshold = [12, 128];
-    //         const blueThreshold = [66, 100];
-    //         let lastSampleId = 8;
+            const numSamples = 1;
+            const width = 320;
+            const height = 340;
+            const redThreshold = [0, 255];
+            const greenThreshold = [12, 128];
+            const blueThreshold = [66, 100];
+            let lastSampleId = 8;
             
-    //         expect(
-    //             generateSamples(
-    //                 generation,
-    //                 numSamples,
-    //                 width,
-    //                 height,
-    //                 redThreshold,
-    //                 greenThreshold,
-    //                 blueThreshold,
-    //                 lastSampleId
-    //             )
-    //         ).toEqual({
-    //             type: 'GENERATE_SAMPLES',
-    //             generationId: 1,
-    //             samples: [
-    //                 {
-    //                     id: ++lastSampleId,
-    //                     generationId: 1,
-    //                     redIndividualId: 1,
-    //                     greenIndividualId: 2,
-    //                     blueIndividualId: 3,
-    //                     width, 
-    //                     height,
-    //                     redThreshold, 
-    //                     greenThreshold, 
-    //                     blueThreshold,
-    //                     cache: {
-    //                         polar: null,
-    //                         cartesian: null
-    //                     },
-    //                     fitness: 0,
-    //                     processing: false
-    //                 }
-    //             ]
-    //         });
+            expect(
+                generateSamples(
+                    selectByWeight,
+                    generation,
+                    numSamples,
+                    width,
+                    height,
+                    redThreshold,
+                    greenThreshold,
+                    blueThreshold,
+                    lastSampleId
+                )
+            ).toEqual({
+                type: 'GENERATE_SAMPLES',
+                generationId: 1,
+                samples: [
+                    {
+                        id: ++lastSampleId,
+                        generationId: 1,
+                        redIndividualId: 1,
+                        greenIndividualId: 2,
+                        blueIndividualId: 3,
+                        width, 
+                        height,
+                        redThreshold, 
+                        greenThreshold, 
+                        blueThreshold,
+                        cache: {
+                            polar: null,
+                            cartesian: null
+                        },
+                        fitness: 0,
+                        processing: false
+                    }
+                ]
+            });
 
-    //         expect(core.rouletteWheelSelection).toHaveBeenCalledWith(generation.individuals, []);
-    //         expect(core.rouletteWheelSelection).toHaveBeenCalledWith(generation.individuals, [0]);
-    //         expect(core.rouletteWheelSelection).toHaveBeenCalledWith(generation.individuals, [0, 1]);
-    //     });
+            expect(selectByWeight).toHaveBeenCalledWith(generation.individuals.map(n => n.fitness), []);
+            expect(selectByWeight).toHaveBeenCalledWith(generation.individuals.map(n => n.fitness), [0]);
+            expect(selectByWeight).toHaveBeenCalledWith(generation.individuals.map(n => n.fitness), [0, 1]);
+        });
         
 
-    //     it('should not generate samples that contain previous individual combinations for R G and B', () => {
+        it('should not generate samples that contain previous individual combinations for R G and B', () => {
             
-    //     });
+        });
 
-    // });
+    });
 
 
-    // describe('generateSampleData', () => {
+    describe('generateSampleData', () => {
        
-    //     it('should dispatch multiple actions and defer generation to a worker queue', () => {
-    //         const dispatch = jest.fn();
-    //         const sample = {
-    //             id: 1
-    //         };
+        it('should dispatch multiple actions and defer generation to a worker queue', () => {
+            const dispatch = jest.fn();
+            const sample = {
+                id: 1
+            };
 
-    //         const coordinateType = 'cartesian';
+            const coordinateType = 'cartesian';
             
-    //         addToWorkerQueue.mockImplementation(({sample, coordinateType}, callback) => {
-    //             expect(sample).toEqual(sample);
-    //             expect(coordinateType).toEqual(coordinateType);
-    //             callback({data: []});
-    //         });
+            const addToWorkerQueue = jest.fn(({sample, coordinateType}, callback) => {
+                expect(sample).toEqual(sample);
+                expect(coordinateType).toEqual(coordinateType);
+                callback({data: []});
+            });
 
             
+            
+            generateSampleData(addToWorkerQueue, sample, coordinateType)(dispatch);
 
-    //         generateSampleData(sample, coordinateType)(dispatch);
+            expect(dispatch).toHaveBeenCalledWith({
+                type: 'SAMPLE_DATA_GENERATING',
+                sampleId: sample.id,
+                coordinateType: coordinateType
+            });
 
-    //         expect(dispatch).toHaveBeenCalledWith({
-    //             type: 'SAMPLE_DATA_GENERATING',
-    //             sampleId: sample.id,
-    //             coordinateType: coordinateType
-    //         });
+            expect(addToWorkerQueue).toHaveBeenCalled();
 
-    //         expect(addToWorkerQueue).toHaveBeenCalled();
+            expect(dispatch).toHaveBeenLastCalledWith({
+                type: 'SAMPLE_DATA_GENERATED',
+                sampleId: sample.id,
+                data: [],
+                coordinateType: coordinateType
+            });
+        }); 
 
-    //         expect(dispatch).toHaveBeenLastCalledWith({
-    //             type: 'SAMPLE_DATA_GENERATED',
-    //             sampleId: sample.id,
-    //             data: [],
-    //             coordinateType: coordinateType
-    //         });
-    //     }); 
-
-    // });
+    });
     
-    // describe('increaseSampleFitness', () => {
+    describe('increaseSampleFitness', () => {
 
-    //     it('generates the correct action', () => {
-    //         expect(increaseSampleFitness({id: 1, redIndividualId: 2, greenIndividualId: 3, blueIndividualId: 4})).toEqual({
-    //             type: 'INCREASE_SAMPLE_FITNESS',
-    //             sampleId: 1,
-    //             redIndividualId: 2,
-    //             greenIndividualId: 3,
-    //             blueIndividualId: 4
-    //         });
-    //     });
+        it('generates the correct action', () => {
+            expect(increaseSampleFitness({id: 1, redIndividualId: 2, greenIndividualId: 3, blueIndividualId: 4})).toEqual({
+                type: 'INCREASE_SAMPLE_FITNESS',
+                sampleId: 1,
+                redIndividualId: 2,
+                greenIndividualId: 3,
+                blueIndividualId: 4
+            });
+        });
 
-    // });
+    });
 
-    // describe('decreaseSampleFitness', () => {
-    //     it('generates the correct action', () => {
-    //         expect(decreaseSampleFitness({id: 1, redIndividualId: 2, greenIndividualId: 3, blueIndividualId: 4})).toEqual({
-    //             type: 'DECREASE_SAMPLE_FITNESS',
-    //             sampleId: 1,
-    //             redIndividualId: 2,
-    //             greenIndividualId: 3,
-    //             blueIndividualId: 4
-    //         });
-    //     });
-    // }); 
+    describe('decreaseSampleFitness', () => {
+        it('generates the correct action', () => {
+            expect(decreaseSampleFitness({id: 1, redIndividualId: 2, greenIndividualId: 3, blueIndividualId: 4})).toEqual({
+                type: 'DECREASE_SAMPLE_FITNESS',
+                sampleId: 1,
+                redIndividualId: 2,
+                greenIndividualId: 3,
+                blueIndividualId: 4
+            });
+        });
+    }); 
 
 });
 

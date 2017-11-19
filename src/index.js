@@ -6,6 +6,10 @@ import store, { history } from './store'
 import AppContainer from './containers/AppContainer'
 import { bindActionCreators } from './actionCreators';
 
+const root = document.createElement('div');
+root.id = 'root';
+document.body.appendChild(root);
+
 render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
@@ -14,5 +18,5 @@ render(
       </div>
     </ConnectedRouter>
   </Provider>,
-  document.querySelector('#root')
-)
+  root
+);

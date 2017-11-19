@@ -6,10 +6,21 @@ export const ActionBar = props => (
     </div>
 );
 
-export const ActionBarItem = props => (
-    <a className={`action-bar__item ${props.active ? 'action-bar__item--active' : ''}`} href="" onClick={props.onClick}>
-        <i className={`icon ${props.iconClass}`}></i> {props.text}
-    </a>
-);
+export const ActionBarItem = props => {
+    
+    if(props.children) {
+        return (
+            <a className={`action-bar__item ${props.active ? 'action-bar__item--active' : ''}`} href="" onClick={props.onClick}>
+                {props.children}
+            </a>
+        );
+    } else {
+        return (
+            <a className={`action-bar__item ${props.active ? 'action-bar__item--active' : ''}`} href="" onClick={props.onClick}>
+                <i className={`action-bar__item-icon icon ${props.iconClass}`}></i> {props.text}
+            </a>
+        );
+    }
+}
 
 

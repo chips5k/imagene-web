@@ -215,32 +215,7 @@ describe('samples', () => {
             });
         });
 
-        it('should not allow fitness to drop below 0', () => {
-
-            const initialState = {
-                byId: {
-                    1: {},
-                    2: {},
-                    3: { id: 3, processing: false, fitness: 0}
-                },
-                allIds: [1, 2, 3]
-            };
-
-            expect(samples(initialState, {
-                type: 'DECREASE_SAMPLE_FITNESS',
-                sampleId: 3
-            })).toEqual({
-                byId: {
-                    ...initialState.byId,
-                    3: {
-                        ...initialState.byId[3],
-                        fitness: 0
-                    }
-                },
-                allIds: [...initialState.allIds]
-            });
-
-        });
+        
     });
 
 });

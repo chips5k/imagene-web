@@ -1,7 +1,11 @@
 import {solveExpression, tokenEvaluators} from './expressions';
 
-onmessage = function(e) {
-    
+//Small hack to support unit tests na dissues with mocking a web worker
+if(!global) {
+    globals = this;
+}
+
+global.onmessage = function(e) {
     let dataArray = new Uint8ClampedArray(e.data.sample.width * e.data.sample.height * 4);
     
     let rgbRange = {
@@ -139,4 +143,4 @@ onmessage = function(e) {
 
     postMessage(dataArray);
 
-}
+}.bind(this);

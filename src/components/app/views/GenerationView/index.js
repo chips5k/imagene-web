@@ -281,6 +281,7 @@ export default class GenerationView extends Component {
                 </Header>
                 <div className="view-content">
                     <VerticalFlexBox>
+                        
                         {this.state.selectedSamples.length > 0 && 
                             <ActionBar>
                                 <ActionBarItem active>

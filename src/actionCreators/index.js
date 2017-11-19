@@ -1,10 +1,9 @@
 import { push } from 'react-router-redux';
 import Random from 'random-js';
-import addToWorkerQueue from '../lib/generationSampleWorkerQueue';
-import { selectRoulette } from '../lib/utilities';
+import { selectRoulette, selectTruncate } from '../lib/utilities';
 import * as expressions from '../lib/expressions';
 import * as individuals from '../lib/individuals';
-
+import addToWorkerQueue from '../lib/generationSampleWorkerQueue.js';
 /**
  * Create Initial Generation
  */
@@ -86,7 +85,7 @@ export const evolveIndividuals = (individualsEvolver, redirect, generation) => {
  * @param {[0, 255]} blueThreshold array containing min/max blue colour values
  * @param {integer} lastSampleId (last sample id in the store)
  */
-export const generateSamples = (selectByFitness, generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
+export const generateSamples = (selectByWeight, generation, numSamples, width, height, redThreshold, greenThreshold, blueThreshold, lastSampleId) => {
     
     let usedIndexes = [];
     let samples = [];
@@ -97,9 +96,9 @@ export const generateSamples = (selectByFitness, generation, numSamples, width, 
             usedIndexes = [];
         }
         
-        usedIndexes.push(selectByFitness(generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
-        usedIndexes.push(selectByFitness(generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
-        usedIndexes.push(selectByFitness(generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
+        usedIndexes.push(selectByWeight(generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
+        usedIndexes.push(selectByWeight(generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
+        usedIndexes.push(selectByWeight(generation.individuals.map(n => n.fitness), usedIndexes.slice())); 
 
         samples.push({
             generationId: generation.id,
@@ -195,29 +194,32 @@ export const bindActionCreators = (randomLibrary) => {
     const getRandomInteger = (min, max) => {
         return random.integer(min, max);
     }
-
+    
     //Bind functions
     const tokenSelector = expressions.getToken.bind(null, expressions.tokenCreators, getRandomReal, getRandomInteger);
-    const expressionBuilder = expressions.buildExpression.bind(null, tokenSelector, getRandomInteger);
-    const rouletteSelector = selectRoulette.bind(null, getRandomReal, getRandomInteger); 
-    const evolutionMethodSelector = individuals.selectEvolutionMethod.bind(null, rouletteSelector, 7, 1.5);
-    const expressionMutator = expressions.mutateExpression.bind(null, expressions.tokenEvaluators, getRandomInteger, tokenSelector, expressionBuilder);
-    const expressionBreeder = expressions.crossOverExpressions.bind(null, expressions.tokenEvaluators, getRandomInteger);
-    const individualMutator = individuals.mutateIndividual.bind(null, expressionMutator);
-    const individualBreeder = individuals.crossOverIndividuals.bind(null, expressionBreeder)
-    const individualsEvolver = individuals.evolveIndividuals.bind(null, tokenSelector, evolutionMethodSelector, rouletteSelector, individualMutator, individualBreeder, getRandomInteger);
+    const rouletteSelector = selectRoulette.bind(null, getRandomInteger, getRandomReal); 
 
+    const buildExpression = expressions.buildExpression.bind(null, tokenSelector, getRandomInteger);
+
+    const crossOverExpressions = expressions.crossOverExpressions.bind(null, expressions.tokenEvaluators, getRandomInteger);
+    const crossOverIndividuals = individuals.crossOverIndividuals.bind(null, crossOverExpressions, rouletteSelector, rouletteSelector, getRandomInteger.bind(null, 1, 5));
+    
+    const mutateExpression = expressions.mutateExpression.bind(null, expressions.tokenEvaluators, getRandomInteger, tokenSelector, buildExpression);
+    const mutateIndividual = individuals.mutateIndividual.bind(null, mutateExpression, individuals => getRandomInteger(0, individuals.length - 1));
+
+    const selectEvolutionMethod = individuals.selectEvolutionMethod.bind(null, rouletteSelector, crossOverIndividuals, mutateIndividual, 7, 1.5);
+    
     // bind action creators to required functions
     return {
         increaseSampleFitness,
         decreaseSampleFitness,
         redirect: push,
         createInitialGeneration: createInitialGeneration.bind(null, push),
-        generateIndividuals: generateIndividuals.bind(null, expressionBuilder),
+        generateIndividuals: generateIndividuals.bind(null, buildExpression),
         generateSamples: generateSamples.bind(null, rouletteSelector),
         updateSamples: updateSamples,
         generateSampleData: generateSampleData.bind(null, addToWorkerQueue),
         removeSamples: removeSamples,
-        evolveIndividuals: evolveIndividuals.bind(null, individualsEvolver, push)
+        evolveIndividuals: evolveIndividuals.bind(null, individuals.evolveIndividuals.bind(null, selectTruncate, selectEvolutionMethod), push)
     }
 }

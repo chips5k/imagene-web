@@ -1,151 +1,164 @@
-import { evolveIndividuals, selectEvolutionMethod } from '../../lib/individuals';
+import { evolveIndividuals, selectEvolutionMethod, crossOverIndividuals, mutateIndividual } from '../../lib/individuals';
 
 describe('individuals', () => {
 
     describe('selectEvolutionMethod', () => {
+        it('should work', () => {
+            const crossOverIndividuals = jest.fn();
+            const mutateIndividual = jest.fn();
+            const selectByWeight = jest.fn(() => {
+                return 1;
+            });
 
-        it('should call the fitness selector with the supplied weighted data', () => {
+            expect(selectEvolutionMethod(() => 0, crossOverIndividuals, mutateIndividual, 0.5, 0.5)).toEqual(crossOverIndividuals);
+            expect(selectEvolutionMethod(() => 1, crossOverIndividuals, mutateIndividual, 0.5, 0.5)).toEqual(mutateIndividual);
 
-            const selector = jest.fn((methods) => 1); 
-            let method = selectEvolutionMethod(selector, 0, 1, 2, 4);
-            expect(selector).toHaveBeenCalledWith([0, 1, 2, 4]);
+            selectEvolutionMethod(selectByWeight, crossOverIndividuals, mutateIndividual, 0.5, 1);
+            expect(selectByWeight).toHaveBeenCalledWith([0.5, 1]);
         });
-
-        it('should return the method name', () => {
-           expect(selectEvolutionMethod((methods) => 2), 0, 0, 1, 0).toEqual('mutation');
-        });
-
     });
 
     describe('evolveIndividuals', () => {
-        it('should retain individuals when elitism is selected', () => {
-            const noop = () => {};
-            const individuals = [
+        it('should work', () => {
+            const selectTruncate = jest.fn((n, p) => [0, 1]);
+            const initial = [
                 {
-                    id: 1
+                    fitness: 0.5
                 }, 
                 {
-                    id: 2
+                    fitness: 0.6
                 },
                 {
-                    id: 3
+                    fitness: 0
+                },
+                {
+                    fitness: 0
                 }
             ];
+            const fakeEvolutionMethod = jest.fn(n => {
+                return n;
+            });
+
+            
+            const selectEvolutionMethod = jest.fn((c, m) => {
+              return fakeEvolutionMethod;  
+            });
 
             expect(
                 evolveIndividuals(
-                    noop, 
-                    () => 'elitism', 
-                    noop, 
-                    noop, 
-                    noop,
-                    noop,
-                    individuals
+                    selectTruncate, 
+                    selectEvolutionMethod, 
+                    initial
                 )
-            ).toEqual(individuals);
-
-        });
-
-        it('should call the breeder function when crossover is selected', () => {
-
-            const noop = () => {};
-            const individuals = [
-                {
-                    id: 1,
-                    expression: ['a']
-                }, 
-                {
-                    id: 2,
-                    expression: ['b']
-                },
-                {
-                    id: 3,
-                    expression: ['c']
-                }
-            ];
-
-            const breeder = (individualA, individualB) => {
-                return { expression: [...individualA.expression, ...individualB.expression] }
-            };
-
-            let calls = 0;
-
-            expect(
-                evolveIndividuals(
-                    noop, 
-                    () => 'crossover', 
-                    () => {
-                        let i = calls++;
-                        if(calls >= 3) { calls = 0;}
-                        return i;
+            ).toEqual(
+                [
+                    {
+                        fitness: 0.5
                     }, 
-                    noop, 
-                    breeder,
-                    () => 1,
-                    individuals
+                    {
+                        fitness: 0.6
+                    }
+                ]
+            );
+
+            expect(selectTruncate).toHaveBeenCalledWith([0.5, 0.6, 0, 0], 0.5);
+            expect(selectEvolutionMethod).toHaveBeenCalledTimes(16);
+            expect(fakeEvolutionMethod).toHaveBeenCalledTimes(16);
+            expect(fakeEvolutionMethod).toHaveBeenCalledWith([{ fitness: 0.5}, {fitness: 0.6}]);
+            
+            const alternateSelectEvolutionMethod = jest.fn((c, m) => {
+                return (n) => {
+                    return [...n, n[1]]
+                }    
+            });
+
+            expect(
+                evolveIndividuals(
+                    selectTruncate, 
+                    alternateSelectEvolutionMethod,  
+                    initial
                 )
-            ).toEqual([
+            ).toEqual(
+                [
+                    {
+                        fitness: 0.5
+                    }, 
+                    {
+                        fitness: 0.6
+                    },
+                    {
+                        fitness: 0.6
+                    },
+                    {
+                        fitness: 0.6
+                    },
+                ]
+            );
+
+            expect(alternateSelectEvolutionMethod).toHaveBeenCalledTimes(2);
+        });
+        
+    });
+
+    describe('crossOverIndividuals', () => {
+        it('should work', () => {
+
+            const selectParentAIndex = jest.fn((n) => 0);
+            const selectParentBIndex = jest.fn((n) => 1);
+            const selectNumChildren = jest.fn((n) => 2);
+            const crossOverExpression = jest.fn((n) => ['1', '+', '2', '+', '2']);
+
+            const individuals = [
                 {
-                    expression: ['a', 'b']
+                    fitness: 1,
+                    expression: ['1', '+', '2']
                 },
                 {
-                    expression: ['c', 'a']
+                    fitness: 2,
+                    expression: ['1', '+', '2']
+                }
+            ];
+
+            expect(crossOverIndividuals(crossOverExpression, selectParentAIndex, selectParentBIndex, selectNumChildren, individuals)).toEqual([
+                ...individuals,
+                {
+                    fitness: Math.floor((1 + 2) / 2),
+                    expression: ['1', '+', '2', '+', '2']
                 },
                 {
-                    expression: ['b', 'c']
+                    fitness: Math.floor((1 + 2) / 2),
+                    expression: ['1', '+', '2', '+', '2']
                 }
             ]);
         });
+    })
 
-        it('should call the mutator function when mutation is selected', () => {
-            
-            const noop = () => {};
+    describe('mutateIndividual', () => {
+        it('should work', () => {
+
+            const mutateExpression = jest.fn((n) => [...n, '-', 'a']);
+            const selectIndividualIndex = jest.fn(() => 1);
+
             const individuals = [
                 {
-                    id: 1,
-                    expression: [1]
-                }, 
-                {
-                    id: 2,
-                    expression: [2]
+                    fitness: 1,
+                    expression: ['1', '+', '2']
                 },
                 {
-                    id: 3,
-                    expression: [3]
+                    fitness: 2,
+                    expression: ['1', '+', '2']
                 }
             ];
 
-            const mutator = (individualA) => {
-                return {...individualA, expression: individualA.expression.map(n => -n)}
-            };
-
-            let calls = 0;
-
-            expect(
-                evolveIndividuals(
-                    noop, 
-                    () => 'mutation', 
-                    () => {
-                        return 0;
-                    }, 
-                    mutator, 
-                    noop,
-                    noop,
-                    individuals
-                )
-            ).toEqual([
+            expect(mutateIndividual(mutateExpression, selectIndividualIndex, individuals)).toEqual([
                 {
-                    id: 1,
-                    expression: [-1]
+                    fitness: 1,
+                    expression: ['1', '+', '2']
                 },
                 {
-                    id: 2,
-                    expression: [-2]
-                },
-                {
-                    id: 3,
-                    expression: [-3]
-                }
+                    fitness: 2,
+                    expression: ['1', '+', '2', '-', 'a']
+                } 
             ]);
         });
     });
