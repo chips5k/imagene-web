@@ -32,7 +32,7 @@ class AppContainer extends Component {
 
     handleNavSidebarLinkClick(url, e) {
         e.preventDefault(e);
-        console.log(this.props.actionCreators);
+        this.refs.layout.toggleNavSidebar();
         if(url === '/new-generation') {
             this.props.actionCreators.createInitialGeneration();
         } else {
@@ -59,6 +59,7 @@ class AppContainer extends Component {
                         match={match}
                         onNavSidebarToggleClick={this.handleNavSidebarToggleClick.bind(this)}
                         actionCreators={this.props.actionCreators}
+                        addToWorkerQueue={this.props.addToWorkerQueue}
                     />
                 }/>
             </Layout>
@@ -66,9 +67,10 @@ class AppContainer extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
     generations: Object.values(state.generations.byId),
-    location: state.router.location.pathname
+    location: state.router.location.pathname,
+    addToWorkerQueue: ownProps.addToWorkerQueue
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

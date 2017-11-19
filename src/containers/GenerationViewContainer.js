@@ -153,7 +153,8 @@ const mapStateToProps = (state, ownProps) => {
         generation: generation,
         lastSampleId: state.samples.allIds.reduce((n, a) => Math.max(n, a), 0),
         config: state.config,
-        actionCreators: ownProps.actionCreators
+        actionCreators: ownProps.actionCreators,
+        addToWorkerQueue: ownProps.addToWorkerQueue
     }
 };
 

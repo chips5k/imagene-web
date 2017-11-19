@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import store, { history } from './store'
 import AppContainer from './containers/AppContainer'
 import { bindActionCreators } from './actionCreators';
-
+import addToWorkerQueue from './lib/generationSampleWorkerQueue.js';
 const root = document.createElement('div');
 root.id = 'root';
 document.body.appendChild(root);
@@ -14,7 +14,7 @@ render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <div>
-        <AppContainer actionCreators={bindActionCreators()}/>
+        <AppContainer actionCreators={bindActionCreators(addToWorkerQueue)} addToWorkerQueue={addToWorkerQueue} />
       </div>
     </ConnectedRouter>
   </Provider>,

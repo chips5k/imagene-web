@@ -35,13 +35,15 @@ export default class GenerationView extends Component {
 
     openExportSamplesModal() {
         this.setState({
-            exportSamplesModalOpen: true
+            exportSamplesModalOpen: true,
+            exportedSamples: []
         });
     }
 
     closeExportSamplesModal() {
         this.setState({
-            exportSamplesModalOpen: false
+            exportSamplesModalOpen: false,
+            exportedSamples: []
         });
     }
 
@@ -126,12 +128,16 @@ export default class GenerationView extends Component {
         this.togglePanelSidebar();
     }
 
-    handleUpdateSamplesClick(e) {
+    handleSamplesPanelUpdateSamplesClick(e) {
         const data = this.refs['samples-panel'].getFormData();
         this.props.updateSamples(this.props.generation.samples.filter((n) => this.state.selectedSamples.indexOf(n.id) !== -1), data.redThreshold, data.greenThreshold, data.blueThreshold);
         this.setState({
             activeView: 'samples'
         });
+
+        if(window.innerWidth < 1224) {
+            this.togglePanelSidebar();
+        }
     }
     
     handleGenerateSamplesClick(e) {
@@ -197,14 +203,16 @@ export default class GenerationView extends Component {
                     coordinateType: n.coordinateType
                 }, (e) => {
                     const exportedSamples = this.state.exportedSamples.slice(0);
-                    exportedSamples[i].data =  Uint8ClampedArray.from(e.data);
-                    exportedSamples[i].processing = false;
-                    exportedSamples[i].symmetricDataUrl = this.props.renderImageDataToDataUrl(n.sample.width, n.sample.height, n.data, true);
-                    exportedSamples[i].asymmetricDataUrl = this.props.renderImageDataToDataUrl(n.sample.width, n.sample.height, n.data, false)
-                    this.setState({
-                        exportedSamples,
-                        exporting: this.state.exportedSamples.filter(n => n.processing).length < this.state.exportedSamples.length
-                    });
+                    if(exportedSamples[i]) {
+                        exportedSamples[i].data =  Uint8ClampedArray.from(e.data);
+                        exportedSamples[i].processing = false;
+                        exportedSamples[i].symmetricDataUrl = this.props.renderImageDataToDataUrl(n.sample.width, n.sample.height, n.data, true);
+                        exportedSamples[i].asymmetricDataUrl = this.props.renderImageDataToDataUrl(n.sample.width, n.sample.height, n.data, false)
+                        this.setState({
+                            exportedSamples,
+                            exporting: this.state.exportedSamples.filter(n => n.processing).length < this.state.exportedSamples.length
+                        });
+                    }
                 });
             });
         });
@@ -414,7 +422,7 @@ export default class GenerationView extends Component {
                             selectedSamples={this.state.selectedSamples}
                             samples={this.props.generation.samples}
                             onGenerateSamplesClick={this.handleSamplesPanelGenerateSamplesClick.bind(this)}
-                            onUpdateSamplesClick={this.handleUpdateSamplesClick.bind(this)}
+                            onUpdateSamplesClick={this.handleSamplesPanelUpdateSamplesClick.bind(this)}
                             onRemoveSamplesClick={this.handleRemoveSamplesClick.bind(this)}
                             onExportSamplesClick={this.handleOpenExportSamplesModal.bind(this)}
                         />

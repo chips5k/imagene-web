@@ -80,27 +80,33 @@ export default (state = { byId: {}, allIds: []}, action) => {
         }
 
         case 'SAMPLE_DATA_GENERATED': {
+            if(state.byId.hasOwnProperty(action.sampleId)) {
             
-            let sample = state.byId[action.sampleId];
-            let key = action.coordinateType;
+                let sample = state.byId[action.sampleId];
+                let key = action.coordinateType;
             
-            return {
-                ...state,
-                byId: {
-                    ...state.byId,
-                    [sample.id]: {
-                        ...sample,
-                        cache: {
-                            ...sample.cache,
-                            [key]: Uint8ClampedArray.from(action.data)
-                        },
-                        processing: false
+                return {
+                    ...state,
+                    byId: {
+                        ...state.byId,
+                        [sample.id]: {
+                            ...sample,
+                            cache: {
+                                ...sample.cache,
+                                [key]: Uint8ClampedArray.from(action.data)
+                            },
+                            processing: false
+                        }
                     }
                 }
             }
+
+            return state;
         }
+        break;
 
         case 'INCREASE_SAMPLE_FITNESS': {
+
             let sample = state.byId[action.sampleId];
             return {
                 ...state,

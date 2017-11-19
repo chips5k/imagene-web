@@ -3,7 +3,6 @@ import Random from 'random-js';
 import { selectRoulette, selectTruncate } from '../lib/utilities';
 import * as expressions from '../lib/expressions';
 import * as individuals from '../lib/individuals';
-import addToWorkerQueue from '../lib/generationSampleWorkerQueue.js';
 /**
  * Create Initial Generation
  */
@@ -182,7 +181,7 @@ export const decreaseSampleFitness = (sample) => {
     }
 };
 
-export const bindActionCreators = (randomLibrary) => {
+export const bindActionCreators = (addToWorkerQueue, randomLibrary) => {
     
     //Initialite our random engine
     const random = randomLibrary ? randomLibrary : new Random(Random.engines.mt19937().autoSeed());

@@ -59,7 +59,9 @@ export default class ExportSamplesModal extends Component {
                         </div>
                     }
                            
-                    <p>You have selected <b>{this.props.selectedSamples.length}</b> samples to export, please adjust the width/height and RGB thresholds for the export.<br/> <b>Please note</b>, the values adjusted here, will not alter the original samples.</p>
+                    <p>You have selected <b>{this.props.selectedSamples.length}</b> samples to export, please adjust the width/height and RGB thresholds for the export.<br/> 
+                    
+                    <b>Please note</b>, the values adjusted here, will not alter the original samples.</p>
 
                     <div className="hbox" style={{marginBottom: '1rem'}}>
                         <div>
@@ -84,8 +86,11 @@ export default class ExportSamplesModal extends Component {
                         <FormControl label="Height">
                             <input className="form-control__input text-input" ref="height" type="text" name="height" defaultValue="320"/> 
                         </FormControl>
+                        
                     </div>
-
+                    <div className="help-block">
+                        <b>Note:</b> Larger image dimensions may result in a different image, this is caused by there being a larger range of values during the normalization process
+                    </div>
                     <div className="vbox">
                     
                         <FormControl label="Red Threshold" last>
