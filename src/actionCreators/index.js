@@ -204,6 +204,7 @@ export const bindActionCreators = (addToWorkerQueue, randomLibrary) => {
 
     const selectExpressionIndex = (expression) => { 
         let weights = convertExpressionToWeightedArray(expression);
+        
         let index = rouletteSelector(weights, [0]);
         return index;
     }

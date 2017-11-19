@@ -150,10 +150,10 @@ describe('expressions', () => {
     });
 
     describe('convertExpressionToWeightedArray', () => {
-        //expect(convertExpressionToWeightedArray(tokenEvaluators, ['1', '2', '+', '4', '*'])).toEqual([2, 2, 0.2, 1, 0]);
+        expect(convertExpressionToWeightedArray(tokenEvaluators, ['1', '2', '+', '4', '*'])).toEqual([4, 4, 1, 1, 0]);
 
-        expect(convertExpressionToWeightedArray(tokenEvaluators, ['6', '3', '+', '4', '5', '*', '-', '4', '4', '+', '/'])).toEqual([4, 4, 3, 4, 4, 3, 2, 3, 3, 2, 1]);
-
+        expect(convertExpressionToWeightedArray(tokenEvaluators, ['6', '3', '+', '4', '5', '*', '-', '4', '4', '+', '/'])).toEqual([13, 13, 4,13, 13, 4, 1, 4, 4, 1, 0]);
+         
         // convertExpressionToWeightedArray(tokenEvaluators, ['pY', '844.7345152710532', '*' ,'pY', 'tan' ,'^' ,'log']);
         
         // let e = ['pY',

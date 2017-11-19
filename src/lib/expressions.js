@@ -303,18 +303,18 @@ export const insertNodeIntoBinaryTreeAtIndex = (parentNode, key, node, currentIn
 
 export const convertExpressionToWeightedArray = (tokenEvaluators, expression) => {
    let tree = expressionToTree(tokenEvaluators, expression);
-    assignWeightToExpressionNode(tokenEvaluators, null, null, tree, 1, expression.length);
+    assignWeightToExpressionNode(tokenEvaluators, null, null, tree, 0, expression.length);
     return treeToExpression(tree);
 };
 
 export const assignWeightToExpressionNode = (tokenEvaluators, parent, key, node, depth, expressionLength) => {
     if(typeof node === 'object') {
         if(node.a) {
-            assignWeightToExpressionNode(tokenEvaluators, node, 'a', node.a, depth + 1, expressionLength);
+            assignWeightToExpressionNode(tokenEvaluators, node, 'a', node.a, depth + 1 + (depth * 2), expressionLength);
         }
         
         if(node.b) {
-            assignWeightToExpressionNode(tokenEvaluators, node, 'b', node.b, depth + 1, expressionLength);
+            assignWeightToExpressionNode(tokenEvaluators, node, 'b', node.b, depth + 1 + (depth * 2), expressionLength);
         }
 
         //if(tokenEvaluators.singleOperators[node.value] || tokenEvaluators.doubleOperators[node.value]) {
