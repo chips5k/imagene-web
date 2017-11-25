@@ -150,8 +150,19 @@ class AppContainer extends Component {
         });
     }
 
+    handleHomeGetStartedClick(e) {
+        e.preventDefault();
+        if(this.props.generations.lengths > 0) {
+            this.props.actionCreators.redirect('/generations/' + this.props.currentGenerationId);
+        } else {
+            this.props.actionCreators.createInitialGeneration();
+        }
+        
+    }
+
     render() {
         return (
+            <div>
             <Layout
                 ref="layout"
                 onToggleClick={this.handleSidebarToggleClick} 
@@ -164,7 +175,7 @@ class AppContainer extends Component {
                 <Route exact path="/" render={ ({match}) => 
                     <HomeView match={match} 
                         onNavSidebarToggleClick={this.handleNavSidebarToggleClick.bind(this)} 
-                        onGetStartedClick={this.handleNavSidebarToggleClick.bind(this)}
+                        onGetStartedClick={this.handleHomeGetStartedClick.bind(this)}
                         onWatchTutorialClick={this.handleHelpAction.bind(this)}
                     />
                 }/>
@@ -176,7 +187,7 @@ class AppContainer extends Component {
                         addToWorkerQueue={this.props.addToWorkerQueue}
                     />
                 }/>
-
+            </Layout>
                 <ExportModal 
                     onCloseModalClick={this.handleExportModalCloseClick.bind(this)} 
                     onExportClick={this.handleExportModalExportClick.bind(this)}
@@ -194,13 +205,13 @@ class AppContainer extends Component {
                     onCloseModalClick={this.handleHelpModalCloseClick.bind(this)} 
                     open={this.state.helpModalOpen}
                 />
-            </Layout>
+            </div>
         );
     }
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    currentState: state,
+    currentGenerationId: Math.max.apply(null, state.generations.allIds),
     generations: Object.values(state.generations.byId),
     location: state.router.location.pathname,
     addToWorkerQueue: ownProps.addToWorkerQueue

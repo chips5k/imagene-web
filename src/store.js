@@ -7,7 +7,9 @@ import reducers from './reducers';
 import persistState from 'redux-localstorage'
 
 // Create a history of your choosing (we're using a browser history in this case)
-export const history = createHistory();
+export const history = createHistory({
+    basename:process.env.PUBLIC_URL
+});
 
 // Build the middleware for intercepting and dispatching navigation actions
 const historyMiddleware = routerMiddleware(history);
