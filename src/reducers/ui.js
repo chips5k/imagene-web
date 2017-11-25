@@ -1,11 +1,10 @@
 export default (state = { exporting: false}, action) => {
     switch(action.type) {
-        case 'START_IMPORT':
+        case 'PROCESS_IMPORT':
             return {
-                ...state,
-                importing: true
+                importing: false
             }
-        
+
         default:
             return state;
     }

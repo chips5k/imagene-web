@@ -2,6 +2,10 @@ import {cloneDeep} from 'lodash';
 
 export default (state = { byId: {}, allIds: []}, action) => {
     switch(action.type) {
+        case 'PROCESS_IMPORT': {
+            return action.data.samples;
+        }
+
         case 'CREATE_INITIAL_GENERATION':
         case 'GENERATE_INDIVIDUALS': {
             return {

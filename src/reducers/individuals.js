@@ -1,5 +1,10 @@
 export default (state = { byId: {}, allIds: []}, action) => {
     switch(action.type) {
+
+        case 'PROCESS_IMPORT': {
+            return action.data.individuals;
+        }
+
         case 'CREATE_INITIAL_GENERATION': {
             return {
                 byId: {},

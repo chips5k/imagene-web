@@ -93,6 +93,30 @@ class AppContainer extends Component {
     handleImportModalImportClick(e) {
         e.preventDefault();
 
+        const file = this.refs.importModal.refs.file.files[0];
+        
+        if(file) {
+
+            const reader = new FileReader();
+
+            reader.onload = e => {
+                try {
+                    const json = JSON.parse(e.target.result);
+                    this.props.actionCreators.importState(json);
+                } catch (e) {   
+                    console.log(e);
+                }
+
+                this.setState({
+                    importModalOpen: false
+                });
+            }
+
+            reader.readAsText(file);
+        }
+
+        
+
     }
 
     handleImportModalCloseClick() {
@@ -125,14 +149,16 @@ class AppContainer extends Component {
                 }/>
 
                 <ExportModal 
+                    currentState={this.props.currentState}
                     onCloseModalClick={this.handleExportModalCloseClick.bind(this)} 
                     onExportClick={this.handleExportModalExportClick.bind(this)}
                     open={this.state.exportModalOpen
                 }/>
 
                 <ImportModal 
+                    ref="importModal"
                     onCloseModalClick={this.handleImportModalCloseClick.bind(this)} 
-                    onExportClick={this.handleImportModalImportClick.bind(this)}
+                    onImportClick={this.handleImportModalImportClick.bind(this)}
                     open={this.state.importModalOpen}
                 />
             </Layout>

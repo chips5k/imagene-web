@@ -5,15 +5,16 @@ import * as expressions from '../lib/expressions';
 import * as individuals from '../lib/individuals';
 
 
-export const importState = (redirect, state) => {
+export const importState = (state) => {
     return dispatch => {
-        dispatch({
-            type: 'START_IMPORT',
-        })
+        //This makes no sense... but it works - for some reason performing a redirect AFTER the import
+        // causes issues e.g the page doesnt redirect
+        dispatch(push('/generation/' + Math.max.apply(null, state.generations.allIds)));
         dispatch({
             type: 'PROCESS_IMPORT',
             data: state
         });
+
     }
 }
     
@@ -247,7 +248,7 @@ export const bindActionCreators = (addToWorkerQueue, randomLibrary) => {
         increaseSampleFitness,
         decreaseSampleFitness,
         redirect: push,
-        importState: importState.bind(null, push),
+        importState: importState,
         createInitialGeneration: createInitialGeneration.bind(null, push),
         generateIndividuals: generateIndividuals.bind(null, buildExpression),
         generateSamples: generateSamples.bind(null, rouletteSelector),
