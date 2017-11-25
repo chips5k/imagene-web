@@ -450,6 +450,18 @@ a {
     color: white;
 }
 
+.video-modal .modal__panel {
+    min-width: 350px;
+    width: 100%;
+    overflow: none;
+}
+.video-modal  iframe {
+    border:0;
+    width: 100% !important;
+    min-height: 480px !important;
+
+}
+
 .button.button--extra-large {
     font-size:1.2rem;
     padding: 1rem;

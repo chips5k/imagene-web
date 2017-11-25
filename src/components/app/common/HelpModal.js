@@ -7,14 +7,12 @@ export default class HelpModal extends Component {
     render() {
        
         return (
-           <Modal onCloseModalClick={this.props.onCloseModalClick} open={this.props.open}>
+           <Modal className="video-modal" onCloseModalClick={this.props.onCloseModalClick} open={this.props.open}>
                <ModalHeader onCloseModalClick={this.props.onCloseModalClick}>
                     Help
                 </ModalHeader>
                 <ModalBody>
-                    <div className="vertical-flex-box flex-fill" style={{maxWidth: 500}}>
-                       
-                    </div>
+                    <iframe title="tutorial" width="854" height="480" src="https://www.youtube.com/embed/XSWF2hm-hBA" frameborder="0" gesture="media" allowfullscreen></iframe>
                 </ModalBody>
                 <ModalFooter>
                     

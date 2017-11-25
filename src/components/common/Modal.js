@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const Modal = props => (
-    <div className={'modal' + (props.open ? ' modal--open' : '')}>
+    <div className={'modal ' + props.className + (props.open ? ' modal--open' : '')}>
         <div className="modal__panel">
             {props.children}
         </div>
