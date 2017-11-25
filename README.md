@@ -87,26 +87,6 @@ At this moment in time, i have chosen to implement a single container component,
 }
 ```
 
-## Todo/Works in progress
-
-* Huntdown any instances of state mutation (there are several) these are likely causing odd side effects.
-* Implement operand/operator selection and probailities for generation of initial population and selection of new expressions when mutating individuals
-
-* Cross Browser bug fixes
-* Web Worker Thread Pool
-* Sample Controls
-  * Multi-select control panel
-  * Single select control panel
-  * Export sample image at various settings
-
-* Mutation
-* Crossover
-* Population Graph (Output as binary tree visualization, maybe use D3.js)
-* Feature locks, e.g Prevent editing of previous generation, samples etc.. if subsequent generations have been created
-* Implement rollback ability - e.g revert to previous generation
-* UI Cleanup/Improvements
-* Export
-* Import 
     
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
