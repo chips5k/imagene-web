@@ -39,6 +39,10 @@ class NavSidebar extends Component {
                                 <i className="nav-sidebar__item-icon fa fa-home" /> <span className="nav-sidebar__item-label">Home</span>
                             </a>  
 
+                            <a href="" onClick={this.props.onLinkClick.bind(null, "/help")} className={this.determineClass("/help")}>
+                                <i className="nav-sidebar__item-icon fa fa-question" /> <span className="nav-sidebar__item-label">Help/Tutorial</span>
+                            </a>  
+
                             <a href="" onClick={this.props.onLinkClick.bind(null, "/new-generation")} className={this.determineClass()} >
                                 <i className="nav-sidebar__item-icon fa fa-sitemap" /> <span className="nav-sidebar__item-label">New Generation</span>
                             </a>

@@ -13,7 +13,7 @@ import GenerationViewContainer from './GenerationViewContainer';
 import HomeView from '../components/app/views/HomeView';
 import ExportModal from '../components/app/common/ExportModal';
 import ImportModal from '../components/app/common/ImportModal';
-
+import HelpModal from '../components/app/common/HelpModal';
 class AppContainer extends Component {
 
     constructor(props) {
@@ -42,6 +42,9 @@ class AppContainer extends Component {
         switch(url) {
             case '/new-generation':
                 this.props.actionCreators.createInitialGeneration();
+                break;
+            case '/help':
+                this.handleHelpAction();
                 break;
             case '/export':
                 this.handleExportAction();
@@ -130,6 +133,23 @@ class AppContainer extends Component {
         });
     }
 
+    handleHelpAction(e) {
+        if(e) {
+            e.preventDefault();
+        }
+        
+        this.setState({
+            helpModalOpen: true
+        });
+    }
+
+    handleHelpModalCloseClick(e) {
+        e.preventDefault();
+        this.setState({
+            helpModalOpen: false
+        });
+    }
+
     render() {
         return (
             <Layout
@@ -142,7 +162,11 @@ class AppContainer extends Component {
                 onSidebarLinkClick={this.handleNavSidebarLinkClick.bind(this)}
             >
                 <Route exact path="/" render={ ({match}) => 
-                    <HomeView match={match} onNavSidebarToggleClick={this.handleNavSidebarToggleClick.bind(this)} />
+                    <HomeView match={match} 
+                        onNavSidebarToggleClick={this.handleNavSidebarToggleClick.bind(this)} 
+                        onGetStartedClick={this.handleNavSidebarToggleClick.bind(this)}
+                        onWatchTutorialClick={this.handleHelpAction.bind(this)}
+                    />
                 }/>
                 <Route exact path="/generation/:id" render={ ({match}) => 
                     <GenerationViewContainer 
@@ -164,6 +188,11 @@ class AppContainer extends Component {
                     onCloseModalClick={this.handleImportModalCloseClick.bind(this)} 
                     onImportClick={this.handleImportModalImportClick.bind(this)}
                     open={this.state.importModalOpen}
+                />
+
+                <HelpModal 
+                    onCloseModalClick={this.handleHelpModalCloseClick.bind(this)} 
+                    open={this.state.helpModalOpen}
                 />
             </Layout>
         );

@@ -21,6 +21,10 @@ export const HomeView = props => (
                     previous data sets or continue where you left off. 
                 </p>
 
+                <div style={{paddingTop: '1rem', paddingBottom: '1rem'}}>
+                    <a className="button button--primary button--extra-large" onClick={props.onGetStartedClick}>Get Started</a>
+                    <a className="button button--info button--extra-large" onClick={props.onWatchTutorialClick}>Watch Tutorial</a>
+                </div>
                 <hr/>
 
                 <h2>About Imagene Web</h2>

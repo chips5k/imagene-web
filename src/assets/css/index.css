@@ -444,6 +444,12 @@ a {
     color: white;
 }
 
+.button.button--info {
+    background: #0da371;
+    border:1px solid #0da371;
+    color: white;
+}
+
 .button.button--extra-large {
     font-size:1.2rem;
     padding: 1rem;
@@ -453,9 +459,16 @@ a {
     background-color: #ccc;
 }
 
+
+
 .button--primary:hover, .button--primary:focus {
     background-color: rgb(38, 99, 212);
 }
+
+.button--info:hover, .button--info:focus {
+    background-color: rgb(16, 105, 77);
+}
+
 
 
 .button i {
