@@ -668,19 +668,22 @@ label {
 
 .sample__details {
     opacity:0;
+    
+    visibility: hidden;
     position:absolute;
     top:2.5rem;
     bottom:2.5rem;
     left: 0px;
     right: 0px;
-    transition: opacity 400ms;
+    transition: opacity 400ms, visibility 450ms;
     background: rgba(0, 0, 0, 0.8);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
 
 .sample__details--open {
-    display:block;
+  
+    visibility: visible;
     opacity: 1;
 }
 

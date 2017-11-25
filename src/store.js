@@ -12,7 +12,7 @@ export const history = createHistory();
 // Build the middleware for intercepting and dispatching navigation actions
 const historyMiddleware = routerMiddleware(history);
 
-const slicer = (state) => {
+export const slicer = (state) => {
 
     const samples = {};
 
