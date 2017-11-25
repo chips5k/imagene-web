@@ -1,5 +1,7 @@
 # Imagene Web
 
+[![Build Status](https://travis-ci.org/chips5k/imagene-web.svg?branch=master)](https://travis-ci.org/chips5k/imagene-web)
+
 Imagene Web is a rebuild of the existing Imagene C++ application.
 The application is an implementation of a genetic programming.
 
@@ -12,6 +14,8 @@ Once a user is happy with the fitness levels of the current generation/populatio
 
 Evolving a population creates a new generation by applying elitism, mutation and crossover to the previous individuals. 
 
+You can view the application in action here: 
+https://chips5k.github.io/imagene-web/
 
 ### React/Redux Usage
 Due to the flexible nature of both react and redux, and the many possible interpretations of how to structure applications utilizing these technologies, i have outlined below, my approach. Ultimately my approach can be seen as an interpretation of CQRS and Event sourcing. This made the most sense for my application and assisted in identifying where responsibilities lie in a clean manner.
