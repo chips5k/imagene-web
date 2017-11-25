@@ -34,7 +34,10 @@ class AppContainer extends Component {
 
     handleNavSidebarLinkClick(url, e) {
         e.preventDefault(e);
-        this.refs.layout.toggleNavSidebar();
+       
+        if(window.innerWidth < 1224) {
+            this.refs.layout.toggleNavSidebar();
+        }
 
         switch(url) {
             case '/new-generation':
@@ -54,15 +57,13 @@ class AppContainer extends Component {
 
     handleExportAction() {
         this.setState({
-            exportModalOpen: true,
-            export: JSON.stringify(this.props.currentState)
+            exportModalOpen: true
         });
     }   
 
     handleExportModalExportClick(e) {
         
         e.preventDefault();
-
 
         const json = JSON.stringify(this.props.slicer(this.props.currentState));
         const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(json)}`;
@@ -90,6 +91,7 @@ class AppContainer extends Component {
         this.setState({
             importModalOpen: true
         });
+        this.refs.importModal.refs.file.value = null;
     }
 
     handleImportModalImportClick(e) {

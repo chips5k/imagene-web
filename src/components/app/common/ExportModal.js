@@ -12,7 +12,7 @@ export default class ExportSamplesModal extends Component {
                     Export Current Session Data
                 </ModalHeader>
                 <ModalBody>
-                    <div className="vertical-flex-box flex-fill">
+                    <div className="vertical-flex-box flex-fill" style={{maxWidth: 500}}>
                         <p>To export/save the current session data, click the export button below. This will allow you to download a file that can be later imported and resumed</p>
 
                         <p>Please note: the cached binary image data for samples will not be exported, just the individuals used to generate the RGB components. Upon importing this file, the system will automatically regenerate the samples on-demand</p>
