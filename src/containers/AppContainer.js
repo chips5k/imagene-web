@@ -214,7 +214,8 @@ const mapStateToProps = (state, ownProps) => ({
     currentGenerationId: Math.max.apply(null, state.generations.allIds),
     generations: Object.values(state.generations.byId),
     location: state.router.location.pathname,
-    addToWorkerQueue: ownProps.addToWorkerQueue
+    addToWorkerQueue: ownProps.addToWorkerQueue,
+    currentState: state
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
