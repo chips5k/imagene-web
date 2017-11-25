@@ -54,7 +54,8 @@ class AppContainer extends Component {
 
     handleExportAction() {
         this.setState({
-            exportModalOpen: true
+            exportModalOpen: true,
+            export: JSON.stringify(this.props.currentState)
         });
     }   
 
@@ -78,7 +79,8 @@ class AppContainer extends Component {
         });
     }
 
-    handleExportModalCloseClick() {
+    handleExportModalCloseClick(e) {
+        e.preventDefault();
         this.setState({
             exportModalOpen: false
         });
@@ -119,7 +121,8 @@ class AppContainer extends Component {
 
     }
 
-    handleImportModalCloseClick() {
+    handleImportModalCloseClick(e) {
+        e.preventDefault();
         this.setState({
             importModalOpen: false
         });
@@ -149,11 +152,10 @@ class AppContainer extends Component {
                 }/>
 
                 <ExportModal 
-                    currentState={this.props.currentState}
                     onCloseModalClick={this.handleExportModalCloseClick.bind(this)} 
                     onExportClick={this.handleExportModalExportClick.bind(this)}
-                    open={this.state.exportModalOpen
-                }/>
+                    open={this.state.exportModalOpen}
+                />
 
                 <ImportModal 
                     ref="importModal"

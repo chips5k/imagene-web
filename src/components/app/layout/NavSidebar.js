@@ -39,10 +39,9 @@ class NavSidebar extends Component {
                                 <i className="nav-sidebar__item-icon fa fa-home" /> <span className="nav-sidebar__item-label">Home</span>
                             </a>  
 
-                            {this.props.generations.length === 0 && 
                             <a href="" onClick={this.props.onLinkClick.bind(null, "/new-generation")} className={this.determineClass()} >
                                 <i className="nav-sidebar__item-icon fa fa-sitemap" /> <span className="nav-sidebar__item-label">New Generation</span>
-                            </a>}
+                            </a>
 
                             <a href="" onClick={this.props.onLinkClick.bind(null, "/import")} className={this.determineClass("/import")}>
                                 <i className="nav-sidebar__item-icon fa fa-download" /> <span className="nav-sidebar__item-label">Import</span>

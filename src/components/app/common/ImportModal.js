@@ -14,9 +14,6 @@ export default class ImportSamplesModal extends Component {
                     <FormControl label="Import File">
                         <input ref="file" type="file" />
                     </FormControl>
-                    <FormControl label="or paste copied data">
-                        <textarea ref="paste" rows="5" cols="10" style={{height:100, flex: 1}} />
-                    </FormControl>
 
                 </ModalBody>
                 <ModalFooter>

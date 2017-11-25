@@ -28,6 +28,14 @@ export default class GenerationView extends Component {
             panelSidebarVisible: window.innerWidth >= 1224
         };
     }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.generation.individuals.length === 0) {
+            this.setState({
+                activeView: 'individuals'
+            });
+        }
+    }
       
     determineClass = (className, property, value) => {
         return className + (this.state[property] === value ? ' main__content-top-nav-item--active' : '');
@@ -78,8 +86,6 @@ export default class GenerationView extends Component {
             symmetric: !this.state.symmetric
         });
     }
-
-    
 
     handleGenerateIndividualsClick(e) {
         e.preventDefault();

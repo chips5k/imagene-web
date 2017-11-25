@@ -46,7 +46,7 @@ export const store = createStore(
     }),
     compose(
         applyMiddleware(historyMiddleware, thunk),
-        persistState(null, { slicer: (paths) => slicer })
+        persistState(['config', 'generations', 'samples', 'individuals'], { slicer: (paths) => slicer })
     )
 );
 
