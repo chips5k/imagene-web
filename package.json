@@ -17,6 +17,7 @@
     "react-router-redux": "next",
     "react-scripts": "1.0.13",
     "redux": "^3.7.2",
+    "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.2.0",
     "roboto-fontface": "^0.8.0",
     "worker-loader": "^1.0.0"
