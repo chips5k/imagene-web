@@ -1,5 +1,5 @@
 import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
-import { routerReducer, routerMiddleware } from 'react-router-redux';
+import { routerReducer, routerMiddleware} from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
@@ -25,7 +25,7 @@ export const slicer = (state) => {
         }
     }
 
-    return {
+    let data = {
         ...state,
         samples: {
             ...state.samples,
@@ -33,15 +33,37 @@ export const slicer = (state) => {
         }
     };
 
+    delete data.router;
+    
+    return data;
 };  
+
+function RootReducer(reducers, initialState){
+    return function(state = initialState, action){
+        switch (action.type) {
+            case 'PROCESS_IMPORT':
+                let data = {
+                    ...action.data,
+                    ui: { importing: false },
+                    router: {...state.router}
+                };
+
+                return data;
+            default:
+                return reducers(state, action);
+        }
+    }
+}
 
 // Add the reducer to your store on the `router` key
 // Also apply our middleware for navigating
 export const store = createStore(
-    combineReducers({
-      ...reducers,
-      router: routerReducer
-    }),
+    RootReducer(
+        combineReducers({
+            ...reducers,
+            router: routerReducer
+        })
+    ),
     compose(
         applyMiddleware(historyMiddleware, thunk),
         persistState(null, { slicer: (paths) => slicer })

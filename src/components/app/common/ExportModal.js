@@ -13,7 +13,7 @@ export default class ExportSamplesModal extends Component {
 
                     <p style={{maxWidth: 500}}>To export/save the current session data, click the export button below. This will allow you to download a file that can be later imported and resumed</p>
 
-                    <p>Please note: the cached binary image data for samples will not be exported, just the individuals used to generate the RGB components. Upon importing this file, the system will automatically regenerate the samples on-demand</p>
+                    <p style={{maxWidth: 500}}>Please note: the cached binary image data for samples will not be exported, just the individuals used to generate the RGB components. Upon importing this file, the system will automatically regenerate the samples on-demand</p>
 
                 </ModalBody>
                 <ModalFooter>

@@ -3,6 +3,20 @@ import Random from 'random-js';
 import { selectRoulette, selectTruncate } from '../lib/utilities';
 import * as expressions from '../lib/expressions';
 import * as individuals from '../lib/individuals';
+
+
+export const importState = (redirect, state) => {
+    return dispatch => {
+        dispatch({
+            type: 'START_IMPORT',
+        })
+        dispatch({
+            type: 'PROCESS_IMPORT',
+            data: state
+        });
+    }
+}
+    
 /**
  * Create Initial Generation
  */
@@ -233,6 +247,7 @@ export const bindActionCreators = (addToWorkerQueue, randomLibrary) => {
         increaseSampleFitness,
         decreaseSampleFitness,
         redirect: push,
+        importState: importState.bind(null, push),
         createInitialGeneration: createInitialGeneration.bind(null, push),
         generateIndividuals: generateIndividuals.bind(null, buildExpression),
         generateSamples: generateSamples.bind(null, rouletteSelector),
