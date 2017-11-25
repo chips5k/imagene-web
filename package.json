@@ -1,5 +1,6 @@
 {
   "name": "imagene-web-react",
+  "homepage": "https://chips5k.github.io/imagene-web/",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
