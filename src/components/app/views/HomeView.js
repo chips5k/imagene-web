@@ -23,7 +23,8 @@ export const HomeView = props => (
 
                 <div style={{paddingTop: '1rem', paddingBottom: '1rem'}}>
                     <a className="button button--primary button--extra-large" onClick={props.onGetStartedClick}>Get Started</a>
-                    <a className="button button--info button--extra-large" onClick={props.onWatchTutorialClick}>Watch Tutorial</a>
+                    <a className="button button--info button--extra-large" onClick={props.onWatchTutorialClick}>Watch Video Walkthrough</a>
+                    <a className="button button--alt button--extra-large" onClick={props.onViewHelpClick}>View Help/Instructions</a>
                 </div>
                 <hr/>
 

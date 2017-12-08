@@ -13,13 +13,16 @@ import GenerationViewContainer from './GenerationViewContainer';
 import HomeView from '../components/app/views/HomeView';
 import ExportModal from '../components/app/common/ExportModal';
 import ImportModal from '../components/app/common/ImportModal';
+import VideoModal from '../components/app/common/VideoModal';
 import HelpModal from '../components/app/common/HelpModal';
 class AppContainer extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            sidebarVisible: false
+            sidebarVisible: false,
+            helpModalOpen: false,
+            videoModalOpen: false
         }
     }
 
@@ -42,6 +45,9 @@ class AppContainer extends Component {
         switch(url) {
             case '/new-generation':
                 this.props.actionCreators.createInitialGeneration();
+                break;
+            case '/video':
+                this.handleVideoAction();
                 break;
             case '/help':
                 this.handleHelpAction();
@@ -133,6 +139,23 @@ class AppContainer extends Component {
         });
     }
 
+    handleVideoAction(e) {
+        if(e) {
+            e.preventDefault();
+        }
+        
+        this.setState({
+            videoModalOpen: true
+        });
+    }
+
+    handleVideoModalCloseClick(e) {
+        e.preventDefault();
+        this.setState({
+            videoModalOpen: false
+        });
+    }
+
     handleHelpAction(e) {
         if(e) {
             e.preventDefault();
@@ -176,7 +199,8 @@ class AppContainer extends Component {
                     <HomeView match={match} 
                         onNavSidebarToggleClick={this.handleNavSidebarToggleClick.bind(this)} 
                         onGetStartedClick={this.handleHomeGetStartedClick.bind(this)}
-                        onWatchTutorialClick={this.handleHelpAction.bind(this)}
+                        onWatchTutorialClick={this.handleVideoAction.bind(this)}
+                        onViewHelpClick={this.handleHelpAction.bind(this)}
                     />
                 }/>
                 <Route exact path="/generation/:id" render={ ({match}) => 
@@ -201,6 +225,10 @@ class AppContainer extends Component {
                     open={this.state.importModalOpen}
                 />
 
+                <VideoModal 
+                    onCloseModalClick={this.handleVideoModalCloseClick.bind(this)} 
+                    open={this.state.videoModalOpen}
+                />
                 <HelpModal 
                     onCloseModalClick={this.handleHelpModalCloseClick.bind(this)} 
                     open={this.state.helpModalOpen}
