@@ -22,9 +22,10 @@ export const HomeView = props => (
                 </p>
 
                 <div style={{paddingTop: '1rem', paddingBottom: '1rem'}}>
-                    <a className="button button--primary button--extra-large" onClick={props.onGetStartedClick}>Get Started</a>
-                    <a className="button button--info button--extra-large" onClick={props.onWatchTutorialClick}>Watch Video Walkthrough</a>
-                    <a className="button button--alt button--extra-large" onClick={props.onViewHelpClick}>View Help/Instructions</a>
+                    <a className="button button--primary button--extra-large" style={{float: 'left', marginTop: '0.5rem'}} onClick={props.onGetStartedClick}>Get Started</a>
+                    <a className="button button--info button--extra-large" style={{float: 'left', marginTop: '0.5rem'}} onClick={props.onWatchTutorialClick}>Video Walkthrough</a>
+                    <a className="button button--alt button--extra-large" style={{float: 'left', marginTop: '0.5rem'}} onClick={props.onViewHelpClick}>View Help/Instructions</a>
+                    <div style={{clear: 'both'}}></div>
                 </div>
                 <hr/>
 

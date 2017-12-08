@@ -39,7 +39,7 @@ class NavSidebar extends Component {
                                 <i className="nav-sidebar__item-icon fa fa-home" /> <span className="nav-sidebar__item-label">Home</span>
                             </a>  
 
-                            <a href="" onClick={this.props.onLinkClick.bind(null, "/help")} className={this.determineClass("/video")}>
+                            <a href="" onClick={this.props.onLinkClick.bind(null, "/video")} className={this.determineClass("/video")}>
                                 <i className="nav-sidebar__item-icon fa fa-video-camera" /> <span className="nav-sidebar__item-label">Video Walkthrough</span>
                             </a>  
 

@@ -8,6 +8,10 @@ body {
     font-family: 'Roboto', 'Sans-serif', 'Arial';
 }
 
+.button {
+    white-space: nowrap;
+}
+
 hr {
     height: 1px;
     border: none;
